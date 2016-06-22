@@ -1,4 +1,4 @@
-package com.soulkey.calltalent.ui.auth;
+package com.soulkey.calltalent.ui.user;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +11,7 @@ import com.soulkey.calltalent.R;
 import com.soulkey.calltalent.di.component.ApplicationComponent;
 import com.soulkey.calltalent.domain.entity.UserProfile;
 import com.soulkey.calltalent.ui.BaseActivity;
+import com.soulkey.calltalent.ui.auth.LoginParams;
 
 import rx.Subscription;
 

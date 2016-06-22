@@ -35,8 +35,8 @@
         <activity android:name=".ui.MainActivity" />
         <activity android:name=".ui.auth.LoginActivity" />
         <activity android:name=".ui.auth.RegisterActivity" />
-        <activity android:name=".ui.auth.CreateUserProfileActivity" />
-        <activity android:name=".ui.auth.AvatarActivity"></activity>
+        <activity android:name=".ui.user.CreateUserProfileActivity" />
+        <activity android:name=".ui.user.AvatarActivity"/>
     </application>
 
 </manifest>

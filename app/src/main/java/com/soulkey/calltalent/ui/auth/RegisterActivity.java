@@ -19,6 +19,7 @@ import com.jakewharton.rxbinding.view.RxView;
 import com.jakewharton.rxbinding.widget.RxCompoundButton;
 import com.soulkey.calltalent.R;
 import com.soulkey.calltalent.di.component.ApplicationComponent;
+import com.soulkey.calltalent.ui.user.CreateUserProfileActivity;
 
 import java.util.HashMap;
 import java.util.Map;

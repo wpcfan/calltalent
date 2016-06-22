@@ -48,7 +48,7 @@ android {
     buildToolsVersion "24"
     defaultConfig {
         applicationId "com.soulkey.calltalent"
-        minSdkVersion 16
+        minSdkVersion 15
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -154,16 +154,16 @@ dependencies {
     //    Chinese alternative of Google's Firebase
     compile "com.wilddog:wilddog-client-android:$wilddog_version"
 
-    //    Google's Realtime data and Analytic platform
-//    PlayCompile "com.google.firebase:firebase-database:$firebase_version"
-//    PlayCompile "com.google.firebase:firebase-core:$firebase_version"
-//    PlayCompile "com.google.firebase:firebase-auth:$firebase_version"
-
     //LeakCanary is a framework to help detect the memory leak and then find out the root causes
     debugCompile "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
     releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$leakcanary_version"
     testCompile 'junit:junit:4.12'
     testCompile "com.squareup.leakcanary:leakcanary-android-no-op:$leakcanary_version"
+
+    //    Google's Realtime data and Analytic platform
+//    PlayCompile "com.google.firebase:firebase-database:$firebase_version"
+//    PlayCompile "com.google.firebase:firebase-core:$firebase_version"
+//    PlayCompile "com.google.firebase:firebase-auth:$firebase_version"
 }
 
 // Add to the bottom of the file

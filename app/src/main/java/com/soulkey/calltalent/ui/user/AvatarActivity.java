@@ -1,4 +1,4 @@
-package com.soulkey.calltalent.ui.auth;
+package com.soulkey.calltalent.ui.user;
 
 import android.Manifest;
 import android.graphics.ImageFormat;
