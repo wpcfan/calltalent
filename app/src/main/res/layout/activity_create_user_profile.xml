@@ -44,12 +44,14 @@
         app:layout_heightPercent="20%">
 
         <Button
+            style="?android:attr/buttonBarButtonStyle"
             android:id="@+id/completeUserProfileBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/createuserprofile_activity_completeUserProfileBtn_text" />
 
         <Button
+            style="?android:attr/buttonBarButtonStyle"
             android:id="@+id/showUserProfileBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

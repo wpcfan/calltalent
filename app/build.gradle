@@ -7,7 +7,7 @@ apply plugin: 'com.jakewharton.hugo'
 
 buildscript {
     ext {
-        support_version = '23.4.0'
+        support_version = '24.0.0'
         kotlin_version = '1.0.2'
         anko_version = '0.8.3'
         retrofit_version = '2.0.2'
@@ -36,20 +36,13 @@ buildscript {
 
 }
 android {
-    signingConfigs {
-        signingkey {
-            keyAlias 'Soulkey'
-            keyPassword 'Soulkey'
-            storeFile file('calltalent.keystore')
-            storePassword 'Soulkey'
-        }
-    }
-    compileSdkVersion 23
+
+    compileSdkVersion 24
     buildToolsVersion "24"
     defaultConfig {
         applicationId "com.soulkey.calltalent"
-        minSdkVersion 16
-        targetSdkVersion 23
+        minSdkVersion 15
+        targetSdkVersion 24
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -63,7 +56,6 @@ android {
         release {
             minifyEnabled true
             zipAlignEnabled true
-            signingConfig signingConfigs.signingkey
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -94,14 +86,13 @@ dependencies {
     //    compile "org.jetbrains.anko:anko-sdk15:$anko_version" // So here it's 15 too
 
     //Compatibility
-    compile "com.android.support:appcompat-v7:$support_version"
+    //Design Support Library depends on v4 and v7
+    //adding it will automatically introduce v4 and v7
+    compile "com.android.support:design:$support_version"
+//    compile "com.android.support:appcompat-v7:$support_version"
     compile "com.android.support:percent:$support_version"
     //    uncomment the following line to enable the flexbox layout
     //    compile "com.google.android:flexbox:$flexbox_version"
-
-    //uncomment to use Google's Percentage Layout
-
-    //    compile "com.android.support:design:$support_version"
 
     //    compile "com.android.support:recyclerview-v7:$support_version"
 
