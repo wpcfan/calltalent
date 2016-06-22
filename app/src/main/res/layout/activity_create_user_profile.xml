@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.percent.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -17,7 +18,8 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         app:layout_heightPercent="20%"
-        app:layout_widthPercent="100%" />
+        app:layout_widthPercent="100%"
+        android:inputType="text" />
 
     <EditText
         android:id="@+id/avatarInput"
@@ -25,7 +27,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/nameInput"
         app:layout_heightPercent="20%"
-        app:layout_widthPercent="100%" />
+        app:layout_widthPercent="100%"
+        android:inputType="text" />
 
     <EditText
         android:id="@+id/titleInput"
@@ -33,7 +36,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/avatarInput"
         app:layout_heightPercent="20%"
-        app:layout_widthPercent="100%" />
+        app:layout_widthPercent="100%"
+        android:inputType="text"/>
 
     <LinearLayout
         android:id="@+id/buttonGroup"
@@ -41,15 +45,18 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/titleInput"
         android:orientation="horizontal"
+        style="?android:attr/buttonBarStyle"
         app:layout_heightPercent="20%">
 
         <Button
+            style="?android:attr/buttonBarButtonStyle"
             android:id="@+id/completeUserProfileBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/createuserprofile_activity_completeUserProfileBtn_text" />
 
         <Button
+            style="?android:attr/buttonBarButtonStyle"
             android:id="@+id/showUserProfileBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

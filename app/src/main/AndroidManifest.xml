@@ -37,6 +37,7 @@
         <activity android:name=".ui.auth.RegisterActivity" />
         <activity android:name=".ui.user.CreateUserProfileActivity" />
         <activity android:name=".ui.user.AvatarActivity"/>
+        <meta-data android:name="CLOUDINARY_URL" android:value="cloudinary://929157142385211:Uq_ar0Une3IsUViBB6UFOh0nwio@twigcodes"/>
     </application>
 
 </manifest>

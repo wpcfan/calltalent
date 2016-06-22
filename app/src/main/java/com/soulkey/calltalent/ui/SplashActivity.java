@@ -1,14 +1,14 @@
 package com.soulkey.calltalent.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+
+import com.soulkey.calltalent.di.component.ApplicationComponent;
 
 /**
  * Provide a splash screen for the app
  * Created by peng on 2016/5/24.
  */
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,9 +16,13 @@ public class SplashActivity extends AppCompatActivity {
         launchActivity(MainActivity.class);
     }
 
-    void launchActivity(Class<?> clazz) {
-        Intent intent = new Intent(this, clazz);
-        startActivity(intent);
-        finish();
+    @Override
+    protected void injectComponent(ApplicationComponent component) {
+        component.inject(this);
+    }
+
+    @Override
+    protected Boolean requiredLoggedIn() {
+        return false;
     }
 }
