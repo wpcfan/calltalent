@@ -71,6 +71,7 @@ public class AvatarActivity extends BaseActivity {
             Observable<RxCamera> observableCamera, Observable<MotionEvent> observableTextureView) {
         return Observable.zip(
                 observableCamera, observableTextureView, (rxCamera, motionEvent) -> rxCamera)
+                .filter(rxCamera2 -> rxCamera2 != null)
                 .flatMap(rxCamera1 ->
                         rxCamera1.request().takePictureRequest(
                                 false,
@@ -100,10 +101,11 @@ public class AvatarActivity extends BaseActivity {
                         Toast.makeText(AvatarActivity.this, "", Toast.LENGTH_SHORT).show();
                 })
                 .filter(granted -> granted)
-                .flatMap(__ -> getRxCameraObservable(textureView, config));
+                .flatMap(__ -> getCameraPreviewObservable(textureView, config));
     }
 
-    private Observable<RxCamera> getRxCameraObservable(TextureView textureView, RxCameraConfig config) {
+    private Observable<RxCamera> getCameraPreviewObservable(
+            TextureView textureView, RxCameraConfig config) {
         return RxCamera.open(this, config)
                 .flatMap(rxCamera -> {
                     this.camera = rxCamera;
