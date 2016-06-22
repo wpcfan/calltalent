@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.soulkey.calltalent.ui.auth.CreateUserProfileActivity">
+
+    <EditText
+        android:id="@+id/nameInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        app:layout_heightPercent="20%"
+        app:layout_widthPercent="100%" />
+
+    <EditText
+        android:id="@+id/avatarInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/nameInput"
+        app:layout_heightPercent="20%"
+        app:layout_widthPercent="100%" />
+
+    <EditText
+        android:id="@+id/titleInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/avatarInput"
+        app:layout_heightPercent="20%"
+        app:layout_widthPercent="100%" />
+
+    <LinearLayout
+        android:id="@+id/buttonGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titleInput"
+        android:orientation="horizontal"
+        app:layout_heightPercent="20%">
+
+        <Button
+            android:id="@+id/completeUserProfileBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/createuserprofile_activity_completeUserProfileBtn_text" />
+
+        <Button
+            android:id="@+id/showUserProfileBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="@string/createuserprofile_activity_showUserProfileBtn_text" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/addAvatarBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/buttonGroup"
+        android:text="@string/createuserprofile_activity_addAvatarBtn_text"
+        app:layout_heightPercent="20%"
+        app:layout_widthPercent="100%" />
+
+</android.support.percent.PercentRelativeLayout>

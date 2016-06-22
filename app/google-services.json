@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "132718887003",
+    "firebase_url": "https://project-9165684739419902055.firebaseio.com",
+    "project_id": "project-9165684739419902055",
+    "storage_bucket": "project-9165684739419902055.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:132718887003:android:2862b929e74aff97",
+        "android_client_info": {
+          "package_name": "com.soulkey.calltalent"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "132718887003-4g3mken0382f74bl91mmcm7oc3ast4qq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.soulkey.calltalent",
+            "certificate_hash": "5830EFBC01713D207E92EC3E8A931CA96EEF645C"
+          }
+        },
+        {
+          "client_id": "132718887003-4ol6l4fj1c9u3oc5q5jkv3sh2s30meid.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGzK8fWVZVIx8JqBR17Hilo88xYKHHgX8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "132718887003-4ol6l4fj1c9u3oc5q5jkv3sh2s30meid.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,57 @@
+package com.soulkey.calltalent.api.auth.wilddog;
+
+import android.app.Application;
+import android.support.annotation.NonNull;
+
+import com.soulkey.calltalent.api.auth.IAuthResult;
+import com.soulkey.calltalent.api.auth.IAuthService;
+import com.soulkey.calltalent.api.wrapper.RxWilddog;
+import com.soulkey.calltalent.domain.entity.User;
+import com.wilddog.client.Wilddog;
+
+import hugo.weaving.DebugLog;
+import rx.Observable;
+
+/**
+ * Wilddog version of the implementation of IAuthService
+ * Created by peng on 2016/5/27.
+ */
+public class AuthServiceWilddogImpl implements IAuthService {
+
+    private Wilddog wilddog;
+
+    public AuthServiceWilddogImpl(Application application) {
+        Wilddog.setAndroidContext(application);
+        String AUTH_URL = "https://calltalent.wilddogio.com/";
+        this.wilddog = new Wilddog(AUTH_URL);
+    }
+
+    @DebugLog
+    @Override
+    public Observable<Boolean> registerWithUsernameAndPassword(
+            @NonNull String username, @NonNull String password) {
+        return RxWilddog.createWithPassword(wilddog, username, password)
+                .map(IAuthResult::isSuccessful);
+    }
+
+    @DebugLog
+    @Override
+    public Observable<User> loginWithUsernameAndPassword(
+            @NonNull String username, @NonNull String password) {
+        return RxWilddog.authWithPassword(wilddog, username, password)
+                .map(iAuthResult -> iAuthResult.isSuccessful() ?
+                        User.create(iAuthResult.getData().getUid(), false) : null);
+    }
+
+    @Override
+    public Observable<User> isUserLoggedIn() {
+        return RxWilddog.observeAuth(wilddog)
+                .map(iAuthResult -> iAuthResult.isSuccessful() ?
+                        User.create(iAuthResult.getData().getUid(), false) : null);
+    }
+
+    @Override
+    public Observable<Boolean> signOut() {
+        return RxWilddog.signOut(wilddog);
+    }
+}

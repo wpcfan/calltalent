@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".ui.auth.RegisterActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorBackground">
+
+        <!--  Header  Starts-->
+        <LinearLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/login_header_gradient"
+            android:orientation="vertical">
+            <!-- Logo Start-->
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:layout_marginStart="10dip"
+                android:contentDescription="@string/login_activity_logo_image_desc"
+                android:src="@mipmap/ic_launcher" />
+            <!-- Logo Ends -->
+        </LinearLayout>
+        <!--  Header Ends -->
+
+
+        <!-- Footer Start -->
+        <LinearLayout
+            android:id="@+id/footer"
+            android:layout_width="match_parent"
+            android:layout_height="130dip"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/login_footer_repeat"
+            android:orientation="vertical" />
+        <!-- Footer Ends -->
+
+
+        <!-- Login Form -->
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/header"
+            android:orientation="vertical"
+            android:padding="10dip">
+            <!-- Username Label Start-->
+            <TextView
+                android:id="@+id/usernameLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/login_activity_usernameLabel_text" />
+            <!-- Username Label ends-->
+
+            <!-- Username Input Start -->
+
+            <AutoCompleteTextView
+                android:id="@+id/usernameText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/login_activity_usernameText_hint"
+                android:inputType="textEmailAddress" />
+            <!-- Username Input Ends -->
+
+            <!-- Password Label Start -->
+            <TextView
+                android:id="@+id/passwordLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/login_activity_passwordLabel_text" />
+            <!-- Password Label Ends -->
+            <android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <!-- Password Input Start -->
+                <EditText
+                    android:id="@+id/passwordText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/login_activity_passwordText_hint"
+                    android:inputType="textPassword"
+                    app:layout_widthPercent="85%" />
+                <!-- Password Input Ends -->
+
+                <!-- Show/Hide Password Switch Start -->
+                <Switch
+                    android:id="@+id/showHidePasswordSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_toEndOf="@id/passwordText"
+                    android:layout_toRightOf="@id/passwordText"
+                    app:layout_widthPercent="15%" />
+                <!-- Show/Hide Password Switch Ends -->
+            </android.support.percent.PercentRelativeLayout>
+
+
+            <!-- Repeat Password Label Start -->
+            <TextView
+                android:id="@+id/repeatPasswordLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/register_activity_repeatPasswordLabel_text" />
+            <!-- Repeat Password Label Ends -->
+
+            <!-- Repeat Password Input Start -->
+            <EditText
+                android:id="@+id/repeatPasswordText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/register_activity_repeatPasswordText_hint"
+                android:inputType="textPassword" />
+            <!-- Repeat Password Input Ends -->
+
+            <!-- Signin Button Start -->
+            <Button
+                android:id="@+id/registerBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/register_activity_registerBtn_text" />
+            <!-- Signin Button Ends -->
+
+            <TextView
+                android:id="@+id/linktoSignin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="40dip"
+                android:layout_marginTop="40dip"
+                android:gravity="center"
+                android:text="@string/register_activity_linktoSignin_text"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp" />
+        </LinearLayout>
+        <!-- Login Form Ends -->
+
+    </RelativeLayout>
+</ScrollView>

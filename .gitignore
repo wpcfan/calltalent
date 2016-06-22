@@ -7,6 +7,7 @@
 
 # Java class files
 *.class
+*.jar
 
 # Generated files
 bin/
@@ -35,6 +36,10 @@ captures/
 # Intellij
 *.iml
 .idea/workspace.xml
+.idea/libraries
 
 # Keystore files
 *.jks
+/*.keystore
+
+/app/src/play/
