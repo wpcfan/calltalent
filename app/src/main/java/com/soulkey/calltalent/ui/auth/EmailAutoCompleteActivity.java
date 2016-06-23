@@ -1,5 +1,6 @@
 package com.soulkey.calltalent.ui.auth;
 
+import android.support.design.widget.TextInputLayout;
 import android.text.InputType;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -11,6 +12,7 @@ import com.jakewharton.rxbinding.widget.RxCompoundButton;
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.soulkey.calltalent.R;
 import com.soulkey.calltalent.ui.BaseActivity;
+import com.soulkey.calltalent.utils.validation.ValidationUtils;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -54,6 +56,43 @@ public abstract class EmailAutoCompleteActivity extends BaseActivity {
                     else
                         passwordText.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 });
+    }
+
+    boolean validateIdenticalPasswords(TextView text, TextView repeatText, TextInputLayout wrapper) {
+        boolean repeatValid = repeatText.getText().toString()
+                .equals(text.getText().toString());
+        if (!repeatValid) {
+            wrapper.setError(getResources().getString(
+                    R.string.validation_repeat_password_not_same));
+            return false;
+        } else {
+            wrapper.setErrorEnabled(false);
+            return true;
+        }
+    }
+
+    boolean validateEmail(TextView view, TextInputLayout wrapper) {
+        if (!ValidationUtils.isValidEmailAddress(
+                view.getText().toString()).isValid()) {
+            wrapper.setError(
+                    getResources().getString(R.string.validation_email_not_valid));
+            return false;
+        } else {
+            wrapper.setErrorEnabled(false);
+            return true;
+        }
+    }
+
+    boolean validateRequiredField(TextView view, TextInputLayout wrapper) {
+        if (!ValidationUtils.validateRequiredField(
+                view.getText().toString()).isValid()) {
+            wrapper.setError(
+                    getResources().getString(R.string.validation_username_not_empty));
+            return false;
+        } else {
+            wrapper.setErrorEnabled(false);
+            return true;
+        }
     }
 
     private void showAutoCompleteDropdown(AutoCompleteTextView emailView) {

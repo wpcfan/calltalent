@@ -89,7 +89,6 @@ dependencies {
     //Design Support Library depends on v4 and v7
     //adding it will automatically introduce v4 and v7
     compile "com.android.support:design:$support_version"
-//    compile "com.android.support:appcompat-v7:$support_version"
     compile "com.android.support:percent:$support_version"
     //    uncomment the following line to enable the flexbox layout
     //    compile "com.google.android:flexbox:$flexbox_version"

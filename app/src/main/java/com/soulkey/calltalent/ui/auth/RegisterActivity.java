@@ -3,28 +3,27 @@ package com.soulkey.calltalent.ui.auth;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
-import android.text.InputType;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jakewharton.rxbinding.view.RxView;
-import com.jakewharton.rxbinding.widget.RxCompoundButton;
+import com.jakewharton.rxbinding.widget.RxTextView;
 import com.soulkey.calltalent.R;
 import com.soulkey.calltalent.di.component.ApplicationComponent;
 import com.soulkey.calltalent.ui.user.CreateUserProfileActivity;
-import com.soulkey.calltalent.utils.validation.ValidationUtils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
 
 public class RegisterActivity extends EmailAutoCompleteActivity {
 
@@ -71,6 +70,28 @@ public class RegisterActivity extends EmailAutoCompleteActivity {
         getSubsCollector().add(dealWithSignin(signinBtn, params));
 
         getSubsCollector().add(switchPasswordVisibility(showHideSwitch, passwordText));
+
+        getSubsCollector().add(RxTextView.textChanges(passwordText)
+                .debounce(getDebounceTime(), TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .filter(charSequence -> charSequence.length()>getThrottleCount())
+                .compose(bindToLifecycle())
+                .subscribe(charSequence1 -> {
+                    validateRequiredField(passwordText, passwordWrapper);
+                    if(repeatPasswordText.getText().length()>0)
+                        validateIdenticalPasswords(passwordText, repeatPasswordText, repeatPasswordWrapper);
+                }));
+
+        getSubsCollector().add(RxTextView.textChanges(repeatPasswordText)
+                .debounce(getDebounceTime(), TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .filter(charSequence -> charSequence.length()>getThrottleCount())
+                .compose(bindToLifecycle())
+                .subscribe(charSequence1 -> {
+                    validateRequiredField(repeatPasswordText, repeatPasswordWrapper);
+                    if(passwordText.getText().length()>0)
+                        validateIdenticalPasswords(passwordText, repeatPasswordText, repeatPasswordWrapper);
+                }));
     }
     @Override
     protected void injectComponent(ApplicationComponent component) {
@@ -93,46 +114,13 @@ public class RegisterActivity extends EmailAutoCompleteActivity {
             final TextInputLayout repeatPasswordWrapper,
             final Map<String, String> params) {
         return RxView.clicks(view)
-                .filter(__ -> {
-                    if (!ValidationUtils.validateRequiredField(
-                            usernameText.getText().toString()).isValid()) {
-                        usernameWrapper.setError(
-                                getResources().getString(R.string.validation_username_not_empty));
-                        return false;
-                    }
-                    if (!ValidationUtils.validateRequiredField(
-                            passwordText.getText().toString()).isValid()) {
-                        passwordWrapper.setError(
-                                getResources().getString(R.string.validation_password_not_empty));
-                        return false;
-                    }
-                    if (!ValidationUtils.validateRequiredField(
-                            repeatPasswordText.getText().toString()).isValid()) {
-                        repeatPasswordWrapper.setError(
-                                getResources().getString(R.string.validation_password_not_empty));
-                        return false;
-                    }
-
-                    if (!ValidationUtils.isValidEmailAddress(
-                            usernameText.getText().toString()).isValid()) {
-                        usernameWrapper.setError(
-                                getResources().getString(R.string.validation_email_not_valid));
-                        return false;
-                    }
-
-                    boolean repeatValid = repeatPasswordText.getText().toString()
-                            .equals(passwordText.getText().toString());
-                    if (!repeatValid) {
-                        repeatPasswordWrapper.setError(getResources().getString(
-                                R.string.validation_repeat_password_not_same));
-                        return false;
-                    }
-
-                    usernameWrapper.setErrorEnabled(false);
-                    passwordWrapper.setErrorEnabled(false);
-                    repeatPasswordWrapper.setErrorEnabled(false);
-                    return true;
-                })
+                .filter(__ -> validateForm(
+                        usernameText,
+                        passwordText,
+                        repeatPasswordText,
+                        usernameWrapper,
+                        passwordWrapper,
+                        repeatPasswordWrapper))
                 .doOnNext(__ -> view.setEnabled(false))
                 .flatMap(__ -> registerUser(
                         usernameText.getText().toString(),
@@ -152,6 +140,14 @@ public class RegisterActivity extends EmailAutoCompleteActivity {
                         launchActivity(CreateUserProfileActivity.class, params);
                     }
                 });
+    }
+
+    private boolean validateForm(TextView usernameText, TextView passwordText, TextView repeatPasswordText, TextInputLayout usernameWrapper, TextInputLayout passwordWrapper, TextInputLayout repeatPasswordWrapper) {
+        return validateRequiredField(usernameText, usernameWrapper) &&
+                validateRequiredField(passwordText, passwordWrapper) &&
+                validateRequiredField(repeatPasswordText, repeatPasswordWrapper) &&
+                validateEmail(usernameText, usernameWrapper) &&
+                validateIdenticalPasswords(passwordText, repeatPasswordText, repeatPasswordWrapper);
     }
 
     @NonNull

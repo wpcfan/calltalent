@@ -10,16 +10,18 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.jakewharton.rxbinding.view.RxView;
+import com.jakewharton.rxbinding.widget.RxTextView;
 import com.soulkey.calltalent.R;
 import com.soulkey.calltalent.di.component.ApplicationComponent;
 import com.soulkey.calltalent.ui.MainActivity;
 import com.soulkey.calltalent.ui.UIHelper;
-import com.soulkey.calltalent.utils.validation.ValidationUtils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * The LoginActivity defines the login-related behaviors
@@ -58,6 +60,15 @@ public class LoginActivity extends EmailAutoCompleteActivity {
         getSubsCollector().add(dealWithRegister(registerBtn, params));
 
         getSubsCollector().add(switchPasswordVisibility(showHideSwitch, passwordText));
+
+        getSubsCollector().add(RxTextView.textChanges(passwordText)
+                .debounce(getDebounceTime(), TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .filter(charSequence -> charSequence.length()>getThrottleCount())
+                .compose(bindToLifecycle())
+                .subscribe(charSequence1 -> {
+                    validateRequiredField(passwordText, passwordWrapper);
+                }));
     }
 
     private Subscription dealWithSignin(
@@ -67,30 +78,9 @@ public class LoginActivity extends EmailAutoCompleteActivity {
             TextInputLayout usernameWrapper,
             TextInputLayout passwordWrapper) {
         return RxView.clicks(button)
-                .filter(aVoid1 -> {
-                    if (!ValidationUtils.validateRequiredField(
-                            usernameText.getText().toString()).isValid()) {
-                        usernameWrapper.setError(
-                                getResources().getString(R.string.validation_username_not_empty));
-                        return false;
-                    }
-                    if (!ValidationUtils.validateRequiredField(
-                            passwordText.getText().toString()).isValid()) {
-                        passwordWrapper.setError(
-                                getResources().getString(R.string.validation_password_not_empty));
-                        return false;
-                    }
-
-                    if (!ValidationUtils.isValidEmailAddress(
-                            usernameText.getText().toString()).isValid()) {
-                        usernameWrapper.setError(
-                                getResources().getString(R.string.validation_email_not_valid));
-                        return false;
-                    }
-                    usernameWrapper.setErrorEnabled(false);
-                    passwordWrapper.setErrorEnabled(false);
-                    return true;
-                })
+                .filter(aVoid1 -> validateRequiredField(usernameText, usernameWrapper) &&
+                        validateRequiredField(passwordText, passwordWrapper) &&
+                        validateEmail(usernameText, usernameWrapper))
                 .doOnNext(aVoid -> {
                     button.setEnabled(false);
                     UIHelper.hideKeyboard(this, button);

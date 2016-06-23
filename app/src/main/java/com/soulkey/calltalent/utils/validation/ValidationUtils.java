@@ -5,9 +5,8 @@ import android.support.annotation.NonNull;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import hugo.weaving.DebugLog;
-
 /**
+ *
  * Created by peng on 2016/6/10.
  */
 public class ValidationUtils {
@@ -98,7 +97,6 @@ public class ValidationUtils {
         return ValidationResult.success(true);
     }
 
-    @DebugLog
     public static ValidationResult<Boolean> validateRepeatPassword(
             @NonNull String password, @NonNull String repeatPassword) {
         if (!password.equals(repeatPassword))
