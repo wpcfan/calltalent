@@ -42,4 +42,4 @@ captures/
 *.jks
 /*.keystore
 
-/app/src/play/
+/app/src/play/**/*.*
