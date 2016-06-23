@@ -48,6 +48,9 @@ public class RegisterActivity extends EmailAutoCompleteActivity {
         assert repeatPasswordText != null;
         assert usernameText != null;
         assert passwordText != null;
+        assert usernameWrapper != null;
+        assert passwordWrapper != null;
+        assert repeatPasswordWrapper != null;
 
         //parameters to be passed to the login screen if the linktoSignin is clicked
         Map<String, String> params = new HashMap<>();
@@ -69,20 +72,6 @@ public class RegisterActivity extends EmailAutoCompleteActivity {
 
         getSubsCollector().add(switchPasswordVisibility(showHideSwitch, passwordText));
     }
-
-    private Subscription switchPasswordVisibility(
-            final CompoundButton showHideSwitch, final TextView passwordText) {
-        return RxCompoundButton.checkedChanges(showHideSwitch)
-                .compose(bindToLifecycle())
-                .subscribe(checked -> {
-                    if (checked)
-                        passwordText.setInputType(
-                                InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                    else
-                        passwordText.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                });
-    }
-
     @Override
     protected void injectComponent(ApplicationComponent component) {
         component.inject(this);
@@ -139,6 +128,9 @@ public class RegisterActivity extends EmailAutoCompleteActivity {
                         return false;
                     }
 
+                    usernameWrapper.setErrorEnabled(false);
+                    passwordWrapper.setErrorEnabled(false);
+                    repeatPasswordWrapper.setErrorEnabled(false);
                     return true;
                 })
                 .doOnNext(__ -> view.setEnabled(false))

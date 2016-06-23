@@ -6,12 +6,14 @@ import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.jakewharton.rxbinding.view.RxView;
 import com.soulkey.calltalent.R;
 import com.soulkey.calltalent.di.component.ApplicationComponent;
 import com.soulkey.calltalent.ui.MainActivity;
+import com.soulkey.calltalent.ui.UIHelper;
 import com.soulkey.calltalent.utils.validation.ValidationUtils;
 
 import java.util.HashMap;
@@ -34,11 +36,15 @@ public class LoginActivity extends EmailAutoCompleteActivity {
         final TextInputLayout usernameWrapper = (TextInputLayout) findViewById(R.id.usernameWrapper);
         final TextInputLayout passwordWrapper = (TextInputLayout) findViewById(R.id.passwordWrapper);
         final AutoCompleteTextView usernameText = (AutoCompleteTextView) findViewById(R.id.usernameText);
+        final Switch showHideSwitch = (Switch) findViewById(R.id.showHidePasswordSwitch);
         final EditText passwordText = (EditText) findViewById(R.id.passwordText);
         assert registerBtn != null;
         assert signinBtn != null;
         assert usernameText != null;
         assert passwordText != null;
+        assert usernameWrapper != null;
+        assert passwordWrapper != null;
+        assert showHideSwitch != null;
 
         //parameters to be passed to the login screen if the linktoSignin is clicked
         Map<String, String> params = new HashMap<>();
@@ -51,6 +57,7 @@ public class LoginActivity extends EmailAutoCompleteActivity {
 
         getSubsCollector().add(dealWithRegister(registerBtn, params));
 
+        getSubsCollector().add(switchPasswordVisibility(showHideSwitch, passwordText));
     }
 
     private Subscription dealWithSignin(
@@ -58,7 +65,7 @@ public class LoginActivity extends EmailAutoCompleteActivity {
             TextView usernameText,
             TextView passwordText,
             TextInputLayout usernameWrapper,
-            TextInputLayout passwprdWrapper) {
+            TextInputLayout passwordWrapper) {
         return RxView.clicks(button)
                 .filter(aVoid1 -> {
                     if (!ValidationUtils.validateRequiredField(
@@ -69,7 +76,7 @@ public class LoginActivity extends EmailAutoCompleteActivity {
                     }
                     if (!ValidationUtils.validateRequiredField(
                             passwordText.getText().toString()).isValid()) {
-                        passwprdWrapper.setError(
+                        passwordWrapper.setError(
                                 getResources().getString(R.string.validation_password_not_empty));
                         return false;
                     }
@@ -80,10 +87,14 @@ public class LoginActivity extends EmailAutoCompleteActivity {
                                 getResources().getString(R.string.validation_email_not_valid));
                         return false;
                     }
-
+                    usernameWrapper.setErrorEnabled(false);
+                    passwordWrapper.setErrorEnabled(false);
                     return true;
                 })
-                .doOnNext(aVoid -> button.setEnabled(false))
+                .doOnNext(aVoid -> {
+                    button.setEnabled(false);
+                    UIHelper.hideKeyboard(this, button);
+                })
                 .flatMap(aVoid -> login(
                         usernameText.getText().toString(), passwordText.getText().toString()))
                 .doOnNext(u -> {

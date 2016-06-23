@@ -8,95 +8,16 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorBackground">
+        android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/component_email_icon"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:paddingStart="8dp"
-            android:paddingLeft="4dp"
-            android:paddingEnd="4dp"
-            android:paddingRight="4dp"
-            android:paddingTop="12dp"
-            android:paddingBottom="4dp"
-            android:src="@drawable/ic_email"
-            android:contentDescription="@string/imagedesc" />
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/usernameWrapper"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/usernameWrapper_hint"
-            android:paddingLeft="56dp"
-            android:paddingStart="56dp"
-            android:paddingEnd="4dp"
-            android:paddingRight="4dp">
-            <AutoCompleteTextView
-                android:id="@+id/usernameText"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:paddingRight="56dp"
-                android:paddingLeft="56dp"
-                android:paddingEnd="32dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:textSize="22sp"
-                android:inputType="textEmailAddress" />
-        </android.support.design.widget.TextInputLayout>
-
-        <ImageView
-            android:id="@+id/component_password_icon"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_below="@+id/usernameWrapper"
-            android:paddingStart="8dp"
-            android:paddingLeft="4dp"
-            android:paddingEnd="4dp"
-            android:paddingRight="4dp"
-            android:paddingTop="12dp"
-            android:paddingBottom="4dp"
-            android:layout_marginRight="60dp"
-            android:contentDescription="@string/imagedesc"
-            android:src="@drawable/ic_password" />
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/passwordWrapper"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/usernameWrapper"
-            android:hint="@string/passwordWrapper_hint"
-            android:paddingLeft="56dp"
-            android:paddingEnd="56dp"
-            android:paddingRight="56dp">
-
-            <EditText
-                android:id="@+id/passwordText"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:paddingRight="56dp"
-                android:paddingLeft="56dp"
-                android:paddingEnd="32dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:textSize="22sp"
-                android:inputType="textPassword" />
-        </android.support.design.widget.TextInputLayout>
-
-        <Switch
-            android:id="@+id/showHidePasswordSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/usernameWrapper"
-            android:layout_alignRight="@+id/passwordWrapper"
-            android:paddingTop="24dp" />
+        <include layout="@layout/component_username_password_input"
+            android:id="@+id/usernamePasswordFields"/>
 
         <ImageView
             android:id="@+id/component_repeat_password_icon"
             android:layout_width="56dp"
             android:layout_height="56dp"
-            android:layout_below="@+id/passwordWrapper"
+            android:layout_below="@+id/usernamePasswordFields"
             android:paddingStart="8dp"
             android:paddingLeft="4dp"
             android:paddingEnd="4dp"
@@ -104,6 +25,7 @@
             android:paddingTop="12dp"
             android:paddingBottom="4dp"
             android:layout_marginRight="60dp"
+            android:layout_marginEnd="60dp"
             android:contentDescription="@string/imagedesc"
             android:src="@drawable/ic_password" />
 
@@ -111,7 +33,7 @@
             android:id="@+id/repeatPasswordWrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/passwordWrapper"
+            android:layout_below="@+id/usernamePasswordFields"
             android:hint="@string/passwordWrapper_hint"
             android:paddingLeft="56dp"
             android:paddingEnd="56dp"
@@ -121,7 +43,8 @@
                 android:id="@+id/repeatPasswordText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:textSize="22sp"/>
             <!-- Repeat Password Input Ends -->
         </android.support.design.widget.TextInputLayout>
 

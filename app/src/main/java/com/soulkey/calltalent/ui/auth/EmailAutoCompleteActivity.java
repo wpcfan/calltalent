@@ -1,9 +1,13 @@
 package com.soulkey.calltalent.ui.auth;
 
+import android.text.InputType;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.CompoundButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jakewharton.rxbinding.widget.RxCompoundButton;
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.soulkey.calltalent.R;
 import com.soulkey.calltalent.ui.BaseActivity;
@@ -37,6 +41,19 @@ public abstract class EmailAutoCompleteActivity extends BaseActivity {
                             Toast.makeText(this, err.getMessage(), Toast.LENGTH_SHORT).show();
                             view.dismissDropDown();
                         });
+    }
+
+    Subscription switchPasswordVisibility(
+            final CompoundButton showHideSwitch, final TextView passwordText) {
+        return RxCompoundButton.checkedChanges(showHideSwitch)
+                .compose(bindToLifecycle())
+                .subscribe(checked -> {
+                    if (checked)
+                        passwordText.setInputType(
+                                InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    else
+                        passwordText.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                });
     }
 
     private void showAutoCompleteDropdown(AutoCompleteTextView emailView) {
