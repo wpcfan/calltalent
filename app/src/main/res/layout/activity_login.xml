@@ -6,54 +6,75 @@
     android:fillViewport="true"
     tools:context=".ui.auth.LoginActivity">
 
-    <RelativeLayout
+    <android.support.percent.PercentRelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
-        <include layout="@layout/component_username_password_input"
-            android:id="@+id/usernamePasswordFields"/>
-
-        <!-- Signin Button Start -->
-        <Button
-            style="?android:attr/buttonBarButtonStyle"
-            android:id="@+id/signinBtn"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/usernamePasswordFields"
-            android:gravity="center"
-            android:text="@string/login_activity_signinBtn_text" />
-        <!-- Signin Button Ends -->
+            android:orientation="vertical"
+            android:id="@+id/header"
+            android:gravity="center_vertical"
+            app:layout_heightPercent="70%">
 
-        <TextView
-            android:id="@+id/forgotCredentialsText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/usernamePasswordFields"
-            android:layout_alignRight="@+id/signinBtn"
-            android:layout_alignEnd="@+id/signinBtn"
-            android:layout_centerVertical="true"
-            android:text="@string/login_activity_forgotCredentialsText_text" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Welcome"
+                android:id="@+id/textHeader"
+                android:textSize="30sp" />
 
-        <TextView
-            android:id="@+id/link_to_register"
+            <include
+                layout="@layout/component_username_password_input"
+                android:id="@+id/usernamePasswordFields"
+                android:layout_below="@+id/textHeader"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent" />
+
+            <!-- Signin Button Start -->
+            <Button
+                style="?android:attr/buttonBarButtonStyle"
+                android:id="@+id/signinBtn"
+                android:layout_below="@+id/usernamePasswordFields"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="@string/login_activity_signinBtn_text" />
+            <!-- Signin Button Ends -->
+            <TextView
+                android:id="@+id/forgotCredentialsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/signinBtn"
+                android:layout_alignBaseline="@+id/signinBtn"
+                android:textColor="@color/secondary_text"
+                android:text="@string/login_activity_forgotCredentialsText_text" />
+        </RelativeLayout>
+
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/forgotCredentialsText"
-            android:layout_marginBottom="12dp"
-            android:layout_marginTop="20dp"
-            android:gravity="center"
-            android:text="@string/login_activity_link_to_register_text"
-            android:textColor="@color/primary_dark"
-            android:textSize="20sp" />
-
-        <!-- Footer Start -->
-        <LinearLayout
+            android:orientation="vertical"
             android:id="@+id/footer"
-            android:layout_width="match_parent"
-            android:layout_height="130dip"
-            android:layout_alignParentBottom="true"
-            android:background="@drawable/login_footer_repeat"
-            android:orientation="vertical" />
-        <!-- Footer Ends -->
-    </RelativeLayout>
+            android:layout_below="@+id/header"
+            app:layout_heightPercent="30%"
+            android:background="@drawable/login_footer_repeat">
+
+            <TextView
+                android:id="@+id/link_to_register"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
+                android:gravity="center_horizontal"
+                android:layout_alignParentBottom="true"
+                android:text="@string/login_activity_link_to_register_text"
+                android:textColor="@color/icons"
+                android:textSize="20sp" />
+
+        </RelativeLayout>
+    </android.support.percent.PercentRelativeLayout>
 </ScrollView>

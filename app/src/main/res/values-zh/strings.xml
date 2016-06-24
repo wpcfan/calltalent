@@ -2,14 +2,12 @@
 <resources>
     <string name="app_name">问达</string>
     <string name="title_activity_login">登陆</string>
-    <string name="login_activity_usernameText_hint">请输入Email</string>
     <string name="login_activity_signinBtn_text">登录</string>
     <string name="login_activity_link_to_register_text">还没有账号？</string>
     <string name="login_activity_usernameLabel_text">用户名</string>
     <string name="login_activity_passwordLabel_text">密码</string>
     <string name="login_activity_rememberMeCheckBox_text">记住我的信息</string>
-    <string name="login_activity_forgotCredentialsText_text">找回密码</string>
-    <string name="login_activity_passwordText_hint">请输入密码</string>
+    <string name="login_activity_forgotCredentialsText_text">忘记密码？</string>
     <string name="register_activity_repeatPasswordLabel_text">再次输入</string>
     <string name="register_activity_repeatPasswordText_hint">请再次输入密码</string>
     <string name="login_activity_logo_image_desc">这里应该有图标的</string>

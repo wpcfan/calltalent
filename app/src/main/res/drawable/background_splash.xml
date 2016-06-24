@@ -9,10 +9,4 @@
             android:src="@mipmap/ic_launcher" />
     </item>
 
-    <item
-        android:height="200dip"
-        android:gravity="bottom">
-        <bitmap android:src="@drawable/repeat_background" />
-    </item>
-
 </layer-list>

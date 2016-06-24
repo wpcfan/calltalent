@@ -9,7 +9,7 @@
     <string name="login_activity_usernameLabel_text">Username</string>
     <string name="login_activity_passwordLabel_text">Password</string>
     <string name="login_activity_rememberMeCheckBox_text">Remember Me</string>
-    <string name="login_activity_forgotCredentialsText_text">Fogot your credentials</string>
+    <string name="login_activity_forgotCredentialsText_text">Fogot?</string>
     <string name="register_activity_repeatPasswordLabel_text">Type Again</string>
     <string name="register_activity_repeatPasswordText_hint">Type your password again</string>
     <string name="login_activity_logo_image_desc">Logo should be here</string>

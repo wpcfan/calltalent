@@ -20,7 +20,7 @@ buildscript {
         moshi_version = '1.1.0'
         picasso_version = '2.5.2'
         reactivenetwork_version = '0.2.0'
-        flexbox_version = '0.1.3'
+        flexbox_version = '0.2.2'
         wilddog_version = '0.6.1'
         firebase_version = '9.0.2'
         leakcanary_version = '1.4-beta2'
@@ -90,8 +90,8 @@ dependencies {
     //adding it will automatically introduce v4 and v7
     compile "com.android.support:design:$support_version"
     compile "com.android.support:percent:$support_version"
-    //    uncomment the following line to enable the flexbox layout
-    //    compile "com.google.android:flexbox:$flexbox_version"
+    //uncomment the following line to enable the flexbox layout
+    compile "com.google.android:flexbox:$flexbox_version"
 
     //    compile "com.android.support:recyclerview-v7:$support_version"
 

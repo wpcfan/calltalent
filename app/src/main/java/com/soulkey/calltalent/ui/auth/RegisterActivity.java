@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,7 +41,7 @@ public class RegisterActivity extends EmailAutoCompleteActivity {
         final TextInputLayout usernameWrapper = (TextInputLayout) findViewById(R.id.usernameWrapper);
         final TextInputLayout passwordWrapper = (TextInputLayout) findViewById(R.id.passwordWrapper);
         final TextInputLayout repeatPasswordWrapper = (TextInputLayout) findViewById(R.id.repeatPasswordWrapper);
-
+        final ImageView repeatPasswordIcon = (ImageView) findViewById(R.id.component_repeat_password_icon);
         assert registerBtn != null;
         assert signinBtn != null;
         assert showHideSwitch != null;
@@ -50,6 +51,10 @@ public class RegisterActivity extends EmailAutoCompleteActivity {
         assert usernameWrapper != null;
         assert passwordWrapper != null;
         assert repeatPasswordWrapper != null;
+        assert repeatPasswordIcon != null;
+
+        repeatPasswordIcon.setVisibility(View.VISIBLE);
+        repeatPasswordWrapper.setVisibility(View.VISIBLE);
 
         //parameters to be passed to the login screen if the linktoSignin is clicked
         Map<String, String> params = new HashMap<>();

@@ -6,78 +6,65 @@
     android:fillViewport="true"
     tools:context=".ui.auth.RegisterActivity">
 
-    <RelativeLayout
+    <android.support.percent.PercentRelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
-        <include layout="@layout/component_username_password_input"
-            android:id="@+id/usernamePasswordFields"/>
-
-        <ImageView
-            android:id="@+id/component_repeat_password_icon"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_below="@+id/usernamePasswordFields"
-            android:paddingStart="8dp"
-            android:paddingLeft="4dp"
-            android:paddingEnd="4dp"
-            android:paddingRight="4dp"
-            android:paddingTop="12dp"
-            android:paddingBottom="4dp"
-            android:layout_marginRight="60dp"
-            android:layout_marginEnd="60dp"
-            android:contentDescription="@string/imagedesc"
-            android:src="@drawable/ic_password" />
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/repeatPasswordWrapper"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/usernamePasswordFields"
-            android:hint="@string/passwordWrapper_hint"
-            android:paddingLeft="56dp"
-            android:paddingEnd="56dp"
-            android:paddingRight="56dp">
-            <!-- Repeat Password Input Start -->
-            <EditText
-                android:id="@+id/repeatPasswordText"
+            android:orientation="vertical"
+            android:id="@+id/header"
+            android:gravity="center_vertical"
+            app:layout_heightPercent="70%">
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:textSize="22sp"/>
-            <!-- Repeat Password Input Ends -->
-        </android.support.design.widget.TextInputLayout>
+                android:gravity="center"
+                android:text="Welcome"
+                android:id="@+id/textHeader"
+                android:textSize="30sp" />
 
-        <!-- Signin Button Start -->
-        <Button
-            android:id="@+id/registerBtn"
+            <include
+                layout="@layout/component_username_password_input"
+                android:id="@+id/usernamePasswordFields"
+                android:layout_below="@+id/textHeader"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent" />
+
+            <!-- Signin Button Start -->
+            <Button
+                style="?android:attr/buttonBarButtonStyle"
+                android:id="@+id/registerBtn"
+                android:layout_below="@+id/usernamePasswordFields"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="@string/register_activity_registerBtn_text" />
+            <!-- Signin Button Ends -->
+        </RelativeLayout>
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/repeatPasswordWrapper"
-            android:text="@string/register_activity_registerBtn_text" />
-        <!-- Signin Button Ends -->
-
-        <TextView
-            android:id="@+id/linktoSignin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="40dip"
-            android:layout_marginTop="40dip"
-            android:layout_below="@+id/registerBtn"
-            android:gravity="center"
-            android:text="@string/register_activity_linktoSignin_text"
-            android:textColor="@color/primary_dark"
-            android:textSize="20sp" />
-
-        <!-- Footer Start -->
-        <LinearLayout
+            android:orientation="vertical"
             android:id="@+id/footer"
-            android:layout_width="match_parent"
-            android:layout_height="130dip"
-            android:layout_alignParentBottom="true"
-            android:background="@drawable/login_footer_repeat"
-            android:orientation="vertical" />
-        <!-- Footer Ends -->
+            android:layout_below="@+id/header"
+            app:layout_heightPercent="30%"
+            android:background="@drawable/login_footer_repeat">
 
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/linktoSignin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
+                android:gravity="center_horizontal"
+                android:layout_alignParentBottom="true"
+                android:text="@string/register_activity_linktoSignin_text"
+                android:textColor="@color/icons"
+                android:textSize="20sp" />
+        </RelativeLayout>
+    </android.support.percent.PercentRelativeLayout>
 </ScrollView>
