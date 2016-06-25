@@ -21,9 +21,10 @@
             <include
                 layout="@layout/component_username_password_input"
                 android:id="@+id/usernamePasswordFields"
-                android:layout_below="@+id/textHeader"
                 android:layout_height="wrap_content"
-                android:layout_width="match_parent" />
+                android:layout_width="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center" />
 
             <!-- Signin Button Start -->
             <Button
@@ -33,6 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
+                android:textSize="@dimen/font_title_size"
                 android:text="@string/login_activity_signinBtn_text" />
             <!-- Signin Button Ends -->
             <TextView

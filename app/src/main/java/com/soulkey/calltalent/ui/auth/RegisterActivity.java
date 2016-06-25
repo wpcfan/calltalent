@@ -3,7 +3,7 @@ package com.soulkey.calltalent.ui.auth;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
@@ -14,7 +14,6 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amulyakhare.textdrawable.TextDrawable;
 import com.jakewharton.rxbinding.view.RxView;
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.soulkey.calltalent.R;
@@ -46,7 +45,6 @@ public class RegisterActivity extends EmailAutoCompleteActivity {
         final TextInputLayout repeatPasswordWrapper = (TextInputLayout) findViewById(R.id.repeatPasswordWrapper);
         final ImageView repeatPasswordIcon = (ImageView) findViewById(R.id.component_repeat_password_icon);
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        final ImageView textHeader = (ImageView) findViewById(R.id.textHeader);
 
         assert registerBtn != null;
         assert signinBtn != null;
@@ -69,12 +67,10 @@ public class RegisterActivity extends EmailAutoCompleteActivity {
 
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(view -> launchActivity(LoginActivity.class, params));
+        final ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
 
-        TextDrawable drawable = TextDrawable.builder()
-                .buildRound(
-                        getResources().getString(R.string.app_name),
-                        ContextCompat.getColor(this, R.color.accent));
-        textHeader.setImageDrawable(drawable);
         getSubsCollector().add(dealWithEmailTextChanges(usernameText, params));
 
         getSubsCollector().add(dealWithRegister(
