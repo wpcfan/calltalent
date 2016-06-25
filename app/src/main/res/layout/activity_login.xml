@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true"
-    tools:context=".ui.auth.LoginActivity">
-
+    android:layout_height="wrap_content"
+    android:id="@+id/form"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.auth.LoginActivity"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <android.support.percent.PercentRelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
-
+        android:layout_height="wrap_content">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -18,14 +17,6 @@
             android:id="@+id/header"
             android:gravity="center_vertical"
             app:layout_heightPercent="70%">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Welcome"
-                android:id="@+id/textHeader"
-                android:textSize="30sp" />
 
             <include
                 layout="@layout/component_username_password_input"
@@ -54,27 +45,47 @@
                 android:text="@string/login_activity_forgotCredentialsText_text" />
         </RelativeLayout>
 
-
-        <RelativeLayout
+        <com.google.android.flexbox.FlexboxLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:id="@+id/footer"
             android:layout_below="@+id/header"
             app:layout_heightPercent="30%"
+            app:flexWrap="wrap"
+            app:alignItems="flex_start"
+            app:alignContent="space_between"
+            app:justifyContent="center"
             android:background="@drawable/login_footer_repeat">
 
+            <ImageView
+                app:layout_minWidth="@dimen/icon_min_size"
+                app:layout_minHeight="@dimen/icon_min_size"
+                android:id="@+id/wechatIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/icon_default_magin"
+                android:src="@drawable/ic_wechat" />
+
+            <ImageView
+                app:layout_minWidth="@dimen/icon_min_size"
+                app:layout_minHeight="@dimen/icon_min_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_weibo"
+                android:layout_margin="@dimen/icon_default_magin"
+                android:layout_toRightOf="@+id/wechatIcon" />
             <TextView
+                app:layout_wrapBefore="true"
                 android:id="@+id/link_to_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="32dp"
+                android:layout_marginBottom="@dimen/icon_default_magin"
                 android:gravity="center_horizontal"
                 android:layout_alignParentBottom="true"
                 android:text="@string/login_activity_link_to_register_text"
                 android:textColor="@color/icons"
-                android:textSize="20sp" />
-
-        </RelativeLayout>
+                android:textSize="@dimen/font_button_size" />
+        </com.google.android.flexbox.FlexboxLayout>
     </android.support.percent.PercentRelativeLayout>
 </ScrollView>

@@ -1,10 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
     tools:context=".ui.auth.RegisterActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:fitsSystemWindows="true">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:layout_scrollFlags="scroll|enterAlways|snap" />
+    </android.support.design.widget.AppBarLayout>
 
     <android.support.percent.PercentRelativeLayout
         android:layout_width="match_parent"
@@ -17,15 +35,13 @@
             android:orientation="vertical"
             android:id="@+id/header"
             android:gravity="center_vertical"
-            app:layout_heightPercent="70%">
+            app:layout_heightPercent="80%">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Welcome"
-                android:id="@+id/textHeader"
-                android:textSize="30sp" />
+            <ImageView
+                android:layout_width="112dp"
+                android:layout_height="56dp"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/textHeader" />
 
             <include
                 layout="@layout/component_username_password_input"
@@ -46,25 +62,29 @@
             <!-- Signin Button Ends -->
         </RelativeLayout>
 
-        <RelativeLayout
+        <com.google.android.flexbox.FlexboxLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:id="@+id/footer"
             android:layout_below="@+id/header"
-            app:layout_heightPercent="30%"
+            app:layout_heightPercent="20%"
+            app:flexWrap="wrap"
+            app:alignItems="flex_start"
+            app:alignContent="space_between"
+            app:justifyContent="center"
             android:background="@drawable/login_footer_repeat">
-
             <TextView
+                app:layout_wrapBefore="true"
                 android:id="@+id/linktoSignin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="32dp"
+                android:layout_marginBottom="@dimen/icon_default_magin"
                 android:gravity="center_horizontal"
                 android:layout_alignParentBottom="true"
                 android:text="@string/register_activity_linktoSignin_text"
                 android:textColor="@color/icons"
-                android:textSize="20sp" />
-        </RelativeLayout>
+                android:textSize="@dimen/font_button_size" />
+        </com.google.android.flexbox.FlexboxLayout>
     </android.support.percent.PercentRelativeLayout>
-</ScrollView>
+</android.support.design.widget.CoordinatorLayout>

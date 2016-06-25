@@ -14,7 +14,6 @@ import com.jakewharton.rxbinding.widget.RxTextView;
 import com.soulkey.calltalent.R;
 import com.soulkey.calltalent.di.component.ApplicationComponent;
 import com.soulkey.calltalent.ui.MainActivity;
-import com.soulkey.calltalent.ui.UIHelper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -83,7 +82,6 @@ public class LoginActivity extends EmailAutoCompleteActivity {
                         validateEmail(usernameText, usernameWrapper))
                 .doOnNext(aVoid -> {
                     button.setEnabled(false);
-                    UIHelper.hideKeyboard(this, button);
                 })
                 .flatMap(aVoid -> login(
                         usernameText.getText().toString(), passwordText.getText().toString()))
