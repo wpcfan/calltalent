@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.jakewharton.rxbinding.view.RxView;
@@ -25,18 +26,18 @@ public class CreateUserProfileActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_user_profile);
-        EditText nameInput = (EditText) findViewById(R.id.nameInput);
-        EditText avatarInput = (EditText) findViewById(R.id.avatarInput);
-        EditText titleInput = (EditText) findViewById(R.id.titleInput);
-        Button completeUserProfile = (Button) findViewById(R.id.completeUserProfileBtn);
-        Button showUserProfileBtn = (Button) findViewById(R.id.showUserProfileBtn);
-        Button addAvatar = (Button) findViewById(R.id.addAvatarBtn);
+        final EditText nameInput = (EditText) findViewById(R.id.nameInput);
+        final EditText titleInput = (EditText) findViewById(R.id.titleInput);
+        final EditText descInput = (EditText) findViewById(R.id.descInput);
+        final Button completeUserProfile = (Button) findViewById(R.id.completeUserProfileBtn);
+        final Button showUserProfileBtn = (Button) findViewById(R.id.showUserProfileBtn);
+        final ImageButton takePhotoBtn = (ImageButton) findViewById(R.id.take_photo_btn);
 
         assert nameInput != null;
-        assert avatarInput != null;
+        assert descInput != null;
         assert titleInput != null;
         assert completeUserProfile != null;
-        assert addAvatar != null;
+        assert takePhotoBtn != null;
         assert showUserProfileBtn != null;
 
 
@@ -49,7 +50,7 @@ public class CreateUserProfileActivity extends BaseActivity {
                             nameInput.getText().toString(),
                             nameInput.getText().toString(),
                             titleInput.getText().toString(),
-                            avatarInput.getText().toString(),
+                            descInput.getText().toString(),
                             true,
                             "something blablabla");
                     return userModel.saveUserProfile(userProfile, uid);
@@ -63,7 +64,7 @@ public class CreateUserProfileActivity extends BaseActivity {
                 .compose(bindToLifecycle())
                 .subscribe(profile -> Toast.makeText(this, profile.name(), Toast.LENGTH_SHORT).show()));
 
-        Subscription subscriptionAddAvatar = RxView.clicks(addAvatar)
+        Subscription subscriptionAddAvatar = RxView.clicks(takePhotoBtn)
                 .compose(bindToLifecycle())
                 .subscribe(aVoid -> launchActivity(AvatarActivity.class));
         getSubsCollector().add(subscriptionAddAvatar);

@@ -146,6 +146,8 @@ dependencies {
 //    PlayCompile "com.google.firebase:firebase-core:$firebase_version"
 //    PlayCompile "com.google.firebase:firebase-auth:$firebase_version"
 
+    //Bring Android Tranistion Framework to pre-lollipop
+    compile "com.andkulikov:transitionseverywhere:1.6.4"
     //LeakCanary is a framework to help detect the memory leak and then find out the root causes
     debugCompile "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
     releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$leakcanary_version"

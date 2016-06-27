@@ -34,7 +34,11 @@
         </activity>
         <activity android:name=".ui.MainActivity" />
         <activity android:name=".ui.auth.LoginActivity" />
-        <activity android:name=".ui.auth.RegisterActivity" />
+        <activity android:name=".ui.auth.RegisterActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.auth.LoginActivity" />
+        </activity>
         <activity android:name=".ui.user.CreateUserProfileActivity" />
         <activity android:name=".ui.user.AvatarActivity"/>
         <meta-data android:name="CLOUDINARY_URL" android:value="cloudinary://929157142385211:Uq_ar0Une3IsUViBB6UFOh0nwio@twigcodes"/>

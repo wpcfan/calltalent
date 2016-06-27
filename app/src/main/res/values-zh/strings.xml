@@ -23,4 +23,7 @@
     <string name="passwordWrapper_hint">密码</string>
     <string name="usernameWrapper_hint">用户名</string>
     <string name="imagedesc">Image</string>
+    <string name="user_profile_desc_wrapper_hint">Please have a brief introduction about yourself</string>
+    <string name="user_profile_name_wrapper_hint">姓名</string>
+    <string name="user_profile_title_wrapper_hint">签名</string>
 </resources>

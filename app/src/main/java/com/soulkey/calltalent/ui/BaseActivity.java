@@ -55,6 +55,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         _subscription.add(accessDeniedFallback());
     }
 
+
     /**
      * When Activity is destroyed, clear all the subscriptions inside the CompositeSubscription
      */
@@ -126,7 +127,6 @@ public abstract class BaseActivity extends RxAppCompatActivity {
      * @return true if login is required, false otherwise
      */
     protected abstract Boolean requiredLoggedIn();
-
 
     /**
      * Helper method to log user in, the method add some exception handling mechanism

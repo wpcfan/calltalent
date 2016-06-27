@@ -68,6 +68,7 @@ public class LoginActivity extends EmailAutoCompleteActivity {
                 .subscribe(charSequence1 -> {
                     validateRequiredField(passwordText, passwordWrapper);
                 }));
+
     }
 
     private Subscription dealWithSignin(
