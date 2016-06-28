@@ -34,19 +34,26 @@ public class AvatarActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_avatar);
-        Button openCameraBtn = (Button) findViewById(R.id.open_camera);
-        Button closeCameraBtn = (Button) findViewById(R.id.close_camera);
+        Button captureBtn = (Button) findViewById(R.id.open_camera);
+        Button saveBtn = (Button) findViewById(R.id.close_camera);
         TextureView textureView = (TextureView) findViewById(R.id.preview_surface);
-        assert openCameraBtn != null;
-        assert closeCameraBtn != null;
+        assert captureBtn != null;
+        assert saveBtn != null;
         assert textureView != null;
 
-        getSubsCollector().add(captureStream(checkPermissionAndLaunchCamera(
-                openCameraBtn,
-                textureView,
-                CameraUtil.getRxCameraConfig(true)),
-                textureViewOnTouchStream(textureView)));
-        getSubsCollector().add(closeCamera(closeCameraBtn));
+        Subscription camSub = checkPermissionAndLaunchCamera(
+                textureView, CameraUtil.getRxCameraConfig(true))
+                .compose(bindToLifecycle())
+                .subscribe(rxCamera -> {
+                    captureBtn.setEnabled(true);
+                });
+
+        getSubsCollector().add(camSub);
+//        getSubsCollector().add(captureStream(checkPermissionAndLaunchCamera(
+//                textureView,
+//                CameraUtil.getRxCameraConfig(true)),
+//                textureViewOnTouchStream(textureView)));
+//        getSubsCollector().add(closeCamera(saveBtn));
     }
 
     private Subscription closeCamera(Button closeCameraBtn) {
@@ -82,6 +89,7 @@ public class AvatarActivity extends BaseActivity {
                                 true))
                 .compose(bindToLifecycle())
                 .subscribe(rxCameraData -> {
+
                     Log.d(TAG, "onCreate: " + Arrays.toString(rxCameraData.cameraData));
                 });
     }
@@ -102,6 +110,18 @@ public class AvatarActivity extends BaseActivity {
                 })
                 .filter(granted -> granted)
                 .flatMap(__ -> getCameraPreviewObservable(textureView, config));
+    }
+
+    private Observable<RxCamera> checkPermissionAndLaunchCamera(
+            TextureView textureView, RxCameraConfig config) {
+        return RxPermissions.getInstance(this)
+                .request(Manifest.permission.CAMERA)
+                .doOnNext(granted -> {
+                    if (!granted)
+                        Toast.makeText(AvatarActivity.this, "", Toast.LENGTH_SHORT).show();
+                })
+                .filter(granted -> granted)
+                .flatMap(__ -> getCameraPreviewObservable(textureView, CameraUtil.getRxCameraConfig(true)));
     }
 
     private Observable<RxCamera> getCameraPreviewObservable(

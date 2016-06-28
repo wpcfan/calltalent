@@ -51,12 +51,14 @@ public class LoginActivity extends EmailAutoCompleteActivity {
         Map<String, String> params = new HashMap<>();
         usernameText.setText(receiveParams(LoginParams.PARAM_KEY_USERNAME.getValue()));
 
+
         getSubsCollector().add(dealWithEmailTextChanges(usernameText, params));
 
         getSubsCollector().add(dealWithSignin(
                 signinBtn, usernameText, passwordText, usernameWrapper, passwordWrapper));
 
-        getSubsCollector().add(dealWithRegister(registerBtn, params));
+        getSubsCollector().add(dealWithRegister(
+                registerBtn, getResources().getString(R.string.link_to_register_transition), params));
 
         getSubsCollector().add(switchPasswordVisibility(showHideSwitch, passwordText));
 
@@ -81,9 +83,7 @@ public class LoginActivity extends EmailAutoCompleteActivity {
                 .filter(aVoid1 -> validateRequiredField(usernameText, usernameWrapper) &&
                         validateRequiredField(passwordText, passwordWrapper) &&
                         validateEmail(usernameText, usernameWrapper))
-                .doOnNext(aVoid -> {
-                    button.setEnabled(false);
-                })
+                .doOnNext(aVoid -> button.setEnabled(false))
                 .flatMap(aVoid -> login(
                         usernameText.getText().toString(), passwordText.getText().toString()))
                 .doOnNext(u -> {
@@ -94,11 +94,12 @@ public class LoginActivity extends EmailAutoCompleteActivity {
                 .subscribe(user -> launchActivity(MainActivity.class));
     }
 
-    private Subscription dealWithRegister(View view, Map<String, String> params) {
+    private Subscription dealWithRegister(View view, String transitionName, Map<String, String> params) {
         return RxView.clicks(view)
                 .compose(bindToLifecycle())
                 .subscribe(
-                        ev -> launchActivity(RegisterActivity.class, params)
+                        ev -> launchActivityWithTransition(
+                                RegisterActivity.class, view, transitionName, params)
                 );
     }
 

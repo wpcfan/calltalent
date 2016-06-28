@@ -16,33 +16,28 @@ public abstract class UserProfile implements Parcelable {
     @JsonCreator
     public static UserProfile create(
             @JsonProperty("uid") String uid,
-            @JsonProperty("username") String username,
             @JsonProperty("name") String name,
             @JsonProperty("title") String title,
             @JsonProperty("avatarUrl") String avatarUrl,
             @JsonProperty("gender") boolean gender,
             @JsonProperty("desc") String desc) {
-        return new AutoValue_UserProfile(uid, username, name, title, avatarUrl, gender, desc, System.currentTimeMillis());
+        return new AutoValue_UserProfile(uid, name, title, avatarUrl, gender, desc, System.currentTimeMillis());
     }
 
     @JsonCreator
     public static UserProfile create(
             @JsonProperty("uid") String uid,
-            @JsonProperty("username") String username,
             @JsonProperty("name") String name,
             @JsonProperty("title") String title,
             @JsonProperty("avatarUrl") String avatarUrl,
             @JsonProperty("gender") boolean gender,
             @JsonProperty("desc") String desc,
             @JsonProperty("timestamp") long timestamp) {
-        return new AutoValue_UserProfile(uid, username, name, title, avatarUrl, gender, desc, timestamp);
+        return new AutoValue_UserProfile(uid, name, title, avatarUrl, gender, desc, timestamp);
     }
 
     @JsonProperty("uid")
     public abstract String uid();
-
-    @JsonProperty("username")
-    public abstract String username();
 
     @JsonProperty("name")
     public abstract String name();

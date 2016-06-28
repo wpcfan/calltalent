@@ -1,9 +1,12 @@
 package com.soulkey.calltalent.ui;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.soulkey.calltalent.App;
@@ -11,12 +14,14 @@ import com.soulkey.calltalent.di.component.ApplicationComponent;
 import com.soulkey.calltalent.domain.entity.User;
 import com.soulkey.calltalent.domain.model.UserModel;
 import com.soulkey.calltalent.ui.auth.LoginActivity;
+import com.soulkey.calltalent.utils.animation.AnimationUtil;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
 import java.util.Map;
 
 import javax.inject.Inject;
 
+import icepick.Icepick;
 import rx.Observable;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
@@ -53,8 +58,15 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         ApplicationComponent component = App.from(this).getAppComponent();
         injectComponent(component);
         _subscription.add(accessDeniedFallback());
+        AnimationUtil.setupWindowAnimations(getWindow());
+        Icepick.restoreInstanceState(this, savedInstanceState);
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Icepick.saveInstanceState(this, outState);
+    }
 
     /**
      * When Activity is destroyed, clear all the subscriptions inside the CompositeSubscription
@@ -62,7 +74,10 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        _subscription.clear();
+        if (_subscription.hasSubscriptions())
+            _subscription.clear();
+        if (!_subscription.isUnsubscribed())
+            _subscription.unsubscribe();
         userModel = null;
     }
 
@@ -75,6 +90,22 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         Intent intent = new Intent(this, clazz);
         startActivity(intent);
         finish();
+    }
+
+    protected void launchActivityWithTransition(
+            Class<?> clazz, View view, String transitionName, final Map<String, String> params) {
+        Intent intent = new Intent(this, clazz);
+        for (Map.Entry<String, String> entry :
+                params.entrySet()) {
+            intent.putExtra(entry.getKey(), entry.getValue());
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(
+                    this, view, transitionName);
+            startActivity(intent, options.toBundle());
+        } else {
+            startActivity(intent);
+        }
     }
 
     /**

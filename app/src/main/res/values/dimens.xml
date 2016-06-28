@@ -8,4 +8,12 @@
     <dimen name="icon_min_size">36dp</dimen>
     <dimen name="icon_label_size">32dp</dimen>
     <dimen name="switch_min_width">36dp</dimen>
+    <dimen name="spacing_micro">4dp</dimen>
+    <dimen name="spacing_normal">8dp</dimen>
+    <dimen name="spacing_double">16dp</dimen>
+    <dimen name="spacing_huge">72dp</dimen>
+
+    <dimen name="elevation_header">4dp</dimen>
+    <dimen name="elevation_fab">8dp</dimen>
+
 </resources>

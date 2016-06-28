@@ -18,14 +18,14 @@ public class CameraUtil {
                 .useFrontCamera()
                 .setAutoFocus(true)
                 .setPreferPreviewFrameRate(15, 30)
-                .setPreferPreviewSize(new Point(X_AXIS, Y_AXIS))
+                .setPreferPreviewSize(new Point(X_AXIS, Y_AXIS), false)
                 .setHandleSurfaceEvent(true)
                 .get();
         return RxCameraConfigChooser.obtain()
                 .useBackCamera()
                 .setAutoFocus(true)
                 .setPreferPreviewFrameRate(15, 30)
-                .setPreferPreviewSize(new Point(X_AXIS, Y_AXIS))
+                .setPreferPreviewSize(new Point(X_AXIS, Y_AXIS), false)
                 .setHandleSurfaceEvent(true)
                 .get();
     }

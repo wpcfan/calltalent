@@ -22,8 +22,12 @@
     <string name="validation_repeat_password_not_same">两次输入的密码不一致</string>
     <string name="passwordWrapper_hint">密码</string>
     <string name="usernameWrapper_hint">用户名</string>
-    <string name="imagedesc">Image</string>
-    <string name="user_profile_desc_wrapper_hint">Please have a brief introduction about yourself</string>
+    <string name="imagedesc">图片</string>
+    <string name="user_profile_desc_wrapper_hint">自我介绍</string>
     <string name="user_profile_name_wrapper_hint">姓名</string>
     <string name="user_profile_title_wrapper_hint">签名</string>
+    <string name="createuserprofile_activity_gender_male">男生</string>
+    <string name="createuserprofile_activity_gender_female">女生</string>
+    <string name="avatar_activity_capture_btn">拍照</string>
+    <string name="avatar_activity_save_btn">保存</string>
 </resources>

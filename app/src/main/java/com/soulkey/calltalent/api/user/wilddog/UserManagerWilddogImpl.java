@@ -2,10 +2,15 @@ package com.soulkey.calltalent.api.user.wilddog;
 
 import android.app.Application;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.android.Utils;
+import com.cloudinary.utils.ObjectUtils;
 import com.soulkey.calltalent.api.user.IUserManager;
 import com.soulkey.calltalent.api.wrapper.RxWilddog;
 import com.soulkey.calltalent.domain.entity.UserProfile;
 import com.wilddog.client.Wilddog;
+
+import java.io.ByteArrayInputStream;
 
 import rx.Observable;
 
@@ -16,12 +21,14 @@ import rx.Observable;
 public class UserManagerWilddogImpl implements IUserManager {
 
     private final Wilddog wilddog;
+    private final Cloudinary cloudinary;
     private final String Profiles_Path = "userprofiles";
 
     public UserManagerWilddogImpl(Application application) {
         Wilddog.setAndroidContext(application);
         String AUTH_URL = "https://calltalent.wilddogio.com/";
         this.wilddog = new Wilddog(AUTH_URL);
+        this.cloudinary = new Cloudinary(Utils.cloudinaryUrlFromContext(application));
     }
 
     @Override
@@ -38,6 +45,14 @@ public class UserManagerWilddogImpl implements IUserManager {
                 return ((UserProfile) dataSnapshot.getValue(UserProfile.class));
             }
             return null;
+        });
+    }
+
+    @Override
+    public Observable<String> uploadAvatar(byte[] imageData, String uid) {
+        return Observable.fromCallable(() -> {
+            cloudinary.uploader().upload(new ByteArrayInputStream(imageData), ObjectUtils.emptyMap());
+            return cloudinary.url().generate(uid);
         });
     }
 }

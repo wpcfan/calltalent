@@ -12,4 +12,6 @@ public interface IUserManager {
     Observable<Void> saveUserProfile(UserProfile profile, String uid);
 
     Observable<UserProfile> getUserProfile(String uid);
+
+    Observable<String> uploadAvatar(byte[] imageData, String uid);
 }

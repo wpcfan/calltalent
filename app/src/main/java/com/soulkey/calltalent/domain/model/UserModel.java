@@ -41,6 +41,10 @@ public class UserModel {
         this.clock = clock;
     }
 
+    public Observable<String> uploadAvatar(byte[] imageData, String uid) {
+        return userManager.uploadAvatar(imageData, uid);
+    }
+
     public Observable<Boolean> register(String username, String password) {
         return service.registerWithUsernameAndPassword(username, password)
                 .compose(schedulerProvider.applySchedulers());

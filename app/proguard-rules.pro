@@ -78,12 +78,14 @@
 -keep interface com.wilddog.client.** { *; }
 -dontwarn com.shaded.fasterxml.**
 
-#paperparcel
--dontwarn org.jetbrains.annotations.**
--keepclassmembers class nz.bradcampbell.paperparcel.PaperParcelMapping {
-  static ** FROM_ORIGINAL;
-  static ** FROM_PARCELABLE;
+#icepick
+-dontwarn icepick.**
+-keep class icepick.** { *; }
+-keep class **$$Icepick { *; }
+-keepclasseswithmembernames class * {
+    @icepick.* <fields>;
 }
+-keepnames class * { @icepick.State *;}
 
 # ALSO REMEMBER KEEPING YOUR MODEL CLASSES
 -keep class com.soulkey.calltalent.domain.** { *; }

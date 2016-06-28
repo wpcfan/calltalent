@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        app:layout_minWidth="@dimen/icon_min_size"
+        app:layout_minHeight="@dimen/icon_min_size"
+        android:id="@+id/wechatIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/imagedesc"
+        android:layout_margin="@dimen/icon_default_magin"
+        android:src="@drawable/ic_wechat" />
+
+    <ImageView
+        app:layout_minWidth="@dimen/icon_min_size"
+        app:layout_minHeight="@dimen/icon_min_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_weibo"
+        android:contentDescription="@string/imagedesc"
+        android:layout_margin="@dimen/icon_default_magin"
+        android:layout_toRightOf="@+id/wechatIcon" />
+
+    <TextView
+        app:layout_wrapBefore="true"
+        android:id="@+id/link_to_register"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/icon_default_magin"
+        android:gravity="center_horizontal"
+        android:layout_alignParentBottom="true"
+        android:text="@string/login_activity_link_to_register_text"
+        android:textColor="@color/icons"
+        android:textSize="@dimen/font_button_size" />
+</merge>

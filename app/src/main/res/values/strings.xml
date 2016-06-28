@@ -25,7 +25,12 @@
     <string name="passwordWrapper_hint">Password</string>
     <string name="usernameWrapper_hint">Username</string>
     <string name="imagedesc">Image</string>
-    <string name="user_profile_desc_wrapper_hint">Please have a brief introduction about yourself</string>
+    <string name="user_profile_desc_wrapper_hint">Brief introduction</string>
     <string name="user_profile_name_wrapper_hint">Name</string>
-    <string name="user_profile_title_wrapper_hint">Short Description</string>
+    <string name="user_profile_title_wrapper_hint">Tagline</string>
+    <string name="link_to_register_transition" translatable="false">linkToRegisterTransition</string>
+    <string name="createuserprofile_activity_gender_male">Gentleman</string>
+    <string name="createuserprofile_activity_gender_female">Lady</string>
+    <string name="avatar_activity_capture_btn">Capture</string>
+    <string name="avatar_activity_save_btn">Save</string>
 </resources>
