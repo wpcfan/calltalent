@@ -18,7 +18,7 @@ public class ImageUtil {
         BitmapFactory.decodeByteArray(data, 0, data.length, prev);
 
         // The new size we want to scale to
-        final int REQUIRED_SIZE = 200; //dpi
+        final int REQUIRED_SIZE = 192;
 
         // Find the correct scale value. It should be the power of 2.
         int scale = 1;
