@@ -20,11 +20,9 @@
 #-keep class * extends java.util.ListResourceBundle {
 #    protected Object[][] getContents();
 #}
-#
 #-keep public class com.google.android.gms.common.internal.safeparcel.SafeParcelable {
 #    public static final *** NULL;
 #}
-#
 #-keepnames @com.google.android.gms.common.annotation.KeepName class *
 #-keepclassmembernames class * {
 #    @com.google.android.gms.common.annotation.KeepName *;
@@ -58,16 +56,13 @@
 
 #RxJava Library
 -dontwarn sun.misc.**
-
 -keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
    long producerIndex;
    long consumerIndex;
 }
-
 -keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
     rx.internal.util.atomic.LinkedQueueNode producerNode;
 }
-
 -keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
     rx.internal.util.atomic.LinkedQueueNode consumerNode;
 }
