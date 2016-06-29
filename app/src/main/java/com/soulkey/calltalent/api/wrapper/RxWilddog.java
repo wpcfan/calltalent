@@ -192,7 +192,7 @@ public class RxWilddog {
         return Observable.create(subscriber -> {
             auth.unauth();
             observeAuth(auth)
-                    .map(iAuthResult1 -> iAuthResult1.isSuccessful())
+                    .map(IAuthResult::isSuccessful)
                     .filter(result -> !result)
                     .take(1)
                     .subscribe(subscriber);

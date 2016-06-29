@@ -15,7 +15,11 @@ import com.soulkey.calltalent.R;
 import com.soulkey.calltalent.di.component.ApplicationComponent;
 import com.soulkey.calltalent.domain.entity.UserProfile;
 import com.soulkey.calltalent.ui.BaseActivity;
+import com.soulkey.calltalent.ui.UIHelper;
 import com.soulkey.calltalent.ui.auth.LoginParams;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import rx.Subscription;
 
@@ -49,7 +53,9 @@ public class CreateUserProfileActivity extends BaseActivity {
         assert femaleChecked != null;
 
         String uid = receiveParams(LoginParams.PARAM_KEY_UID.getValue());
-
+        //parameters to be passed to the login screen if the linktoSignin is clicked
+        Map<String, String> params = new HashMap<>();
+        params.put(LoginParams.PARAM_KEY_UID.getValue(), uid);
         getSubsCollector().add(maleCheckedSubscription(maleChecked, femaleChecked));
         getSubsCollector().add(femaleCheckedSubscription(femaleChecked, maleChecked));
 
@@ -59,13 +65,16 @@ public class CreateUserProfileActivity extends BaseActivity {
                 .flatMap(aVoid -> userModel.getUserProfile(uid))
                 .compose(bindToLifecycle())
                 .subscribe(profile -> Toast.makeText(this, profile.name(), Toast.LENGTH_SHORT).show()));
-        getSubsCollector().add(dealWithAvatar(takePhotoBtn));
+        getSubsCollector().add(dealWithAvatar(takePhotoBtn, params));
     }
 
-    private Subscription dealWithAvatar(ImageButton takePhotoBtn) {
+    private Subscription dealWithAvatar(ImageButton takePhotoBtn, Map<String, String> params) {
         return RxView.clicks(takePhotoBtn)
                 .compose(bindToLifecycle())
-                .subscribe(aVoid -> launchActivity(AvatarActivity.class));
+                .subscribe(aVoid -> {
+                    UIHelper.launchActivity(CreateUserProfileActivity.this, AvatarActivity.class, params);
+                    finish();
+                });
     }
 
     private Subscription dealWithSubmit(EditText nameInput, EditText titleInput, EditText descInput, Button completeUserProfile, RadioGroup genderRadioGroup, String uid) {

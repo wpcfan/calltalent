@@ -52,19 +52,19 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/maven/com.squareup.okio/okio/pom.xml'
+        exclude 'META-INF/maven/com.squareup.okio/okio/pom.properties'
+    }
+
     buildTypes {
         release {
             minifyEnabled true
             zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-    }
-
-    packagingOptions {
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/maven/com.squareup.okio/okio/pom.xml'
-        exclude 'META-INF/maven/com.squareup.okio/okio/pom.properties'
     }
 }
 
@@ -106,6 +106,7 @@ dependencies {
     compile "info.android15.solid:collections:$solidVersion"
     compile "com.cloudinary:cloudinary-android:$cloudinary_version"
     compile "com.cloudinary:cloudinary-core:$cloudinary_version"
+    compile "com.squareup.picasso:picasso:$picasso_version"
     //    Chinese alternative of Google's Firebase
     compile "com.wilddog:wilddog-client-android:$wilddog_version"
 
@@ -129,7 +130,6 @@ dependencies {
     //    compile "com.github.pwittchen:reactivenetwork:$reactivenetwork_version"
     //    compile "io.reactivex:rxkotlin:$rxkotlin_version"
     //    compile "com.squareup.moshi:moshi:$moshi_version"
-    //    compile "com.squareup.picasso:picasso:$picasso_version"
     //    Google's Realtime data and Analytic platform
 //    PlayCompile "com.google.firebase:firebase-database:$firebase_version"
 //    PlayCompile "com.google.firebase:firebase-core:$firebase_version"

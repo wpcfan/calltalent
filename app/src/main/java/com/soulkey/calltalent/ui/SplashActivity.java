@@ -13,7 +13,8 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        launchActivity(MainActivity.class);
+        UIHelper.launchActivity(SplashActivity.this, MainActivity.class);
+        finish();
     }
 
     @Override

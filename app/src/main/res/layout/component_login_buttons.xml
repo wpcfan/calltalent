@@ -20,7 +20,8 @@
         android:src="@drawable/ic_weibo"
         android:contentDescription="@string/imagedesc"
         android:layout_margin="@dimen/icon_default_magin"
-        android:layout_toRightOf="@+id/wechatIcon" />
+        android:layout_toRightOf="@+id/wechatIcon"
+        android:layout_toEndOf="@+id/wechatIcon" />
 
     <TextView
         app:layout_wrapBefore="true"

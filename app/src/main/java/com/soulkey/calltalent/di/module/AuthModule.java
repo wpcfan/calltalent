@@ -6,6 +6,8 @@ import android.preference.PreferenceManager;
 
 import com.soulkey.calltalent.api.auth.IAuthService;
 import com.soulkey.calltalent.api.auth.wilddog.AuthServiceWilddogImpl;
+import com.soulkey.calltalent.api.image.ImageHandler;
+import com.soulkey.calltalent.api.storage.AvatarDiskCache;
 import com.soulkey.calltalent.api.storage.UserProfileDiskCache;
 import com.soulkey.calltalent.api.user.IUserManager;
 import com.soulkey.calltalent.api.user.wilddog.UserManagerWilddogImpl;
@@ -66,6 +68,16 @@ public class AuthModule {
     }
 
     @Provides
+    public ImageHandler providesImageHandler(Application application) {
+        return new ImageHandler(application);
+    }
+
+    @Provides
+    public AvatarDiskCache providesAvatarDiskCache(SharedPreferences prefs) {
+        return new AvatarDiskCache(prefs);
+    }
+
+    @Provides
     public SchedulerProvider providesSchedulerProvider() {
         return SchedulerProvider.DEFAULT;
     }
@@ -80,10 +92,12 @@ public class AuthModule {
     public UserModel providesUserModel(
             SchedulerProvider provider,
             UserProfileDiskCache userDiskCache,
+            AvatarDiskCache avatarDiskCache,
             IAuthService service,
             IUserManager userManager,
+            ImageHandler imageHandler,
             Clock clock) {
-        return new UserModel(provider, userDiskCache, service, userManager, clock);
+        return new UserModel(provider, userDiskCache, avatarDiskCache, service, userManager, imageHandler, clock);
     }
 
 }

@@ -33,4 +33,5 @@
     <string name="createuserprofile_activity_gender_female">Lady</string>
     <string name="avatar_activity_capture_btn">Capture</string>
     <string name="avatar_activity_save_btn">Save</string>
+    <string name="avatar_activity_capture_alternative_btn">Capture Again?</string>
 </resources>

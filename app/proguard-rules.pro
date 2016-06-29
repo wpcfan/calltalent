@@ -46,6 +46,7 @@
 
 # required by picasso
 -dontwarn com.squareup.okhttp.**
+
 #Retrofit/OKHttp/Moshi
 -dontwarn okio.**
 -dontwarn retrofit2.**

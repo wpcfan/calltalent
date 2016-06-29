@@ -52,7 +52,7 @@ public class AnimationUtil {
             Fade fade = new Fade();
             fade.setDuration(LongDuration);
             window.setEnterTransition(fade);
-            Slide slide = new Slide(Gravity.LEFT);
+            Slide slide = new Slide(Gravity.START);
             slide.setDuration(LongDuration);
             window.setReturnTransition(slide);
         }

@@ -10,8 +10,8 @@ import com.ragnarok.rxcamera.config.RxCameraConfigChooser;
  * Created by peng on 2016/6/13.
  */
 public class CameraUtil {
-    public final static int Y_AXIS = 640;
-    public final static int X_AXIS = 480;
+    public final static int Y_AXIS = 1024;
+    public final static int X_AXIS = 768;
     public final static int MIN_FRAME = 15;
     public final static int MAX_FRAME = 30;
     public final static boolean ACCEPT_SQUARE_PREVIEW = false;

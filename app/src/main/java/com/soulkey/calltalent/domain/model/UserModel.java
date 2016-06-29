@@ -1,12 +1,18 @@
 package com.soulkey.calltalent.domain.model;
 
 import com.soulkey.calltalent.api.auth.IAuthService;
+import com.soulkey.calltalent.api.image.ImageHandler;
+import com.soulkey.calltalent.api.storage.AvatarDiskCache;
 import com.soulkey.calltalent.api.storage.UserProfileDiskCache;
 import com.soulkey.calltalent.api.user.IUserManager;
 import com.soulkey.calltalent.domain.Clock;
+import com.soulkey.calltalent.domain.entity.Avatar;
 import com.soulkey.calltalent.domain.entity.User;
 import com.soulkey.calltalent.domain.entity.UserProfile;
 import com.soulkey.calltalent.utils.rx.SchedulerProvider;
+import com.squareup.picasso.RequestCreator;
+
+import java.io.File;
 
 import rx.Observable;
 import rx.Subscription;
@@ -21,24 +27,42 @@ public class UserModel {
     private static final long STALE_MS = 50 * 1000;
     private final SchedulerProvider schedulerProvider;
     private final UserProfileDiskCache diskCache;
+    private final AvatarDiskCache avatarDiskCache;
     private final IAuthService service;
     private final IUserManager userManager;
     private final Clock clock;
     private UserProfile memoryCache;
     private ReplaySubject<UserProfile> userProfileReplaySubject;
-    private Subscription userPrpfileSubscription;
+    private Subscription userProfileSubscription;
+    private ImageHandler imageHandler;
 
     public UserModel(
             SchedulerProvider schedulerProvider,
             UserProfileDiskCache diskCache,
+            AvatarDiskCache avatarDiskCache,
             IAuthService service,
             IUserManager userManager,
+            ImageHandler imageHandler,
             Clock clock) {
         this.schedulerProvider = schedulerProvider;
         this.diskCache = diskCache;
+        this.avatarDiskCache = avatarDiskCache;
         this.service = service;
         this.userManager = userManager;
+        this.imageHandler = imageHandler;
         this.clock = clock;
+    }
+
+    public Observable<RequestCreator> loadImageFrom(File file) {
+        return imageHandler.loadImageFrom(file);
+    }
+
+    public Observable<RequestCreator> loadImageFrom(String uri) {
+        return imageHandler.loadImageFrom(uri);
+    }
+
+    public Observable<Boolean> saveAvatarToDiskCache(String uid, String mediaUri) {
+        return avatarDiskCache.saveEntity(Avatar.create(uid, mediaUri));
     }
 
     public Observable<String> uploadAvatar(byte[] imageData, String uid) {
@@ -64,9 +88,9 @@ public class UserModel {
     }
 
     public Observable<UserProfile> getUserProfile(String uid) {
-        if (userPrpfileSubscription == null || userPrpfileSubscription.isUnsubscribed()) {
+        if (userProfileSubscription == null || userProfileSubscription.isUnsubscribed()) {
             userProfileReplaySubject = ReplaySubject.create();
-            userPrpfileSubscription = Observable.concat(memory(), disk(), network(uid))
+            userProfileSubscription = Observable.concat(memory(), disk(), network(uid))
                     .first(entity -> entity != null && isUpToDate(entity))
                     .subscribe(userProfileReplaySubject);
         }

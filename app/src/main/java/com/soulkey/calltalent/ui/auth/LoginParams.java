@@ -7,7 +7,8 @@ package com.soulkey.calltalent.ui.auth;
 public enum LoginParams {
     PARAM_KEY_USERNAME("intent-params-key-username"),
     PARAM_KEY_PASSWORD("intent-params-key-password"),
-    PARAM_KEY_UID("intent-params-key-uid");
+    PARAM_KEY_UID("intent-params-key-uid"),
+    PARAM_KEY_AVATAR_URI("intent-params-key-avatar_uri");
 
     private final String value;
 

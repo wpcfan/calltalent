@@ -14,6 +14,7 @@ import com.jakewharton.rxbinding.widget.RxTextView;
 import com.soulkey.calltalent.R;
 import com.soulkey.calltalent.di.component.ApplicationComponent;
 import com.soulkey.calltalent.ui.MainActivity;
+import com.soulkey.calltalent.ui.UIHelper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +27,7 @@ import rx.android.schedulers.AndroidSchedulers;
  * The LoginActivity defines the login-related behaviors
  */
 public class LoginActivity extends EmailAutoCompleteActivity {
-
+    private boolean shouldFinish;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +48,7 @@ public class LoginActivity extends EmailAutoCompleteActivity {
         assert passwordWrapper != null;
         assert showHideSwitch != null;
 
+        shouldFinish = false;
         //parameters to be passed to the login screen if the linktoSignin is clicked
         Map<String, String> params = new HashMap<>();
         usernameText.setText(receiveParams(LoginParams.PARAM_KEY_USERNAME.getValue()));
@@ -73,6 +75,13 @@ public class LoginActivity extends EmailAutoCompleteActivity {
 
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (shouldFinish)
+            finish();
+    }
+
     private Subscription dealWithSignin(
             Button button,
             TextView usernameText,
@@ -80,28 +89,35 @@ public class LoginActivity extends EmailAutoCompleteActivity {
             TextInputLayout usernameWrapper,
             TextInputLayout passwordWrapper) {
         return RxView.clicks(button)
-                .filter(aVoid1 -> validateRequiredField(usernameText, usernameWrapper) &&
+                .filter(__ -> validateRequiredField(usernameText, usernameWrapper) &&
                         validateRequiredField(passwordText, passwordWrapper) &&
                         validateEmail(usernameText, usernameWrapper))
-                .doOnNext(aVoid -> button.setEnabled(false))
-                .flatMap(aVoid -> login(
+                .doOnNext(__ -> button.setEnabled(false))
+                .flatMap(__ -> login(
                         usernameText.getText().toString(), passwordText.getText().toString()))
                 .doOnNext(u -> {
                     if (u == null) button.setEnabled(true);
                 })
                 .filter(user1 -> user1 != null)
                 .compose(bindToLifecycle())
-                .subscribe(user -> launchActivity(MainActivity.class));
+                .subscribe(user -> {
+                    UIHelper.launchActivity(LoginActivity.this, MainActivity.class);
+                    finish();
+                });
     }
 
     private Subscription dealWithRegister(View view, String transitionName, Map<String, String> params) {
         return RxView.clicks(view)
                 .compose(bindToLifecycle())
                 .subscribe(
-                        ev -> launchActivityWithTransition(
-                                RegisterActivity.class, view, transitionName, params)
+                        ev -> {
+                            UIHelper.launchActivityWithTransition(LoginActivity.this,
+                                    RegisterActivity.class, view, transitionName, params);
+                            shouldFinish = true;
+                        }
                 );
     }
+
 
     @Override
     protected void injectComponent(ApplicationComponent component) {
@@ -117,4 +133,5 @@ public class LoginActivity extends EmailAutoCompleteActivity {
     protected Boolean requiredLoggedIn() {
         return false;
     }
+
 }

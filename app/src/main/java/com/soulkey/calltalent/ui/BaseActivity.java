@@ -1,12 +1,8 @@
 package com.soulkey.calltalent.ui;
 
-import android.app.ActivityOptions;
-import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import com.soulkey.calltalent.App;
@@ -16,8 +12,6 @@ import com.soulkey.calltalent.domain.model.UserModel;
 import com.soulkey.calltalent.ui.auth.LoginActivity;
 import com.soulkey.calltalent.utils.animation.AnimationUtil;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
-
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -82,49 +76,6 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     }
 
     /**
-     * Helper method to launch an Activity
-     *
-     * @param clazz the Activity class to be navigated to.
-     */
-    protected void launchActivity(Class<?> clazz) {
-        Intent intent = new Intent(this, clazz);
-        startActivity(intent);
-        finish();
-    }
-
-    protected void launchActivityWithTransition(
-            Class<?> clazz, View view, String transitionName, final Map<String, String> params) {
-        Intent intent = new Intent(this, clazz);
-        for (Map.Entry<String, String> entry :
-                params.entrySet()) {
-            intent.putExtra(entry.getKey(), entry.getValue());
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(
-                    this, view, transitionName);
-            startActivity(intent, options.toBundle());
-        } else {
-            startActivity(intent);
-        }
-    }
-
-    /**
-     * Helper method to launch an Activity with parameters
-     *
-     * @param clazz  the Activity class to be navigated to
-     * @param params the parameters to be received
-     */
-    protected void launchActivity(final Class<?> clazz, final Map<String, String> params) {
-        Intent intent = new Intent(this, clazz);
-        for (Map.Entry<String, String> entry :
-                params.entrySet()) {
-            intent.putExtra(entry.getKey(), entry.getValue());
-        }
-        startActivity(intent);
-        finish();
-    }
-
-    /**
      * Define the logic when the access is denied
      *
      * @return the subscription that observes the changes
@@ -136,8 +87,10 @@ public abstract class BaseActivity extends RxAppCompatActivity {
                                 (user == null || user.isAnonymous()))
                 .compose(bindToLifecycle())
                 .subscribe(
-                        result ->
-                                launchActivity(LoginActivity.class),
+                        result -> {
+                            UIHelper.launchActivity(this, LoginActivity.class);
+                            finish();
+                        },
                         err -> {
                             Log.d("accessDeniedFallback: ", err.getMessage());
                         }

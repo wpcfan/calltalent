@@ -18,6 +18,7 @@ import com.jakewharton.rxbinding.view.RxView;
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.soulkey.calltalent.R;
 import com.soulkey.calltalent.di.component.ApplicationComponent;
+import com.soulkey.calltalent.ui.UIHelper;
 import com.soulkey.calltalent.ui.user.CreateUserProfileActivity;
 
 import java.util.HashMap;
@@ -66,8 +67,12 @@ public class RegisterActivity extends EmailAutoCompleteActivity {
         usernameText.setText(receiveParams(LoginParams.PARAM_KEY_USERNAME.getValue()));
 
         setSupportActionBar(toolbar);
-        toolbar.setNavigationOnClickListener(view -> launchActivity(LoginActivity.class, params));
+        toolbar.setNavigationOnClickListener(view -> {
+            UIHelper.launchActivity(RegisterActivity.this, LoginActivity.class, params);
+            finish();
+        });
         final ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
 
@@ -145,20 +150,27 @@ public class RegisterActivity extends EmailAutoCompleteActivity {
                     if (!isRegistered)
                         view.setEnabled(true);
                 })
-                .filter(isRegisterd -> isRegisterd)
-                .flatMap(isRegisterd -> login(
+                .filter(isRegistered -> isRegistered)
+                .flatMap(isRegistered -> login(
                         usernameText.getText().toString(),
                         passwordText.getText().toString()))
                 .compose(bindToLifecycle())
                 .subscribe(user -> {
                     if (user != null) {
                         params.put(LoginParams.PARAM_KEY_UID.getValue(), user.uid());
-                        launchActivity(CreateUserProfileActivity.class, params);
+                        UIHelper.launchActivity(RegisterActivity.this, CreateUserProfileActivity.class, params);
+                        finish();
                     }
                 });
     }
 
-    private boolean validateForm(TextView usernameText, TextView passwordText, TextView repeatPasswordText, TextInputLayout usernameWrapper, TextInputLayout passwordWrapper, TextInputLayout repeatPasswordWrapper) {
+    private boolean validateForm(
+            TextView usernameText,
+            TextView passwordText,
+            TextView repeatPasswordText,
+            TextInputLayout usernameWrapper,
+            TextInputLayout passwordWrapper,
+            TextInputLayout repeatPasswordWrapper) {
         return validateRequiredField(usernameText, usernameWrapper) &&
                 validateRequiredField(passwordText, passwordWrapper) &&
                 validateRequiredField(repeatPasswordText, repeatPasswordWrapper) &&
@@ -186,7 +198,10 @@ public class RegisterActivity extends EmailAutoCompleteActivity {
         return RxView.clicks(view)
                 .compose(bindToLifecycle())
                 .subscribe(
-                        ev -> launchActivity(LoginActivity.class, params)
+                        ev -> {
+                            UIHelper.launchActivity(RegisterActivity.this, LoginActivity.class, params);
+                            finish();
+                        }
                 );
     }
 
