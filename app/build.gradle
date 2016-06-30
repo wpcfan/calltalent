@@ -4,14 +4,12 @@ apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'com.jakewharton.hugo'
 //apply plugin: 'kotlin-android'
 
-
 buildscript {
     ext {
         support_version = '23.2.1'
         kotlin_version = '1.0.2'
         anko_version = '0.8.3'
         retrofit_version = '2.0.2'
-        okhttp_version = '3.2.0'
         dagger_version = '2.4'
         rxbinding_version = '0.4.0'
         rxlifecycle_version = '0.6.1'
@@ -121,8 +119,6 @@ dependencies {
     //    compile "org.jetbrains.anko:anko-design:$anko_version"
     //    compile "org.jetbrains.anko:anko-recyclerview-v7:$anko_version"
     //    compile "org.jetbrains.anko:anko-cardview-v7:$anko_version"
-    //    compile "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
-    //    compile "com.squareup.okhttp3:okhttp:$okhttp_version"
     //Retrofit2 is a library to minimize the code to handle RESTful services
     //    compile "com.squareup.retrofit2:adapter-rxjava:$retrofit_version"
     //    compile "com.squareup.retrofit2:converter-moshi:$retrofit_version"

@@ -8,7 +8,6 @@ import com.soulkey.calltalent.di.component.ApplicationComponent;
 import com.soulkey.calltalent.di.component.DaggerApplicationComponent;
 import com.soulkey.calltalent.di.module.AppModule;
 import com.soulkey.calltalent.di.module.AuthModule;
-import com.squareup.leakcanary.LeakCanary;
 
 /**
  * Custom application definition.
@@ -32,7 +31,6 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        LeakCanary.install(this);
         appComponent = DaggerApplicationComponent.builder()
                 .appModule(new AppModule(this))
                 .authModule(new AuthModule())

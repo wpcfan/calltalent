@@ -3,16 +3,17 @@ package com.soulkey.calltalent.api.user.wilddog;
 import android.app.Application;
 
 import com.cloudinary.Cloudinary;
-import com.cloudinary.android.Utils;
 import com.cloudinary.utils.ObjectUtils;
 import com.soulkey.calltalent.api.user.IUserManager;
 import com.soulkey.calltalent.api.wrapper.RxWilddog;
 import com.soulkey.calltalent.domain.entity.UserProfile;
 import com.wilddog.client.Wilddog;
 
-import java.io.ByteArrayInputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import rx.Observable;
+import rx.schedulers.Schedulers;
 
 /**
  * User related API service call encapsulated in here
@@ -28,7 +29,11 @@ public class UserManagerWilddogImpl implements IUserManager {
         Wilddog.setAndroidContext(application);
         String AUTH_URL = "https://calltalent.wilddogio.com/";
         this.wilddog = new Wilddog(AUTH_URL);
-        this.cloudinary = new Cloudinary(Utils.cloudinaryUrlFromContext(application));
+        Map<String, String> config = new HashMap<>();
+        config.put("cloud_name", "twigcodes");
+        config.put("api_key", "929157142385211");
+        config.put("api_secret", "Uq_ar0Une3IsUViBB6UFOh0nwio");
+        this.cloudinary = new Cloudinary(config);
     }
 
     @Override
@@ -51,8 +56,8 @@ public class UserManagerWilddogImpl implements IUserManager {
     @Override
     public Observable<String> uploadAvatar(byte[] imageData, String uid) {
         return Observable.fromCallable(() -> {
-            cloudinary.uploader().upload(new ByteArrayInputStream(imageData), ObjectUtils.emptyMap());
+            cloudinary.uploader().upload(imageData, ObjectUtils.emptyMap());
             return cloudinary.url().generate(uid);
-        });
+        }).subscribeOn(Schedulers.computation());
     }
 }

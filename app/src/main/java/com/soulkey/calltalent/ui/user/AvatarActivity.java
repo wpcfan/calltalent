@@ -1,10 +1,8 @@
 package com.soulkey.calltalent.ui.user;
 
 import android.Manifest;
-import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.TextureView;
 import android.view.View;
@@ -108,24 +106,15 @@ public class AvatarActivity extends BaseActivity {
                     saveBtn.setEnabled(false);
                     recaptureBtn.setEnabled(false);
                 })
-                .flatMap(__ -> saveImageToGallery(of(this.cameraData).collect(toBytes())))
-                .doOnNext(mediaUri -> userModel.saveAvatarToDiskCache(this.uid, mediaUri))
                 .flatMap(__ -> userModel.uploadAvatar(of(this.cameraData).collect(toBytes()), this.uid))
                 .compose(bindToLifecycle())
                 .subscribe(remoteUri -> {
                     params.put(LoginParams.PARAM_KEY_AVATAR_URI.getValue(), remoteUri);
                     UIHelper.launchActivity(AvatarActivity.this, CreateUserProfileActivity.class, params);
                     finish();
-                });
+                        },
+                        err -> Toast.makeText(AvatarActivity.this, err.getMessage(), Toast.LENGTH_SHORT).show());
         getSubsCollector().add(subSave);
-    }
-
-    private Observable<String> saveImageToGallery(final byte[] data) {
-        return Observable.fromCallable(() -> MediaStore.Images.Media.insertImage(
-                getContentResolver(),
-                BitmapFactory.decodeByteArray(data, 0, data.length),
-                R.string.app_name + String.valueOf(System.currentTimeMillis()),
-                R.string.app_name + "avatar"));
     }
 
     @Override

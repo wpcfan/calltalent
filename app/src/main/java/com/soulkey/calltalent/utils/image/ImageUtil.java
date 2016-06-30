@@ -1,11 +1,17 @@
 package com.soulkey.calltalent.utils.image;
 
+import android.content.ContentResolver;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.provider.MediaStore;
+
+import com.soulkey.calltalent.R;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+
+import rx.Observable;
 
 /**
  * Created by wangpeng on 16/6/29.
@@ -57,5 +63,13 @@ public class ImageUtil {
         } catch (FileNotFoundException e) {
         }
         return null;
+    }
+
+    public static Observable<String> saveImageToGallery(ContentResolver resolver, final byte[] data) {
+        return Observable.fromCallable(() -> MediaStore.Images.Media.insertImage(
+                resolver,
+                BitmapFactory.decodeByteArray(data, 0, data.length),
+                R.string.app_name + String.valueOf(System.currentTimeMillis()),
+                R.string.app_name + "avatar"));
     }
 }

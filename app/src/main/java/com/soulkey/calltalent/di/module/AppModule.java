@@ -2,6 +2,8 @@ package com.soulkey.calltalent.di.module;
 
 import android.app.Application;
 
+import com.squareup.leakcanary.LeakCanary;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -17,6 +19,7 @@ public class AppModule {
 
     public AppModule(Application application) {
         this.mApplication = application;
+        LeakCanary.install(this.mApplication);
     }
 
     @Provides
