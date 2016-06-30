@@ -2,6 +2,7 @@ package com.soulkey.calltalent.di.module;
 
 import android.app.Application;
 
+import com.fuck_boilerplate.rx_paparazzo.RxPaparazzo;
 import com.squareup.leakcanary.LeakCanary;
 
 import javax.inject.Singleton;
@@ -20,6 +21,7 @@ public class AppModule {
     public AppModule(Application application) {
         this.mApplication = application;
         LeakCanary.install(this.mApplication);
+        RxPaparazzo.register(this.mApplication);
     }
 
     @Provides

@@ -1,5 +1,7 @@
 package com.soulkey.calltalent.domain.model;
 
+import android.net.Uri;
+
 import com.soulkey.calltalent.api.auth.IAuthService;
 import com.soulkey.calltalent.api.image.ImageHandler;
 import com.soulkey.calltalent.api.storage.AvatarDiskCache;
@@ -58,6 +60,10 @@ public class UserModel {
     }
 
     public Observable<RequestCreator> loadImageFrom(String uri) {
+        return imageHandler.loadImageFrom(uri);
+    }
+
+    public Observable<RequestCreator> loadImageFrom(Uri uri) {
         return imageHandler.loadImageFrom(uri);
     }
 

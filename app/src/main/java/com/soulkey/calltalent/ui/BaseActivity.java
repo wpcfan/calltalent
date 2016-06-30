@@ -1,7 +1,10 @@
 package com.soulkey.calltalent.ui;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -26,6 +29,8 @@ import rx.subscriptions.CompositeSubscription;
  */
 public abstract class BaseActivity extends RxAppCompatActivity {
     private final String TAG = BaseActivity.class.getSimpleName();
+    private AlertDialog mAlertDialog;
+
     /**
      * The subscription to hold all subscriptions and will be cleared when Activity is destroyed
      * Every subscription MUST be added to it to avoid MEMORY LEAK
@@ -60,6 +65,17 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Icepick.saveInstanceState(this, outState);
+    }
+
+    /**
+     * Hide alert dialog if any.
+     */
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mAlertDialog != null && mAlertDialog.isShowing()) {
+            mAlertDialog.dismiss();
+        }
     }
 
     /**
@@ -145,4 +161,29 @@ public abstract class BaseActivity extends RxAppCompatActivity {
             return bundle.getString(key);
         return null;
     }
+
+    /**
+     * This method shows dialog with given title & message.
+     * Also there is an option to pass onClickListener for positive & negative button.
+     *
+     * @param title                         - dialog title
+     * @param message                       - dialog message
+     * @param onPositiveButtonClickListener - listener for positive button
+     * @param positiveText                  - positive button text
+     * @param onNegativeButtonClickListener - listener for negative button
+     * @param negativeText                  - negative button text
+     */
+    protected void showAlertDialog(@Nullable String title, @Nullable String message,
+                                   @Nullable DialogInterface.OnClickListener onPositiveButtonClickListener,
+                                   @NonNull String positiveText,
+                                   @Nullable DialogInterface.OnClickListener onNegativeButtonClickListener,
+                                   @NonNull String negativeText) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.setPositiveButton(positiveText, onPositiveButtonClickListener);
+        builder.setNegativeButton(negativeText, onNegativeButtonClickListener);
+        mAlertDialog = builder.show();
+    }
+
 }

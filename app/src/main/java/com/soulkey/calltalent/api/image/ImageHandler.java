@@ -1,6 +1,7 @@
 package com.soulkey.calltalent.api.image;
 
 import android.app.Application;
+import android.net.Uri;
 
 import com.soulkey.calltalent.utils.memory.SystemUtil;
 import com.squareup.picasso.LruCache;
@@ -30,5 +31,9 @@ public class ImageHandler {
 
     public Observable<RequestCreator> loadImageFrom(File file) {
         return Observable.fromCallable(() -> this.picasso.load(file).noFade().fit());
+    }
+
+    public Observable<RequestCreator> loadImageFrom(Uri uri) {
+        return Observable.fromCallable(() -> this.picasso.load(uri).noFade().fit());
     }
 }

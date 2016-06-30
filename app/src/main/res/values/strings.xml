@@ -34,4 +34,6 @@
     <string name="avatar_activity_capture_btn">Capture</string>
     <string name="avatar_activity_save_btn">Save</string>
     <string name="avatar_activity_capture_alternative_btn">Capture Again?</string>
+    <string name="avatar_activity_edit_image_btn">edit</string>
+    <string name="progress_bar_title_saving">Saving</string>
 </resources>

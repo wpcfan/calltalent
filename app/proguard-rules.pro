@@ -83,14 +83,10 @@
 }
 -keepnames class * { @icepick.State *;}
 
-# ProGuard configurations for Bugtags
--keepattributes LineNumberTable,SourceFile
-
--keep class com.bugtags.library.** {*;}
--dontwarn org.apache.http.**
--dontwarn android.net.http.AndroidHttpClient
--dontwarn com.bugtags.library.**
-# End Bugtags
+#ucrop
+-dontwarn com.yalantis.ucrop**
+-keep class com.yalantis.ucrop** { *; }
+-keep interface com.yalantis.ucrop** { *; }
 
 # ALSO REMEMBER KEEPING YOUR MODEL CLASSES
 -keep class com.soulkey.calltalent.domain.** { *; }
