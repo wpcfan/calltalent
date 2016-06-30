@@ -9,7 +9,6 @@ import com.soulkey.calltalent.api.wrapper.RxWilddog;
 import com.soulkey.calltalent.domain.entity.User;
 import com.wilddog.client.Wilddog;
 
-import hugo.weaving.DebugLog;
 import rx.Observable;
 
 /**
@@ -26,7 +25,6 @@ public class AuthServiceWilddogImpl implements IAuthService {
         this.wilddog = new Wilddog(AUTH_URL);
     }
 
-    @DebugLog
     @Override
     public Observable<Boolean> registerWithUsernameAndPassword(
             @NonNull String username, @NonNull String password) {
@@ -34,7 +32,6 @@ public class AuthServiceWilddogImpl implements IAuthService {
                 .map(IAuthResult::isSuccessful);
     }
 
-    @DebugLog
     @Override
     public Observable<User> loginWithUsernameAndPassword(
             @NonNull String username, @NonNull String password) {

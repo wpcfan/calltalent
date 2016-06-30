@@ -1,9 +1,11 @@
 apply plugin: 'com.android.application'
 // add after applying plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
-apply plugin: 'com.jakewharton.hugo'
 //apply plugin: 'kotlin-android'
-
+apply plugin: 'com.fernandocejas.frodo'
+frodo {
+    enabled = true
+}
 buildscript {
     ext {
         support_version = '23.2.1'
