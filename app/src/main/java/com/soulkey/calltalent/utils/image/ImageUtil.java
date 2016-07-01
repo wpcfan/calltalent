@@ -3,6 +3,7 @@ package com.soulkey.calltalent.utils.image;
 import android.content.ContentResolver;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.provider.MediaStore;
 
 import com.soulkey.calltalent.R;
@@ -65,10 +66,14 @@ public class ImageUtil {
         return null;
     }
 
-    public static Observable<String> saveImageToGallery(ContentResolver resolver, final byte[] data) {
+    public static Observable<String> saveImageToGallery(
+            ContentResolver resolver, final byte[] data, Matrix matrix) {
+        Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+
         return Observable.fromCallable(() -> MediaStore.Images.Media.insertImage(
                 resolver,
-                BitmapFactory.decodeByteArray(data, 0, data.length),
+                Bitmap.createBitmap(
+                        bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, false),
                 R.string.app_name + String.valueOf(System.currentTimeMillis()),
                 R.string.app_name + "avatar"));
     }

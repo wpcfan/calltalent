@@ -27,6 +27,7 @@ buildscript {
         cloudinary_version = '1.4.2'
         solidVersion = '2.0.3'
         icepick_version = '3.2.0'
+        butterknife_version = '8.1.0'
     }
 
     repositories {
@@ -82,6 +83,9 @@ dependencies {
     apt 'frankiesardo:auto-parcel:1.0.3'
     compile "frankiesardo:icepick:$icepick_version"
     provided "frankiesardo:icepick-processor:$icepick_version"
+    //Butter Knife to help inject views
+    compile "com.jakewharton:butterknife:$butterknife_version"
+    apt "com.jakewharton:butterknife-compiler:$butterknife_version"
 
     //Compatibility
     //Design Support Library depends on v4 and v7

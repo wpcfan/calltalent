@@ -25,39 +25,42 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
 public class RegisterActivity extends EmailAutoCompleteActivity {
 
+    @BindView(R.id.registerBtn)
+    Button registerBtn;
+    @BindView(R.id.linktoSignin)
+    TextView signinBtn;
+    @BindView(R.id.showHidePasswordSwitch)
+    Switch showHideSwitch;
+    @BindView(R.id.usernameText)
+    AutoCompleteTextView usernameText;
+    @BindView(R.id.passwordText)
+    EditText passwordText;
+    @BindView(R.id.repeatPasswordText)
+    EditText repeatPasswordText;
+    @BindView(R.id.usernameWrapper)
+    TextInputLayout usernameWrapper;
+    @BindView(R.id.passwordWrapper)
+    TextInputLayout passwordWrapper;
+    @BindView(R.id.repeatPasswordWrapper)
+    TextInputLayout repeatPasswordWrapper;
+    @BindView(R.id.component_repeat_password_icon)
+    ImageView repeatPasswordIcon;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        final Button registerBtn = (Button) findViewById(R.id.registerBtn);
-        final TextView signinBtn = (TextView) findViewById(R.id.linktoSignin);
-        final Switch showHideSwitch = (Switch) findViewById(R.id.showHidePasswordSwitch);
-        final AutoCompleteTextView usernameText = (AutoCompleteTextView) findViewById(R.id.usernameText);
-        final EditText passwordText = (EditText) findViewById(R.id.passwordText);
-        final EditText repeatPasswordText = (EditText) findViewById(R.id.repeatPasswordText);
-        final TextInputLayout usernameWrapper = (TextInputLayout) findViewById(R.id.usernameWrapper);
-        final TextInputLayout passwordWrapper = (TextInputLayout) findViewById(R.id.passwordWrapper);
-        final TextInputLayout repeatPasswordWrapper = (TextInputLayout) findViewById(R.id.repeatPasswordWrapper);
-        final ImageView repeatPasswordIcon = (ImageView) findViewById(R.id.component_repeat_password_icon);
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
-        assert registerBtn != null;
-        assert signinBtn != null;
-        assert showHideSwitch != null;
-        assert repeatPasswordText != null;
-        assert usernameText != null;
-        assert passwordText != null;
-        assert usernameWrapper != null;
-        assert passwordWrapper != null;
-        assert repeatPasswordWrapper != null;
-        assert repeatPasswordIcon != null;
-        assert toolbar != null;
+        ButterKnife.bind(this);
 
         repeatPasswordIcon.setVisibility(View.VISIBLE);
         repeatPasswordWrapper.setVisibility(View.VISIBLE);
@@ -68,7 +71,7 @@ public class RegisterActivity extends EmailAutoCompleteActivity {
 
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(view -> {
-            UIHelper.launchActivity(RegisterActivity.this, LoginActivity.class, params);
+            UIHelper.launchActivity(this, LoginActivity.class, params);
             finish();
         });
         final ActionBar actionBar = getSupportActionBar();
@@ -76,44 +79,56 @@ public class RegisterActivity extends EmailAutoCompleteActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
 
-        getSubsCollector().add(dealWithEmailTextChanges(usernameText, params));
+        Observable<CharSequence> observable = getUsernameTextChangeStream(usernameText);
 
-        getSubsCollector().add(dealWithRegister(
-                registerBtn,
-                usernameText,
-                passwordText,
-                repeatPasswordText,
-                usernameWrapper,
-                passwordWrapper,
-                repeatPasswordWrapper,
-                params));
+        getSubsCollector().add(dealWithEmailTextChanges(observable, usernameText, params));
 
-        getSubsCollector().add(dealWithSignin(signinBtn, params));
+        getSubsCollector().add(observable
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(bindToLifecycle())
+                .subscribe(charSequence -> {
+                    validateRequiredField(usernameText, usernameWrapper);
+                    if (usernameText.length() > 0)
+                        validateEmail(usernameText, usernameWrapper);
+                }));
+
+        getSubsCollector().add(dealWithRegister(params));
+
+        getSubsCollector().add(dealWithSignin(params));
 
         getSubsCollector().add(switchPasswordVisibility(showHideSwitch, passwordText));
 
-        getSubsCollector().add(RxTextView.textChanges(passwordText)
-                .debounce(getDebounceTime(), TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .filter(charSequence -> charSequence.length()>getThrottleCount())
-                .compose(bindToLifecycle())
+        getSubsCollector().add(getPasswordTextChangeStream()
                 .subscribe(charSequence1 -> {
                     validateRequiredField(passwordText, passwordWrapper);
                     if(repeatPasswordText.getText().length()>0)
-                        validateIdenticalPasswords(passwordText, repeatPasswordText, repeatPasswordWrapper);
+                        validateIdenticalPasswords(
+                                passwordText, repeatPasswordText, repeatPasswordWrapper);
                 }));
 
-        getSubsCollector().add(RxTextView.textChanges(repeatPasswordText)
-                .debounce(getDebounceTime(), TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .filter(charSequence -> charSequence.length()>getThrottleCount())
-                .compose(bindToLifecycle())
+        getSubsCollector().add(getRepeatPasswordTextChangeStream()
                 .subscribe(charSequence1 -> {
                     validateRequiredField(repeatPasswordText, repeatPasswordWrapper);
                     if(passwordText.getText().length()>0)
-                        validateIdenticalPasswords(passwordText, repeatPasswordText, repeatPasswordWrapper);
+                        validateIdenticalPasswords(
+                                passwordText, repeatPasswordText, repeatPasswordWrapper);
                 }));
     }
+
+    private Observable<CharSequence> getRepeatPasswordTextChangeStream() {
+        return RxTextView.textChanges(repeatPasswordText)
+                .debounce(getDebounceTime(), TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(bindToLifecycle());
+    }
+
+    private Observable<CharSequence> getPasswordTextChangeStream() {
+        return RxTextView.textChanges(passwordText)
+                .debounce(getDebounceTime(), TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(bindToLifecycle());
+    }
+
     @Override
     protected void injectComponent(ApplicationComponent component) {
         component.inject(this);
@@ -125,30 +140,16 @@ public class RegisterActivity extends EmailAutoCompleteActivity {
     }
 
     @NonNull
-    private Subscription dealWithRegister(
-            final View view,
-            final TextView usernameText,
-            final TextView passwordText,
-            final TextView repeatPasswordText,
-            final TextInputLayout usernameWrapper,
-            final TextInputLayout passwordWrapper,
-            final TextInputLayout repeatPasswordWrapper,
-            final Map<String, String> params) {
-        return RxView.clicks(view)
-                .filter(__ -> validateForm(
-                        usernameText,
-                        passwordText,
-                        repeatPasswordText,
-                        usernameWrapper,
-                        passwordWrapper,
-                        repeatPasswordWrapper))
-                .doOnNext(__ -> view.setEnabled(false))
+    private Subscription dealWithRegister(final Map<String, String> params) {
+        return RxView.clicks(registerBtn)
+                .filter(__ -> validateForm())
+                .doOnNext(__ -> registerBtn.setEnabled(false))
                 .flatMap(__ -> registerUser(
                         usernameText.getText().toString(),
                         passwordText.getText().toString()))
                 .doOnNext(isRegistered -> {
                     if (!isRegistered)
-                        view.setEnabled(true);
+                        registerBtn.setEnabled(true);
                 })
                 .filter(isRegistered -> isRegistered)
                 .flatMap(isRegistered -> login(
@@ -158,19 +159,13 @@ public class RegisterActivity extends EmailAutoCompleteActivity {
                 .subscribe(user -> {
                     if (user != null) {
                         params.put(LoginParams.PARAM_KEY_UID.getValue(), user.uid());
-                        UIHelper.launchActivity(RegisterActivity.this, CreateUserProfileActivity.class, params);
+                        UIHelper.launchActivity(this, CreateUserProfileActivity.class, params);
                         finish();
                     }
                 });
     }
 
-    private boolean validateForm(
-            TextView usernameText,
-            TextView passwordText,
-            TextView repeatPasswordText,
-            TextInputLayout usernameWrapper,
-            TextInputLayout passwordWrapper,
-            TextInputLayout repeatPasswordWrapper) {
+    private boolean validateForm() {
         return validateRequiredField(usernameText, usernameWrapper) &&
                 validateRequiredField(passwordText, passwordWrapper) &&
                 validateRequiredField(repeatPasswordText, repeatPasswordWrapper) &&
@@ -194,12 +189,12 @@ public class RegisterActivity extends EmailAutoCompleteActivity {
     }
 
     @NonNull
-    private Subscription dealWithSignin(final View view, final Map<String, String> params) {
-        return RxView.clicks(view)
+    private Subscription dealWithSignin(final Map<String, String> params) {
+        return RxView.clicks(signinBtn)
                 .compose(bindToLifecycle())
                 .subscribe(
                         ev -> {
-                            UIHelper.launchActivity(RegisterActivity.this, LoginActivity.class, params);
+                            UIHelper.launchActivity(this, LoginActivity.class, params);
                             finish();
                         }
                 );

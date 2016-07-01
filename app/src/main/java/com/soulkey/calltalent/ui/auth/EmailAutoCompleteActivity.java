@@ -1,5 +1,6 @@
 package com.soulkey.calltalent.ui.auth;
 
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.text.InputType;
 import android.widget.ArrayAdapter;
@@ -17,6 +18,7 @@ import com.soulkey.calltalent.utils.validation.ValidationUtils;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
@@ -27,10 +29,10 @@ import rx.android.schedulers.AndroidSchedulers;
 public abstract class EmailAutoCompleteActivity extends BaseActivity {
 
     Subscription dealWithEmailTextChanges(
+            Observable<CharSequence> observable,
             AutoCompleteTextView view,
             Map<String, String> params) {
-        return RxTextView.textChanges(view)
-                .debounce(getDebounceTime(), TimeUnit.MICROSECONDS)
+        return observable
                 .doOnNext(s -> params.put(LoginParams.PARAM_KEY_USERNAME.getValue(), s.toString()))
                 .filter(charSequence ->
                         charSequence.length() > 3 &&
@@ -43,6 +45,14 @@ public abstract class EmailAutoCompleteActivity extends BaseActivity {
                             Toast.makeText(this, err.getMessage(), Toast.LENGTH_SHORT).show();
                             view.dismissDropDown();
                         });
+    }
+
+    @NonNull
+    Observable<CharSequence> getUsernameTextChangeStream(AutoCompleteTextView view) {
+        return RxTextView.textChanges(view)
+                .debounce(getDebounceTime(), TimeUnit.MICROSECONDS)
+                .publish()
+                .refCount();
     }
 
     Subscription switchPasswordVisibility(

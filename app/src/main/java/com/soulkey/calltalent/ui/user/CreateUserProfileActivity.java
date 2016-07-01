@@ -21,6 +21,9 @@ import com.soulkey.calltalent.ui.auth.LoginParams;
 import java.util.HashMap;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import rx.Observable;
 import rx.Subscription;
 
 /**
@@ -28,56 +31,61 @@ import rx.Subscription;
  */
 public class CreateUserProfileActivity extends BaseActivity {
 
+    @BindView(R.id.nameInput)
+    EditText nameInput;
+    @BindView(R.id.titleInput)
+    EditText titleInput;
+    @BindView(R.id.descInput)
+    EditText descInput;
+    @BindView(R.id.completeUserProfileBtn)
+    Button completeUserProfile;
+    @BindView(R.id.showUserProfileBtn)
+    Button showUserProfileBtn;
+    @BindView(R.id.take_photo_btn)
+    ImageButton takePhotoBtn;
+    @BindView(R.id.gender_radio_group)
+    RadioGroup genderRadioGroup;
+    @BindView(R.id.gender_male_selected)
+    RadioButton maleChecked;
+    @BindView(R.id.gender_female_selected)
+    RadioButton femaleChecked;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_user_profile);
-        final EditText nameInput = (EditText) findViewById(R.id.nameInput);
-        final EditText titleInput = (EditText) findViewById(R.id.titleInput);
-        final EditText descInput = (EditText) findViewById(R.id.descInput);
-        final Button completeUserProfile = (Button) findViewById(R.id.completeUserProfileBtn);
-        final Button showUserProfileBtn = (Button) findViewById(R.id.showUserProfileBtn);
-        final ImageButton takePhotoBtn = (ImageButton) findViewById(R.id.take_photo_btn);
-        final RadioGroup genderRadioGroup = (RadioGroup) findViewById(R.id.gender_radio_group);
-        final RadioButton maleChecked = (RadioButton) findViewById(R.id.gender_male_selected);
-        final RadioButton femaleChecked = (RadioButton) findViewById(R.id.gender_female_selected);
-
-        assert nameInput != null;
-        assert descInput != null;
-        assert titleInput != null;
-        assert completeUserProfile != null;
-        assert takePhotoBtn != null;
-        assert showUserProfileBtn != null;
-        assert genderRadioGroup != null;
-        assert maleChecked != null;
-        assert femaleChecked != null;
+        ButterKnife.bind(this);
 
         String uid = receiveParams(LoginParams.PARAM_KEY_UID.getValue());
         //parameters to be passed to the login screen if the linktoSignin is clicked
         Map<String, String> params = new HashMap<>();
         params.put(LoginParams.PARAM_KEY_UID.getValue(), uid);
-        getSubsCollector().add(maleCheckedSubscription(maleChecked, femaleChecked));
-        getSubsCollector().add(femaleCheckedSubscription(femaleChecked, maleChecked));
+        getSubsCollector().add(maleCheckedSubscription());
+        getSubsCollector().add(femaleCheckedSubscription());
 
-        getSubsCollector().add(dealWithSubmit(
-                nameInput, titleInput, descInput, completeUserProfile, genderRadioGroup, uid));
+        getSubsCollector().add(dealWithSubmit(uid));
         getSubsCollector().add(RxView.clicks(showUserProfileBtn)
                 .flatMap(aVoid -> userModel.getUserProfile(uid))
                 .compose(bindToLifecycle())
                 .subscribe(profile -> Toast.makeText(this, profile.name(), Toast.LENGTH_SHORT).show()));
-        getSubsCollector().add(dealWithAvatar(takePhotoBtn, params));
+        getSubsCollector().add(dealWithAvatar(params));
     }
 
-    private Subscription dealWithAvatar(ImageButton takePhotoBtn, Map<String, String> params) {
+    private Subscription dealWithAvatar(Map<String, String> params) {
         return RxView.clicks(takePhotoBtn)
                 .compose(bindToLifecycle())
                 .subscribe(aVoid -> {
-                    UIHelper.launchActivity(CreateUserProfileActivity.this, AvatarActivity.class, params);
+                    UIHelper.launchActivity(this, AvatarActivity.class, params);
                     finish();
                 });
     }
 
-    private Subscription dealWithSubmit(EditText nameInput, EditText titleInput, EditText descInput, Button completeUserProfile, RadioGroup genderRadioGroup, String uid) {
+    private Subscription dealWithSubmit(String uid) {
+        return getSubmitProfileStream(uid)
+                .subscribe(aVoid1 -> Log.d("Haha", "onCreate: "));
+    }
+
+    private Observable<Boolean> getSubmitProfileStream(String uid) {
         return RxView.clicks(completeUserProfile)
                 .flatMap(aVoid -> {
                     UserProfile userProfile = UserProfile.create(
@@ -89,11 +97,10 @@ public class CreateUserProfileActivity extends BaseActivity {
                             descInput.getText().toString());
                     return userModel.saveUserProfile(userProfile, uid);
                 })
-                .compose(bindToLifecycle())
-                .subscribe(aVoid1 -> Log.d("Haha", "onCreate: "));
+                .compose(bindToLifecycle());
     }
 
-    private Subscription femaleCheckedSubscription(RadioButton femaleChecked, RadioButton maleChecked) {
+    private Subscription femaleCheckedSubscription() {
         return RxView.clicks(femaleChecked)
                 .subscribe(__ -> {
                     femaleChecked.setTextColor(
@@ -102,7 +109,7 @@ public class CreateUserProfileActivity extends BaseActivity {
                 });
     }
 
-    private Subscription maleCheckedSubscription(RadioButton maleChecked, RadioButton femaleChecked) {
+    private Subscription maleCheckedSubscription() {
         return RxView.clicks(maleChecked)
                 .subscribe(__ -> {
                     maleChecked.setTextColor(
