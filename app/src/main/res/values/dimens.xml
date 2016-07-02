@@ -15,5 +15,6 @@
 
     <dimen name="elevation_header">4dp</dimen>
     <dimen name="elevation_fab">8dp</dimen>
-
+    <dimen name="avatar_thumbnail_width">168dp</dimen>
+    <dimen name="avatar_thumbnail_height">168dp</dimen>
 </resources>

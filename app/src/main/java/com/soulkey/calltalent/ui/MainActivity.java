@@ -27,6 +27,7 @@ public class MainActivity extends BaseActivity {
                 .flatMap(__ -> userModel.signOut())
                 .compose(bindToLifecycle())
                 .subscribe(aVoid -> {
+                    userModel.clearMemoryAndDiskCache();
                     UIHelper.launchActivity(MainActivity.this, LoginActivity.class);
                     finish();
                 });

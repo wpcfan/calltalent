@@ -10,13 +10,13 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin">
 
-    <ImageButton
+    <ImageView
         android:id="@+id/take_photo_btn"
         android:layout_width="match_parent"
-        android:layout_height="168dp"
+        android:layout_height="@dimen/avatar_thumbnail_height"
         android:layout_centerHorizontal="true"
-        android:background="@color/primary_dark"
         android:scaleType="fitCenter"
+        android:background="@color/primary_dark"
         android:contentDescription="@string/imagedesc"
         android:src="@drawable/ic_person" />
 

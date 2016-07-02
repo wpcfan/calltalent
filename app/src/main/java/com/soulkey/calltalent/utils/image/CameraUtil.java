@@ -1,5 +1,6 @@
 package com.soulkey.calltalent.utils.image;
 
+import android.content.Context;
 import android.graphics.Point;
 
 import com.ragnarok.rxcamera.config.RxCameraConfig;
@@ -22,13 +23,16 @@ public class CameraUtil {
      * @param useFront if front camera is to be used
      * @return the Camera configuration object
      */
-    public static RxCameraConfig getRxCameraConfig(boolean useFront) {
+    public static RxCameraConfig getRxCameraConfig(boolean useFront, Context context) {
         RxCameraConfigChooser chooser = RxCameraConfigChooser.obtain();
         chooser = useFront ? chooser.useFrontCamera() : chooser.useBackCamera();
         return chooser
                 .setAutoFocus(true)
                 .setPreferPreviewFrameRate(MIN_FRAME, MAX_FRAME)
-                .setPreferPreviewSize(new Point(X_AXIS, Y_AXIS), ACCEPT_SQUARE_PREVIEW)
+                .setPreferPreviewSize(new Point(
+                                ImageUtil.getScreenDimens(context)[0],
+                                ImageUtil.getScreenDimens(context)[1]),
+                        ACCEPT_SQUARE_PREVIEW)
                 .setHandleSurfaceEvent(true)
                 .get();
     }

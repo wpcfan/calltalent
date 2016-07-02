@@ -2,7 +2,6 @@ package com.soulkey.calltalent.ui.user;
 
 import android.Manifest;
 import android.app.ProgressDialog;
-import android.graphics.Bitmap;
 import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.net.Uri;
@@ -21,7 +20,6 @@ import com.jakewharton.rxbinding.view.RxView;
 import com.ragnarok.rxcamera.RxCamera;
 import com.ragnarok.rxcamera.RxCameraData;
 import com.ragnarok.rxcamera.config.RxCameraConfig;
-import com.ragnarok.rxcamera.request.Func;
 import com.soulkey.calltalent.R;
 import com.soulkey.calltalent.di.component.ApplicationComponent;
 import com.soulkey.calltalent.ui.BaseActivity;
@@ -29,7 +27,6 @@ import com.soulkey.calltalent.ui.UIHelper;
 import com.soulkey.calltalent.ui.auth.LoginParams;
 import com.soulkey.calltalent.utils.image.CameraUtil;
 import com.soulkey.calltalent.utils.image.ImageUtil;
-import com.squareup.picasso.RequestCreator;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.yalantis.ucrop.UCrop;
 
@@ -42,21 +39,20 @@ import butterknife.ButterKnife;
 import icepick.State;
 import rx.Observable;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import rx_activity_result.Result;
 import rx_activity_result.RxActivityResult;
-
-import static solid.collectors.ToArray.toArray;
-import static solid.collectors.ToArrays.toBytes;
-import static solid.stream.Primitives.box;
-import static solid.stream.Stream.of;
 
 public class AvatarActivity extends BaseActivity {
     private final String TAG = AvatarActivity.class.getSimpleName();
     @State
-    Byte[] cameraData;
+    byte[] cameraData;
     @State
     String uid;
-    Matrix rotationMatrix;
+    Matrix rotateMatrix;
+    @State
+    Uri tempFileUri;
 
     @BindView(R.id.open_camera)
     Button captureBtn;
@@ -81,8 +77,6 @@ public class AvatarActivity extends BaseActivity {
         ProgressDialog dialog = configProgressDialog();
 
         uid = receiveParams(LoginParams.PARAM_KEY_UID.getValue());
-        Map<String, String> params = new HashMap<>();
-        params.put(LoginParams.PARAM_KEY_UID.getValue(), uid);
 
         //Make the camera preview a hot observable
         Observable<RxCamera> observable = checkPermissionAndLaunchCamera()
@@ -93,12 +87,19 @@ public class AvatarActivity extends BaseActivity {
         dealWithCapture(observable);
         dealWithRecapture(observable);
         dealWithEdit();
-        dealWithSave(dialog, params);
+        dealWithSave(dialog);
+    }
+
+    public Map<String, String> getParams() {
+        Map<String, String> params = new HashMap<>();
+        params.put(LoginParams.PARAM_KEY_UID.getValue(), uid);
+        params.put(LoginParams.PARAM_KEY_AVATAR_URI.getValue(), tempFileUri.toString());
+        return params;
     }
 
     @NonNull
     private ProgressDialog configProgressDialog() {
-        ProgressDialog dialog = new ProgressDialog(this);
+        ProgressDialog dialog = new ProgressDialog(AvatarActivity.this);
         dialog.setIndeterminate(true);
         dialog.setTitle(getResources().getString(R.string.progress_bar_title_saving));
         dialog.setCanceledOnTouchOutside(false);
@@ -111,14 +112,13 @@ public class AvatarActivity extends BaseActivity {
         getSubsCollector().add(subPreview);
     }
 
-    private void dealWithSave(ProgressDialog dialog, Map<String, String> params) {
+    private void dealWithSave(ProgressDialog dialog) {
         Subscription subSave = getSaveImageStream(dialog)
-                .subscribe(remoteUri -> {
+                .subscribe(__ -> {
                     dialog.dismiss();
                     progressBar.setVisibility(View.GONE);
-                    params.put(LoginParams.PARAM_KEY_AVATAR_URI.getValue(), remoteUri);
                     UIHelper.launchActivity(
-                            AvatarActivity.this, CreateUserProfileActivity.class, params);
+                            AvatarActivity.this, CreateUserProfileActivity.class, getParams());
                     finish();
                 });
         getSubsCollector().add(subSave);
@@ -126,9 +126,14 @@ public class AvatarActivity extends BaseActivity {
 
     private void dealWithEdit() {
         Subscription subEdit = getEditImageStream()
-                .subscribe(result -> {
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(uri -> {
+                    if (uri != null) {
+                        tempFileUri = uri;
+                        imagePreview.setImageURI(uri);
+                    } else
+                        imagePreview.setImageURI(tempFileUri);
                     editBtn.setEnabled(true);
-                    result.into(imagePreview);
                 });
         getSubsCollector().add(subEdit);
     }
@@ -151,45 +156,40 @@ public class AvatarActivity extends BaseActivity {
 
     private void dealWithCapture(Observable<RxCamera> observable) {
         Subscription subCapture = getCaptureStream(observable)
-                .subscribe(rxCameraData -> {
-                    cameraData = box(rxCameraData.cameraData).collect(toArray(Byte.class));
-                    rotationMatrix = rxCameraData.rotateMatrix;
+                .flatMap(rxCameraData -> {
+                    cameraData = rxCameraData.cameraData;
+                    rotateMatrix = rxCameraData.rotateMatrix;
+                    return ImageUtil.createBitmap(cameraData, rotateMatrix);
+                })
+                .flatMap(bitmap -> ImageUtil.saveImageToCache(this, bitmap))
+                .subscribe(uri -> {
+                    tempFileUri = uri;
+                    imagePreview.setImageURI(uri);
                     captureBtn.setVisibility(View.GONE);
                     textureView.setVisibility(View.GONE);
                     imagePreview.setVisibility(View.VISIBLE);
                     recaptureBtn.setVisibility(View.VISIBLE);
                     editBtn.setVisibility(View.VISIBLE);
                     saveBtn.setVisibility(View.VISIBLE);
-                    imagePreview.setImageBitmap(createBitmap(rxCameraData));
                     progressBar.setVisibility(View.GONE);
                 });
         getSubsCollector().add(subCapture);
     }
 
-    private Bitmap createBitmap(RxCameraData data) {
-        Bitmap bitmap = ImageUtil.decodeFile(data.cameraData);
-        return Bitmap.createBitmap(
-                bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), data.rotateMatrix, false);
-    }
-
-    private Observable<String> getSaveImageStream(ProgressDialog dialog) {
+    private Observable<Void> getSaveImageStream(ProgressDialog dialog) {
         return RxView.clicks(saveBtn)
                 .doOnNext(__ -> {
                     saveBtn.setEnabled(false);
                     recaptureBtn.setEnabled(false);
                     dialog.show();
                 })
-                .flatMap(__ -> userModel.uploadAvatar(
-                        of(cameraData).collect(toBytes()), this.uid))
                 .compose(bindToLifecycle());
     }
 
-    private Observable<RequestCreator> getEditImageStream() {
+    private Observable<Uri> getEditImageStream() {
         return RxView.clicks(editBtn)
                 .doOnNext(__ -> editBtn.setEnabled(false))
-                .flatMap(__ -> ImageUtil.saveImageToGallery(
-                        getContentResolver(), of(cameraData).collect(toBytes()), rotationMatrix))
-                .flatMap(this::getCropImageStream)
+                .flatMap(__ -> getCropImageStream(tempFileUri.toString()))
                 .map(result -> {
                     int resultCode = result.resultCode();
                     if (resultCode == RESULT_OK) {
@@ -197,7 +197,6 @@ public class AvatarActivity extends BaseActivity {
                     }
                     return null;
                 })
-                .flatMap(uri -> userModel.loadImageFrom(uri))
                 .compose(bindToLifecycle());
     }
 
@@ -230,11 +229,11 @@ public class AvatarActivity extends BaseActivity {
                 .flatMap(rxCamera ->
                         rxCamera.request().takePictureRequest(
                                 false,
-                                (Func) () -> Log.d(TAG, "captured"),
-                                CameraUtil.X_AXIS,
-                                CameraUtil.Y_AXIS,
+                                () -> Log.d(TAG, "captured"),
+                                ImageUtil.getScreenDimens(this)[0],
+                                ImageUtil.getScreenDimens(this)[1],
                                 ImageFormat.JPEG,
-                                true))
+                                true).subscribeOn(Schedulers.computation()))
                 .compose(bindToLifecycle());
     }
 
@@ -246,7 +245,7 @@ public class AvatarActivity extends BaseActivity {
                         Toast.makeText(AvatarActivity.this, "", Toast.LENGTH_SHORT).show();
                 })
                 .filter(granted -> granted)
-                .flatMap(__ -> getCameraPreviewObservable(CameraUtil.getRxCameraConfig(true)));
+                .flatMap(__ -> getCameraPreviewObservable(CameraUtil.getRxCameraConfig(true, this)));
     }
 
     private Observable<RxCamera> getCameraPreviewObservable(RxCameraConfig config) {

@@ -1,6 +1,7 @@
 package com.soulkey.calltalent.domain.model;
 
 import android.net.Uri;
+import android.widget.ImageView;
 
 import com.soulkey.calltalent.api.auth.IAuthService;
 import com.soulkey.calltalent.api.image.ImageHandler;
@@ -12,9 +13,6 @@ import com.soulkey.calltalent.domain.entity.Avatar;
 import com.soulkey.calltalent.domain.entity.User;
 import com.soulkey.calltalent.domain.entity.UserProfile;
 import com.soulkey.calltalent.utils.rx.SchedulerProvider;
-import com.squareup.picasso.RequestCreator;
-
-import java.io.File;
 
 import rx.Observable;
 import rx.Subscription;
@@ -55,24 +53,20 @@ public class UserModel {
         this.clock = clock;
     }
 
-    public Observable<RequestCreator> loadImageFrom(File file) {
-        return imageHandler.loadImageFrom(file);
+    public Observable<Void> loadImage(Uri uri, ImageView imageView) {
+        return imageHandler.loadImage(uri, imageView);
     }
 
-    public Observable<RequestCreator> loadImageFrom(String uri) {
-        return imageHandler.loadImageFrom(uri);
-    }
-
-    public Observable<RequestCreator> loadImageFrom(Uri uri) {
-        return imageHandler.loadImageFrom(uri);
+    public Observable<Void> loadImage(Uri uri, ImageView imageView, int targetWidthRes, int targetHeightRes) {
+        return imageHandler.loadImage(uri, imageView, targetWidthRes, targetHeightRes);
     }
 
     public Observable<Boolean> saveAvatarToDiskCache(String uid, String mediaUri) {
         return avatarDiskCache.saveEntity(Avatar.create(uid, mediaUri));
     }
 
-    public Observable<String> uploadAvatar(byte[] imageData, String uid) {
-        return userManager.uploadAvatar(imageData, uid);
+    public Observable<String> uploadAvatar(byte[] data, String uid) {
+        return userManager.uploadAvatar(data, uid);
     }
 
     public Observable<Boolean> register(String username, String password) {
