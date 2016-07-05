@@ -97,7 +97,7 @@ public abstract class EmailAutoCompleteActivity extends BaseActivity {
         if (!ValidationUtils.validateRequiredField(
                 view.getText().toString()).isValid()) {
             wrapper.setError(
-                    getResources().getString(R.string.validation_username_not_empty));
+                    getResources().getString(R.string.validation_required_not_met));
             return false;
         } else {
             wrapper.setErrorEnabled(false);

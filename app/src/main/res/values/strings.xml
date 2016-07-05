@@ -18,8 +18,7 @@
     <string name="createuserprofile_activity_completeUserProfileBtn_text">Done</string>
     <string name="createuserprofile_activity_addAvatarBtn_text">Add Avatar</string>
     <string name="createuserprofile_activity_showUserProfileBtn_text">Show</string>
-    <string name="validation_username_not_empty">Username canot be empty</string>
-    <string name="validation_password_not_empty">Password cannot be empty</string>
+    <string name="validation_required_not_met">required field cannot be empty</string>
     <string name="validation_email_not_valid">Email is not valid</string>
     <string name="validation_repeat_password_not_same">The password retyped is not same as password above</string>
     <string name="passwordWrapper_hint">Password</string>
@@ -36,4 +35,5 @@
     <string name="avatar_activity_capture_alternative_btn">Capture Again?</string>
     <string name="avatar_activity_edit_image_btn">edit</string>
     <string name="progress_bar_title_saving">Saving</string>
+    <string name="validation_avatar_not_empty">Avatar is not set yet</string>
 </resources>

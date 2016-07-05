@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.fuck_boilerplate.rx_paparazzo.RxPaparazzo;
 import com.squareup.leakcanary.LeakCanary;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import javax.inject.Singleton;
 
@@ -20,8 +21,9 @@ public class AppModule {
 
     public AppModule(Application application) {
         this.mApplication = application;
-        LeakCanary.install(this.mApplication);
-        RxPaparazzo.register(this.mApplication);
+        LeakCanary.install(mApplication);
+        RxPaparazzo.register(mApplication);
+        CrashReport.initCrashReport(mApplication, "900037648", true);
     }
 
     @Provides

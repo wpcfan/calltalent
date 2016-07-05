@@ -16,8 +16,7 @@
     <string name="createuserprofile_activity_completeUserProfileBtn_text">完成</string>
     <string name="createuserprofile_activity_addAvatarBtn_text">增加头像</string>
     <string name="createuserprofile_activity_showUserProfileBtn_text">显示</string>
-    <string name="validation_username_not_empty">用户名不能为空</string>
-    <string name="validation_password_not_empty">密码不能为空</string>
+    <string name="validation_required_not_met">必填项不能为空</string>
     <string name="validation_email_not_valid">email地址不正确</string>
     <string name="validation_repeat_password_not_same">两次输入的密码不一致</string>
     <string name="passwordWrapper_hint">密码</string>
@@ -33,4 +32,5 @@
     <string name="avatar_activity_capture_alternative_btn">重拍一张？</string>
     <string name="avatar_activity_edit_image_btn">编辑</string>
     <string name="progress_bar_title_saving">正在保存</string>
+    <string name="validation_avatar_not_empty">还没有设置头像哦！</string>
 </resources>

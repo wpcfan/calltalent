@@ -9,7 +9,6 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.jakewharton.rxbinding.view.RxView;
-import com.jakewharton.rxbinding.widget.RxTextView;
 import com.soulkey.calltalent.R;
 import com.soulkey.calltalent.di.component.ApplicationComponent;
 import com.soulkey.calltalent.ui.MainActivity;
@@ -17,18 +16,16 @@ import com.soulkey.calltalent.ui.UIHelper;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Observable;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * The LoginActivity defines the login-related behaviors
  */
-public class LoginActivity extends EmailAutoCompleteActivity {
+public final class LoginActivity extends EmailAutoCompleteActivity {
     private boolean shouldFinish;
     @BindView(R.id.link_to_register)
     TextView registerBtn;
@@ -59,14 +56,6 @@ public class LoginActivity extends EmailAutoCompleteActivity {
         Observable<CharSequence> observable = getUsernameTextChangeStream(usernameText);
 
         getSubsCollector().add(dealWithEmailTextChanges(observable, usernameText, params));
-        getSubsCollector().add(observable
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(bindToLifecycle())
-                .subscribe(charSequence -> {
-                    validateRequiredField(usernameText, usernameWrapper);
-                    if (usernameText.length() > 0)
-                        validateEmail(usernameText, usernameWrapper);
-                }));
 
         getSubsCollector().add(dealWithSignin());
 
@@ -74,18 +63,8 @@ public class LoginActivity extends EmailAutoCompleteActivity {
 
         getSubsCollector().add(switchPasswordVisibility(showHideSwitch, passwordText));
 
-        getSubsCollector().add(getPasswordTextChangeStream()
-                .subscribe(charSequence1 -> {
-                    validateRequiredField(passwordText, passwordWrapper);
-                }));
+        getSubsCollector().add(checkNetworkStatus());
 
-    }
-
-    private Observable<CharSequence> getPasswordTextChangeStream() {
-        return RxTextView.textChanges(passwordText)
-                .debounce(getDebounceTime(), TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(bindToLifecycle());
     }
 
     @Override

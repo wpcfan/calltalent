@@ -3,6 +3,8 @@ package com.soulkey.calltalent.ui.user;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,6 +17,7 @@ import com.jakewharton.rxbinding.view.RxView;
 import com.soulkey.calltalent.R;
 import com.soulkey.calltalent.di.component.ApplicationComponent;
 import com.soulkey.calltalent.domain.entity.UserProfile;
+import com.soulkey.calltalent.exception.RequireFieldNotSetException;
 import com.soulkey.calltalent.ui.BaseActivity;
 import com.soulkey.calltalent.ui.UIHelper;
 import com.soulkey.calltalent.ui.auth.LoginParams;
@@ -34,6 +37,11 @@ import rx.Subscription;
  * CreateUserProfileActivity is the UI for users to create his/her profile
  */
 public class CreateUserProfileActivity extends BaseActivity {
+
+    private final String TEMP_PROFILE_NAME = "temp_profile_name";
+    private final String TEMP_PROFILE_TITLE = "temp_profile_title";
+    private final String TEMP_PROFILE_DESC = "temp_profile_desc";
+    private final String TEMP_PROFILE_GENDER = "temp_profile_gender";
 
     @BindView(R.id.nameInput)
     EditText nameInput;
@@ -68,10 +76,32 @@ public class CreateUserProfileActivity extends BaseActivity {
 
         uid = receiveParams(LoginParams.PARAM_KEY_UID.getValue());
         Subscription subReceiveParam = getParams()
-                .subscribe(uri -> {
+                .doOnNext(uri -> {
                     localUri = Uri.parse(uri);
-                    takePhotoBtn.setImageURI(localUri);
+                    RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(getResources(), uri.toString());
+                    dr.setCornerRadius(5);
+                    takePhotoBtn.setImageDrawable(dr);
+                })
+                .flatMap(__ -> storageService.readString(TEMP_PROFILE_NAME))
+                .doOnNext(name -> {
+                    nameInput.setText(name);
+                })
+                .flatMap(__ -> storageService.readString(TEMP_PROFILE_TITLE))
+                .doOnNext(title -> {
+                    titleInput.setText(title);
+                })
+                .flatMap(__ -> storageService.readString(TEMP_PROFILE_DESC))
+                .doOnNext(desc -> {
+                    descInput.setText(desc);
+                })
+                .flatMap(__ -> storageService.readBoolean(TEMP_PROFILE_GENDER))
+                .subscribe(gender -> {
+                    if (gender)
+                        maleChecked.setChecked(true);
+                    else
+                        femaleChecked.setChecked(true);
                 });
+
         getSubsCollector().add(subReceiveParam);
 
         //parameters to be passed to the login screen if the linktoSignin is clicked
@@ -96,6 +126,10 @@ public class CreateUserProfileActivity extends BaseActivity {
 
     private Subscription dealWithAvatar(Map<String, String> params) {
         return RxView.clicks(takePhotoBtn)
+                .flatMap(__ -> storageService.writeString(TEMP_PROFILE_NAME, nameInput.getText().toString()))
+                .flatMap(__ -> storageService.writeString(TEMP_PROFILE_TITLE, titleInput.getText().toString()))
+                .flatMap(__ -> storageService.writeString(TEMP_PROFILE_DESC, descInput.getText().toString()))
+                .flatMap(__ -> storageService.writeBoolean(TEMP_PROFILE_GENDER, genderRadioGroup.getCheckedRadioButtonId() == R.id.gender_male_selected))
                 .compose(bindToLifecycle())
                 .subscribe(aVoid -> {
                     UIHelper.launchActivity(this, AvatarActivity.class, params);
@@ -111,6 +145,12 @@ public class CreateUserProfileActivity extends BaseActivity {
     private Observable<Boolean> getSubmitProfileStream() {
         return RxView.clicks(completeUserProfile)
                 .flatMap(__ -> {
+                    if (localUri == null || localUri.equals(""))
+                        return Observable.error(
+                                new RequireFieldNotSetException(
+                                        getResources()
+                                                .getString(R.string.validation_avatar_not_empty)))
+                                .materialize();
                     byte[] data = new byte[0];
                     try {
                         data = ImageUtil.getBytes(this, localUri);
@@ -118,6 +158,17 @@ public class CreateUserProfileActivity extends BaseActivity {
                         return Observable.error(e).materialize();
                     }
                     return userModel.uploadAvatar(data, uid).materialize();
+                })
+                .doOnNext(notice -> {
+                    if (notice.hasThrowable())
+                        Toast.makeText(
+                                this, notice.getThrowable().getMessage(), Toast.LENGTH_SHORT).show();
+                })
+                .doOnNext(__ -> {
+                    storageService.remove(TEMP_PROFILE_NAME);
+                    storageService.remove(TEMP_PROFILE_TITLE);
+                    storageService.remove(TEMP_PROFILE_GENDER);
+                    storageService.remove(TEMP_PROFILE_DESC);
                 })
                 .flatMap(notification -> {
                     if (notification.hasValue()) {
@@ -131,10 +182,13 @@ public class CreateUserProfileActivity extends BaseActivity {
                                 descInput.getText().toString());
                         return userModel.saveUserProfile(userProfile, uid);
                     } else {
-                        //TODO:upload error to server
                         return Observable.just(false);
                     }
                 })
+                .doOnError(err -> Toast.makeText(
+                        this, err.getMessage(), Toast.LENGTH_SHORT).show()
+                )
+                .onErrorResumeNext(throwable -> Observable.just(false))
                 .compose(bindToLifecycle());
     }
 

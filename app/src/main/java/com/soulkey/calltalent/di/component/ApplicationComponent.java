@@ -5,6 +5,8 @@ import android.app.Application;
 import com.soulkey.calltalent.App;
 import com.soulkey.calltalent.di.module.AppModule;
 import com.soulkey.calltalent.di.module.AuthModule;
+import com.soulkey.calltalent.di.module.NetworkModule;
+import com.soulkey.calltalent.di.module.StorageModule;
 import com.soulkey.calltalent.ui.BaseActivity;
 import com.soulkey.calltalent.utils.rx.SchedulerProvider;
 
@@ -19,7 +21,9 @@ import dagger.Component;
 @Singleton
 @Component(modules = {
         AppModule.class,
-        AuthModule.class
+        AuthModule.class,
+        NetworkModule.class,
+        StorageModule.class
 })
 public interface ApplicationComponent {
     void inject(App app);
@@ -29,5 +33,4 @@ public interface ApplicationComponent {
     Application getApplication();
 
     SchedulerProvider getProvider();
-
 }

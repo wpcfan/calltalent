@@ -10,8 +10,6 @@ import com.google.auto.value.AutoValue;
  */
 @AutoValue
 public abstract class Avatar implements Parcelable {
-    private final String TAG = Avatar.class.getSimpleName();
-
     //Please note that the order of params defined in the constructor
     // must be the same as the definition order in the class
     public static Avatar create(final String uid, String mediaUri) {

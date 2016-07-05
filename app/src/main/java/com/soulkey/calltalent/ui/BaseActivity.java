@@ -4,11 +4,15 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.soulkey.calltalent.App;
+import com.soulkey.calltalent.api.network.INetworkService;
+import com.soulkey.calltalent.api.storage.IStorageService;
 import com.soulkey.calltalent.di.component.ApplicationComponent;
 import com.soulkey.calltalent.domain.entity.User;
 import com.soulkey.calltalent.domain.model.UserModel;
@@ -21,6 +25,7 @@ import javax.inject.Inject;
 import icepick.Icepick;
 import rx.Observable;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.CompositeSubscription;
 
 /**
@@ -38,13 +43,13 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     private final CompositeSubscription _subscription = new CompositeSubscription();
     @Inject
     protected UserModel userModel;
+    @Inject
+    protected INetworkService networkService;
+    @Inject
+    protected IStorageService storageService;
 
     protected long getDebounceTime() {
         return 400L;
-    }
-
-    protected int getThrottleCount() {
-        return 3;
     }
 
     protected CompositeSubscription getSubsCollector() {
@@ -184,6 +189,26 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         builder.setPositiveButton(positiveText, onPositiveButtonClickListener);
         builder.setNegativeButton(negativeText, onNegativeButtonClickListener);
         mAlertDialog = builder.show();
+    }
+
+    protected void showSnackBar(View view, String message, String actionText) {
+        Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_SHORT);
+        snackbar.setAction(actionText, v -> snackbar.dismiss());
+        snackbar.show();
+    }
+
+    protected void showSnackBar(String message, String actionText) {
+        showSnackBar(getWindow().getDecorView().getRootView(), message, actionText);
+    }
+
+    protected Subscription checkNetworkStatus() {
+        return networkService.getNetworkStatus()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(networkStatus -> {
+                    if (networkStatus == INetworkService.NetworkStatus.OFFLINE ||
+                            networkStatus == INetworkService.NetworkStatus.UNKNOWN)
+                        showSnackBar(findViewById(android.R.id.content), "no network", "Close");
+                });
     }
 
 }

@@ -15,7 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jakewharton.rxbinding.view.RxView;
-import com.jakewharton.rxbinding.widget.RxTextView;
 import com.soulkey.calltalent.R;
 import com.soulkey.calltalent.di.component.ApplicationComponent;
 import com.soulkey.calltalent.ui.UIHelper;
@@ -23,15 +22,13 @@ import com.soulkey.calltalent.ui.user.CreateUserProfileActivity;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Observable;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
 
-public class RegisterActivity extends EmailAutoCompleteActivity {
+public final class RegisterActivity extends EmailAutoCompleteActivity {
 
     @BindView(R.id.registerBtn)
     Button registerBtn;
@@ -83,50 +80,13 @@ public class RegisterActivity extends EmailAutoCompleteActivity {
 
         getSubsCollector().add(dealWithEmailTextChanges(observable, usernameText, params));
 
-        getSubsCollector().add(observable
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(bindToLifecycle())
-                .subscribe(charSequence -> {
-                    validateRequiredField(usernameText, usernameWrapper);
-                    if (usernameText.length() > 0)
-                        validateEmail(usernameText, usernameWrapper);
-                }));
-
         getSubsCollector().add(dealWithRegister(params));
 
         getSubsCollector().add(dealWithSignin(params));
 
         getSubsCollector().add(switchPasswordVisibility(showHideSwitch, passwordText));
 
-        getSubsCollector().add(getPasswordTextChangeStream()
-                .subscribe(charSequence1 -> {
-                    validateRequiredField(passwordText, passwordWrapper);
-                    if(repeatPasswordText.getText().length()>0)
-                        validateIdenticalPasswords(
-                                passwordText, repeatPasswordText, repeatPasswordWrapper);
-                }));
-
-        getSubsCollector().add(getRepeatPasswordTextChangeStream()
-                .subscribe(charSequence1 -> {
-                    validateRequiredField(repeatPasswordText, repeatPasswordWrapper);
-                    if(passwordText.getText().length()>0)
-                        validateIdenticalPasswords(
-                                passwordText, repeatPasswordText, repeatPasswordWrapper);
-                }));
-    }
-
-    private Observable<CharSequence> getRepeatPasswordTextChangeStream() {
-        return RxTextView.textChanges(repeatPasswordText)
-                .debounce(getDebounceTime(), TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(bindToLifecycle());
-    }
-
-    private Observable<CharSequence> getPasswordTextChangeStream() {
-        return RxTextView.textChanges(passwordText)
-                .debounce(getDebounceTime(), TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(bindToLifecycle());
+        getSubsCollector().add(checkNetworkStatus());
     }
 
     @Override
