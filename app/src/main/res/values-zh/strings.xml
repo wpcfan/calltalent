@@ -33,4 +33,5 @@
     <string name="avatar_activity_edit_image_btn">编辑</string>
     <string name="progress_bar_title_saving">正在保存</string>
     <string name="validation_avatar_not_empty">还没有设置头像哦！</string>
+    <string name="main_activity_bottom_bar_my_btn">我的</string>
 </resources>

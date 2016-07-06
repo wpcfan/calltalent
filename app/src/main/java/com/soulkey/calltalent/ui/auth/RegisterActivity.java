@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import com.jakewharton.rxbinding.view.RxView;
 import com.soulkey.calltalent.R;
-import com.soulkey.calltalent.di.component.ApplicationComponent;
+import com.soulkey.calltalent.di.component.BaseActivityComponent;
 import com.soulkey.calltalent.ui.UIHelper;
 import com.soulkey.calltalent.ui.user.CreateUserProfileActivity;
 
@@ -90,7 +90,7 @@ public final class RegisterActivity extends EmailAutoCompleteActivity {
     }
 
     @Override
-    protected void injectComponent(ApplicationComponent component) {
+    protected void injectBaseActivityComponent(BaseActivityComponent component) {
         component.inject(this);
     }
 

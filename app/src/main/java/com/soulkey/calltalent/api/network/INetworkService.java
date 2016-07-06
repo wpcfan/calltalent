@@ -3,6 +3,7 @@ package com.soulkey.calltalent.api.network;
 import rx.Observable;
 
 /**
+ *
  * Created by peng on 2016/7/3.
  */
 public interface INetworkService {
@@ -23,5 +24,8 @@ public interface INetworkService {
         }
     }
 
+    Observable<NetworkStatus> observeNetworkChange();
     Observable<NetworkStatus> getNetworkStatus();
+
+    Observable<String> getSplashImageUrl(String url);
 }

@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.jakewharton.rxbinding.view.RxView;
 import com.soulkey.calltalent.R;
-import com.soulkey.calltalent.di.component.ApplicationComponent;
+import com.soulkey.calltalent.di.component.BaseActivityComponent;
 import com.soulkey.calltalent.ui.MainActivity;
 import com.soulkey.calltalent.ui.UIHelper;
 
@@ -68,6 +68,11 @@ public final class LoginActivity extends EmailAutoCompleteActivity {
     }
 
     @Override
+    protected void injectBaseActivityComponent(BaseActivityComponent component) {
+        component.inject(this);
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
         // in order to eliminate the flicker effect when activity transitions
@@ -104,12 +109,6 @@ public final class LoginActivity extends EmailAutoCompleteActivity {
                             shouldFinish = true;
                         }
                 );
-    }
-
-
-    @Override
-    protected void injectComponent(ApplicationComponent component) {
-        component.inject(this);
     }
 
     /**

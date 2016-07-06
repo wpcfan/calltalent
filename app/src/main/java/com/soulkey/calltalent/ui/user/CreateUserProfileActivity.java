@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import com.jakewharton.rxbinding.view.RxView;
 import com.soulkey.calltalent.R;
-import com.soulkey.calltalent.di.component.ApplicationComponent;
+import com.soulkey.calltalent.di.component.BaseActivityComponent;
 import com.soulkey.calltalent.domain.entity.UserProfile;
 import com.soulkey.calltalent.exception.RequireFieldNotSetException;
 import com.soulkey.calltalent.ui.BaseActivity;
@@ -118,6 +118,11 @@ public class CreateUserProfileActivity extends BaseActivity {
         getSubsCollector().add(dealWithAvatar(params));
     }
 
+    @Override
+    protected void injectBaseActivityComponent(BaseActivityComponent component) {
+        component.inject(this);
+    }
+
     private Observable<String> getParams() {
         return Observable.just(receiveParams(LoginParams.PARAM_KEY_AVATAR_URI.getValue()))
                 .filter(code -> code != null)
@@ -208,11 +213,6 @@ public class CreateUserProfileActivity extends BaseActivity {
                             ContextCompat.getColor(this, R.color.gender_male));
                     femaleChecked.setTextColor(ContextCompat.getColor(this, R.color.secondary_text));
                 });
-    }
-
-    @Override
-    protected void injectComponent(ApplicationComponent component) {
-        component.inject(this);
     }
 
     @Override

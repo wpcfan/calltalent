@@ -36,4 +36,5 @@
     <string name="avatar_activity_edit_image_btn">edit</string>
     <string name="progress_bar_title_saving">Saving</string>
     <string name="validation_avatar_not_empty">Avatar is not set yet</string>
+    <string name="main_activity_bottom_bar_my_btn">Me</string>
 </resources>

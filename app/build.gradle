@@ -78,7 +78,7 @@ dependencies {
 
     //uncomment the following line to enable the flexbox layout
     compile 'com.google.android:flexbox:latest.release'
-
+    compile "com.squareup.moshi:moshi:latest.release"
     compile 'com.jakewharton.rxbinding:rxbinding:latest.release'
     compile 'com.jakewharton.rxbinding:rxbinding-design:latest.release'
     compile 'com.jakewharton.rxbinding:rxbinding-appcompat-v7:latest.release'
@@ -116,7 +116,7 @@ dependencies {
     //    compile "com.squareup.retrofit2:retrofit:$retrofit_version"
     //    compile "com.github.pwittchen:reactivenetwork:$reactivenetwork_version"
     //    compile "io.reactivex:rxkotlin:$rxkotlin_version"
-    //    compile "com.squareup.moshi:moshi:$moshi_version"
+
     //    Google's Realtime data and Analytic platform
 //    PlayCompile "com.google.firebase:firebase-database:$firebase_version"
 //    PlayCompile "com.google.firebase:firebase-core:$firebase_version"

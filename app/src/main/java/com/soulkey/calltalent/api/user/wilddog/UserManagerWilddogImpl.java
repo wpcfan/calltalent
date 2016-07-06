@@ -58,6 +58,6 @@ public class UserManagerWilddogImpl implements IUserManager {
         return Observable.fromCallable(() -> {
             cloudinary.uploader().upload(imageData, ObjectUtils.emptyMap());
             return cloudinary.url().generate(uid);
-        }).subscribeOn(Schedulers.computation());
+        }).subscribeOn(Schedulers.io());
     }
 }

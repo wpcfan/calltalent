@@ -21,7 +21,7 @@ import com.ragnarok.rxcamera.RxCamera;
 import com.ragnarok.rxcamera.RxCameraData;
 import com.ragnarok.rxcamera.config.RxCameraConfig;
 import com.soulkey.calltalent.R;
-import com.soulkey.calltalent.di.component.ApplicationComponent;
+import com.soulkey.calltalent.di.component.BaseActivityComponent;
 import com.soulkey.calltalent.ui.BaseActivity;
 import com.soulkey.calltalent.ui.UIHelper;
 import com.soulkey.calltalent.ui.auth.LoginParams;
@@ -88,6 +88,11 @@ public class AvatarActivity extends BaseActivity {
         dealWithRecapture(observable);
         dealWithEdit();
         dealWithSave(dialog);
+    }
+
+    @Override
+    protected void injectBaseActivityComponent(BaseActivityComponent component) {
+        component.inject(this);
     }
 
     public Map<String, String> getParams() {
@@ -233,7 +238,7 @@ public class AvatarActivity extends BaseActivity {
                                 ImageUtil.getScreenDimens(this)[0],
                                 ImageUtil.getScreenDimens(this)[1],
                                 ImageFormat.JPEG,
-                                true).subscribeOn(Schedulers.computation()))
+                                true).subscribeOn(Schedulers.io()))
                 .compose(bindToLifecycle());
     }
 
@@ -252,11 +257,6 @@ public class AvatarActivity extends BaseActivity {
         return RxCamera.open(this, config)
                 .flatMap(rxCamera -> rxCamera.bindTexture(textureView))
                 .flatMap(RxCamera::startPreview);
-    }
-
-    @Override
-    protected void injectComponent(ApplicationComponent component) {
-        component.inject(this);
     }
 
     @Override

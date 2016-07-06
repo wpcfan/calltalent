@@ -6,7 +6,7 @@ import android.widget.Button;
 
 import com.jakewharton.rxbinding.view.RxView;
 import com.soulkey.calltalent.R;
-import com.soulkey.calltalent.di.component.ApplicationComponent;
+import com.soulkey.calltalent.di.component.BaseActivityComponent;
 import com.soulkey.calltalent.ui.auth.LoginActivity;
 
 import rx.Subscription;
@@ -22,6 +22,11 @@ public class MainActivity extends BaseActivity {
         getSubsCollector().add(signOut(signoutBtn));
     }
 
+    @Override
+    protected void injectBaseActivityComponent(BaseActivityComponent component) {
+        component.inject(this);
+    }
+
     private Subscription signOut(View signoutBtn) {
         return RxView.clicks(signoutBtn)
                 .flatMap(__ -> userModel.signOut())
@@ -31,12 +36,6 @@ public class MainActivity extends BaseActivity {
                     UIHelper.launchActivity(MainActivity.this, LoginActivity.class);
                     finish();
                 });
-    }
-
-
-    @Override
-    protected void injectComponent(ApplicationComponent component) {
-        component.inject(this);
     }
 
     @Override

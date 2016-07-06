@@ -13,7 +13,10 @@ import android.widget.Toast;
 import com.soulkey.calltalent.App;
 import com.soulkey.calltalent.api.network.INetworkService;
 import com.soulkey.calltalent.api.storage.IStorageService;
-import com.soulkey.calltalent.di.component.ApplicationComponent;
+import com.soulkey.calltalent.di.component.BaseActivityComponent;
+import com.soulkey.calltalent.di.component.DaggerBaseActivityComponent;
+import com.soulkey.calltalent.di.module.NetworkModule;
+import com.soulkey.calltalent.di.module.UserModule;
 import com.soulkey.calltalent.domain.entity.User;
 import com.soulkey.calltalent.domain.model.UserModel;
 import com.soulkey.calltalent.ui.auth.LoginActivity;
@@ -59,12 +62,19 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ApplicationComponent component = App.from(this).getAppComponent();
-        injectComponent(component);
+        BaseActivityComponent component = DaggerBaseActivityComponent
+                .builder()
+                .applicationComponent(App.from(this).getAppComponent())
+                .networkModule(new NetworkModule())
+                .userModule(new UserModule())
+                .build();
+        injectBaseActivityComponent(component);
         _subscription.add(accessDeniedFallback());
         AnimationUtil.setupWindowAnimations(getWindow());
         Icepick.restoreInstanceState(this, savedInstanceState);
     }
+
+    protected abstract void injectBaseActivityComponent(BaseActivityComponent component);
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -117,14 +127,6 @@ public abstract class BaseActivity extends RxAppCompatActivity {
                         }
                 );
     }
-
-    /**
-     * Abstract method to inject the dependency powered by Dagger2
-     * All children classes need to implement
-     *
-     * @param component the component to be injected
-     */
-    protected abstract void injectComponent(ApplicationComponent component);
 
     /**
      * Abstract method to determine if the current Activity requires users to be logged in to access
@@ -202,7 +204,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     }
 
     protected Subscription checkNetworkStatus() {
-        return networkService.getNetworkStatus()
+        return networkService.observeNetworkChange()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(networkStatus -> {
                     if (networkStatus == INetworkService.NetworkStatus.OFFLINE ||

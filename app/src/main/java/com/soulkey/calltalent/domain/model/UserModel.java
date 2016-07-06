@@ -1,10 +1,6 @@
 package com.soulkey.calltalent.domain.model;
 
-import android.net.Uri;
-import android.widget.ImageView;
-
 import com.soulkey.calltalent.api.auth.IAuthService;
-import com.soulkey.calltalent.api.image.ImageHandler;
 import com.soulkey.calltalent.api.storage.AvatarDiskCache;
 import com.soulkey.calltalent.api.storage.UserProfileDiskCache;
 import com.soulkey.calltalent.api.user.IUserManager;
@@ -34,7 +30,6 @@ public class UserModel {
     private UserProfile memoryCache;
     private ReplaySubject<UserProfile> userProfileReplaySubject;
     private Subscription userProfileSubscription;
-    private ImageHandler imageHandler;
 
     public UserModel(
             SchedulerProvider schedulerProvider,
@@ -42,23 +37,13 @@ public class UserModel {
             AvatarDiskCache avatarDiskCache,
             IAuthService service,
             IUserManager userManager,
-            ImageHandler imageHandler,
             Clock clock) {
         this.schedulerProvider = schedulerProvider;
         this.diskCache = diskCache;
         this.avatarDiskCache = avatarDiskCache;
         this.service = service;
         this.userManager = userManager;
-        this.imageHandler = imageHandler;
         this.clock = clock;
-    }
-
-    public Observable<Void> loadImage(Uri uri, ImageView imageView) {
-        return imageHandler.loadImage(uri, imageView);
-    }
-
-    public Observable<Void> loadImage(Uri uri, ImageView imageView, int targetWidthRes, int targetHeightRes) {
-        return imageHandler.loadImage(uri, imageView, targetWidthRes, targetHeightRes);
     }
 
     public Observable<Boolean> saveAvatarToDiskCache(String uid, String mediaUri) {

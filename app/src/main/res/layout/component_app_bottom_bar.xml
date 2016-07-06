@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:alpha="0.8"
             android:layout_weight="1"
-            android:text="test"
+            android:text="@string/main_activity_bottom_bar_my_btn"
             android:drawableTop="@drawable/ic_person"
             android:gravity="center" />
     </LinearLayout>
