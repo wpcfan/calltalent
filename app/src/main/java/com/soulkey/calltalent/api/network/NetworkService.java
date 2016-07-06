@@ -40,12 +40,10 @@ public class NetworkService implements INetworkService {
         return Observable.fromCallable(() -> mapNetworkStatus(rxNetwork.getConnectivityStatus(application)));
     }
 
-
     @Override
     public Observable<String> getSplashImageUrl(String url) {
         return getHttpResponse(url).map(BingImageProcessor::getImageUri);
     }
-
 
     private Observable<Response> getHttpResponse(String url) {
         return Observable.fromCallable(() -> client.newCall(new Request.Builder().url(url).build()).execute());
