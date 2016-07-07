@@ -90,6 +90,7 @@ public class RxWilddog {
             WeakReference<Subscriber> subscriberRef = new WeakReference<>(subscriber);
             final Wilddog.CompletionListener listener = (wilddogError, wilddog) -> {
                 if (wilddogError == null) {
+                    subscriberRef.get().onNext(null);
                     subscriberRef.get().onCompleted();
                 } else
                     subscriberRef.get().onError(wilddogError.toException());

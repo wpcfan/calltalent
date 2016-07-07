@@ -34,25 +34,14 @@
         android:text="@string/app_name" />
 
     <ImageView
-        android:id="@+id/tencent_market_logo"
+        android:id="@+id/market_qihu_logo"
         android:layout_below="@+id/text_app_name"
         android:layout_marginBottom="56dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_wechat"
+        android:src="@mipmap/market_qihu"
         android:layout_gravity="center"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true" />
 
-    <ImageView
-        android:layout_below="@+id/text_app_name"
-        android:layout_marginBottom="56dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_wechat"
-        android:layout_gravity="center"
-        android:layout_toEndOf="@+id/tencent_market_logo"
-        android:layout_toRightOf="@+id/tencent_market_logo"
-        android:layout_alignBottom="@+id/tencent_market_logo"
-        android:layout_alignParentBottom="true" />
 </android.support.percent.PercentRelativeLayout>

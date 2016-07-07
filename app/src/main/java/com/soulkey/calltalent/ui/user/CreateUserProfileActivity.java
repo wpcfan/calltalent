@@ -32,6 +32,8 @@ import butterknife.ButterKnife;
 import icepick.State;
 import rx.Observable;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * CreateUserProfileActivity is the UI for users to create his/her profile
@@ -76,27 +78,17 @@ public class CreateUserProfileActivity extends BaseActivity {
 
         uid = receiveParams(LoginParams.PARAM_KEY_UID.getValue());
         Subscription subReceiveParam = getParams()
-                .doOnNext(uri -> {
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(uri -> {
                     localUri = Uri.parse(uri);
                     RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(getResources(), uri.toString());
                     dr.setCornerRadius(5);
                     takePhotoBtn.setImageDrawable(dr);
-                })
-                .flatMap(__ -> storageService.readString(TEMP_PROFILE_NAME))
-                .doOnNext(name -> {
-                    nameInput.setText(name);
-                })
-                .flatMap(__ -> storageService.readString(TEMP_PROFILE_TITLE))
-                .doOnNext(title -> {
-                    titleInput.setText(title);
-                })
-                .flatMap(__ -> storageService.readString(TEMP_PROFILE_DESC))
-                .doOnNext(desc -> {
-                    descInput.setText(desc);
-                })
-                .flatMap(__ -> storageService.readBoolean(TEMP_PROFILE_GENDER))
-                .subscribe(gender -> {
-                    if (gender)
+                    nameInput.setText(storageService.readString(TEMP_PROFILE_NAME));
+                    titleInput.setText(storageService.readString(TEMP_PROFILE_TITLE));
+                    descInput.setText(storageService.readString(TEMP_PROFILE_DESC));
+                    if (storageService.readBoolean(TEMP_PROFILE_GENDER))
                         maleChecked.setChecked(true);
                     else
                         femaleChecked.setChecked(true);
@@ -131,12 +123,12 @@ public class CreateUserProfileActivity extends BaseActivity {
 
     private Subscription dealWithAvatar(Map<String, String> params) {
         return RxView.clicks(takePhotoBtn)
-                .flatMap(__ -> storageService.writeString(TEMP_PROFILE_NAME, nameInput.getText().toString()))
-                .flatMap(__ -> storageService.writeString(TEMP_PROFILE_TITLE, titleInput.getText().toString()))
-                .flatMap(__ -> storageService.writeString(TEMP_PROFILE_DESC, descInput.getText().toString()))
-                .flatMap(__ -> storageService.writeBoolean(TEMP_PROFILE_GENDER, genderRadioGroup.getCheckedRadioButtonId() == R.id.gender_male_selected))
                 .compose(bindToLifecycle())
                 .subscribe(aVoid -> {
+                    storageService.writeString(TEMP_PROFILE_NAME, nameInput.getText().toString());
+                    storageService.writeString(TEMP_PROFILE_TITLE, titleInput.getText().toString());
+                    storageService.writeString(TEMP_PROFILE_DESC, descInput.getText().toString());
+                    storageService.writeBoolean(TEMP_PROFILE_GENDER, genderRadioGroup.getCheckedRadioButtonId() == R.id.gender_male_selected);
                     UIHelper.launchActivity(this, AvatarActivity.class, params);
                     finish();
                 });

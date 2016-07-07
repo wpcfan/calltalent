@@ -16,6 +16,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import icepick.State;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -35,6 +36,9 @@ public class SplashActivity extends BaseActivity {
     @BindView(R.id.count_down)
     TextView countDown;
 
+    @State
+    String splash_image_uri;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,12 +57,20 @@ public class SplashActivity extends BaseActivity {
         return observableCountDown
                 .map(Object::toString)
                 .switchMap(s -> splashModel.getSplashImage(URL).subscribeOn(Schedulers.io()))
-                .timeout(5L, TimeUnit.SECONDS)
+                .doOnNext(url -> {
+                    if (url != null && url.length() > 1) {
+                        Picasso.with(this).load(url).fit().noFade().into(splashImage);
+                        splash_image_uri = url;
+                    }
+                })
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(bindToLifecycle())
-                .subscribe(url -> {
-                            if (url != null)
+                .subscribe(
+                        url -> {
+                            if (url != null && url.length() > 1) {
                                 Picasso.with(this).load(url).fit().noFade().into(splashImage);
+                                splash_image_uri = url;
+                            }
                         },
                         err -> Toast.makeText(SplashActivity.this, err.getMessage(), Toast.LENGTH_SHORT).show());
     }
