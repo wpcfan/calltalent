@@ -16,7 +16,7 @@ import java.util.Map;
  *
  * Created by peng on 2016/6/7.
  */
-public class UIHelper {
+public final class UIHelper {
 
     // region Utility Methods
     public static void hideKeyboard(Context context, View view) {

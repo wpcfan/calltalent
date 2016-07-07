@@ -1,6 +1,6 @@
 package com.soulkey.calltalent.domain.model;
 
-import com.soulkey.calltalent.api.auth.IAuthService;
+import com.soulkey.calltalent.api.auth.IAuthManager;
 import com.soulkey.calltalent.api.storage.AvatarDiskCache;
 import com.soulkey.calltalent.api.storage.UserProfileDiskCache;
 import com.soulkey.calltalent.api.user.IUserManager;
@@ -24,7 +24,7 @@ public class UserModel {
     private final SchedulerProvider schedulerProvider;
     private final UserProfileDiskCache diskCache;
     private final AvatarDiskCache avatarDiskCache;
-    private final IAuthService service;
+    private final IAuthManager service;
     private final IUserManager userManager;
     private final Clock clock;
     private UserProfile memoryCache;
@@ -35,7 +35,7 @@ public class UserModel {
             SchedulerProvider schedulerProvider,
             UserProfileDiskCache diskCache,
             AvatarDiskCache avatarDiskCache,
-            IAuthService service,
+            IAuthManager service,
             IUserManager userManager,
             Clock clock) {
         this.schedulerProvider = schedulerProvider;

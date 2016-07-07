@@ -2,8 +2,8 @@ package com.soulkey.calltalent.di.module;
 
 import android.content.SharedPreferences;
 
-import com.soulkey.calltalent.api.storage.IStorageService;
-import com.soulkey.calltalent.api.storage.StorageService;
+import com.soulkey.calltalent.api.storage.IStorageManager;
+import com.soulkey.calltalent.api.storage.StorageManager;
 
 import javax.inject.Singleton;
 
@@ -18,7 +18,7 @@ import dagger.Provides;
 public class StorageModule {
     @Provides
     @Singleton
-    IStorageService providesStorageService(SharedPreferences prefs) {
-        return new StorageService(prefs);
+    IStorageManager providesStorageManager(SharedPreferences prefs) {
+        return new StorageManager(prefs);
     }
 }

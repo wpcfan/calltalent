@@ -2,12 +2,13 @@ package com.soulkey.calltalent;
 
 import android.app.Application;
 import android.content.Context;
-import android.os.StrictMode;
 import android.support.annotation.NonNull;
 
 import com.soulkey.calltalent.di.component.ApplicationComponent;
 import com.soulkey.calltalent.di.component.DaggerApplicationComponent;
 import com.soulkey.calltalent.di.module.AppModule;
+import com.soulkey.calltalent.di.module.NetworkModule;
+import com.soulkey.calltalent.di.module.StorageModule;
 import com.soulkey.calltalent.di.module.SupportModule;
 
 /**
@@ -35,21 +36,23 @@ public class App extends Application {
         appComponent = DaggerApplicationComponent.builder()
                 .appModule(new AppModule(this))
                 .supportModule(new SupportModule())
+                .storageModule(new StorageModule())
+                .networkModule(new NetworkModule())
                 .build();
         appComponent.inject(this);
 
-        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-                .detectDiskReads()
-                .detectDiskWrites()
-                .detectNetwork()   // or .detectAll() for all detectable problems
-                .penaltyLog()
-                .build());
-        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
-                .detectLeakedSqlLiteObjects()
-                .detectLeakedClosableObjects()
-                .penaltyLog()
-                .penaltyDeath()
-                .build());
+//        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+//                .detectDiskReads()
+//                .detectDiskWrites()
+//                .detectNetwork()   // or .detectAll() for all detectable problems
+//                .penaltyLog()
+//                .build());
+//        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+//                .detectLeakedSqlLiteObjects()
+//                .detectLeakedClosableObjects()
+//                .penaltyLog()
+//                .penaltyDeath()
+//                .build());
     }
 
     public ApplicationComponent getAppComponent() {

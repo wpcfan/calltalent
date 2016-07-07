@@ -8,7 +8,7 @@ import rx.Observable;
  * The authentication interface
  * Created by peng on 2016/5/27.
  */
-public interface IAuthService {
+public interface IAuthManager {
     Observable<Boolean> registerWithUsernameAndPassword(String username, String password);
 
     Observable<User> loginWithUsernameAndPassword(String username, String password);

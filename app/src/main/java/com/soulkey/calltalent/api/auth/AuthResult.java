@@ -8,9 +8,12 @@ import android.support.annotation.Nullable;
  */
 public class AuthResult<T> implements IAuthResult<T> {
 
-    private final boolean success;
+    private boolean success;
     private String reason;
     private T data;
+
+    public AuthResult() {
+    }
 
     private AuthResult(boolean success, @Nullable String reason, @Nullable T data) {
         this.success = success;
@@ -41,5 +44,20 @@ public class AuthResult<T> implements IAuthResult<T> {
     @Override
     public boolean isSuccessful() {
         return this.success;
+    }
+
+    @Override
+    public void setData(T t) {
+        data = t;
+    }
+
+    @Override
+    public void setSuccessful(boolean isSuccess) {
+        success = isSuccess;
+    }
+
+    @Override
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 }

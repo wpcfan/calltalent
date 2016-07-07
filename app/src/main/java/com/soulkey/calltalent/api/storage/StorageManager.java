@@ -7,10 +7,10 @@ import android.support.annotation.NonNull;
  *
  * Created by peng on 2016/7/3.
  */
-public class StorageService implements IStorageService {
+public class StorageManager implements IStorageManager {
     private final SharedPreferences prefs;
 
-    public StorageService(SharedPreferences prefs) {
+    public StorageManager(SharedPreferences prefs) {
         this.prefs = prefs;
     }
 

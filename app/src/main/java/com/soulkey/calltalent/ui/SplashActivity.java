@@ -8,7 +8,7 @@ import android.widget.Toast;
 import com.soulkey.calltalent.R;
 import com.soulkey.calltalent.di.component.BaseActivityComponent;
 import com.soulkey.calltalent.domain.model.SplashModel;
-import com.squareup.picasso.Picasso;
+import com.soulkey.calltalent.service.SplashService;
 
 import java.util.concurrent.TimeUnit;
 
@@ -49,6 +49,7 @@ public class SplashActivity extends BaseActivity {
         getSubsCollector().add(subscriptionCountDown);
 
         final String URL = "http://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=en-US";
+
         Subscription subSplashImage = dealWithSplashImage(observableCountDown, URL);
         getSubsCollector().add(subSplashImage);
     }
@@ -57,18 +58,24 @@ public class SplashActivity extends BaseActivity {
         return observableCountDown
                 .map(Object::toString)
                 .switchMap(s -> splashModel.getSplashImage(URL).subscribeOn(Schedulers.io()))
-                .doOnNext(url -> {
-                    if (url != null && url.length() > 1) {
-                        Picasso.with(this).load(url).fit().noFade().into(splashImage);
-                        splash_image_uri = url;
-                    }
-                })
+//                .doOnNext(url -> {
+//                    if (url != null && url.length() > 1) {
+//                        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+//                        request.setDestinationUri(Uri.fromFile(new File(getCacheDir().getAbsolutePath(), "downloaded_splash.jpg")));
+//                        DownloadManager downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+//                        downloadManager.enqueue(request);
+//                        Picasso.with(this).load(url).fit().noFade().into(splashImage);
+//                        splash_image_uri = url;
+//                    }
+//                })
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(bindToLifecycle())
                 .subscribe(
                         url -> {
                             if (url != null && url.length() > 1) {
-                                Picasso.with(this).load(url).fit().noFade().into(splashImage);
+                                SplashService.startActionDownloadImage(SplashActivity.this, "splash.jpg", url);
+
+//                                Picasso.with(this).load(url).fit().noFade().into(splashImage);
                                 splash_image_uri = url;
                             }
                         },

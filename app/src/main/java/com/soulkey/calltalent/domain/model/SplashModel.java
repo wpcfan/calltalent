@@ -1,6 +1,6 @@
 package com.soulkey.calltalent.domain.model;
 
-import com.soulkey.calltalent.api.network.INetworkService;
+import com.soulkey.calltalent.api.network.IHttpManager;
 import com.soulkey.calltalent.utils.rx.SchedulerProvider;
 
 import rx.Observable;
@@ -10,14 +10,14 @@ import rx.Observable;
  */
 public class SplashModel {
     private final SchedulerProvider schedulerProvider;
-    private final INetworkService networkService;
+    private final IHttpManager httpManager;
 
-    public SplashModel(SchedulerProvider schedulerProvider, INetworkService networkService) {
+    public SplashModel(SchedulerProvider schedulerProvider, IHttpManager httpManager) {
         this.schedulerProvider = schedulerProvider;
-        this.networkService = networkService;
+        this.httpManager = httpManager;
     }
 
     public Observable<String> getSplashImage(String url) {
-        return networkService.getSplashImageUrl(url).compose(schedulerProvider.applySchedulers());
+        return httpManager.getSplashImageUrl(url).compose(schedulerProvider.applySchedulers());
     }
 }

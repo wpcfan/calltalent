@@ -6,7 +6,7 @@ import rx.Observable;
  *
  * Created by peng on 2016/7/3.
  */
-public interface INetworkService {
+public interface INetworkManager {
     enum NetworkStatus {
         UNKNOWN("unknown"),
         WIFI_CONNECTED("connected to WiFi"),
@@ -14,11 +14,9 @@ public interface INetworkService {
         OFFLINE("offline");
 
         private final String value;
-
         NetworkStatus(String value) {
             this.value = value;
         }
-
         public String getValue() {
             return this.value;
         }
@@ -26,6 +24,4 @@ public interface INetworkService {
 
     Observable<NetworkStatus> observeNetworkChange();
     Observable<NetworkStatus> getNetworkStatus();
-
-    Observable<String> getSplashImageUrl(String url);
 }

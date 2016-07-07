@@ -2,8 +2,8 @@ package com.soulkey.calltalent.di.module;
 
 import android.app.Application;
 
-import com.soulkey.calltalent.api.network.INetworkService;
-import com.soulkey.calltalent.api.network.NetworkService;
+import com.soulkey.calltalent.api.network.INetworkManager;
+import com.soulkey.calltalent.api.network.NetworkManager;
 
 import dagger.Module;
 import dagger.Provides;
@@ -15,7 +15,7 @@ import dagger.Provides;
 @Module
 public class NetworkModule {
     @Provides
-    INetworkService providesNetworkService(Application application) {
-        return new NetworkService(application);
+    INetworkManager providesNetworkManager(Application application) {
+        return new NetworkManager(application);
     }
 }

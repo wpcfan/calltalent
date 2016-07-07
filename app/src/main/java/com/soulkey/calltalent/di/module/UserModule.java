@@ -3,8 +3,8 @@ package com.soulkey.calltalent.di.module;
 import android.app.Application;
 import android.content.SharedPreferences;
 
-import com.soulkey.calltalent.api.auth.IAuthService;
-import com.soulkey.calltalent.api.auth.wilddog.AuthServiceWilddogImpl;
+import com.soulkey.calltalent.api.auth.IAuthManager;
+import com.soulkey.calltalent.api.auth.wilddog.AuthManagerWilddogImpl;
 import com.soulkey.calltalent.api.storage.AvatarDiskCache;
 import com.soulkey.calltalent.api.storage.UserProfileDiskCache;
 import com.soulkey.calltalent.api.user.IUserManager;
@@ -25,8 +25,8 @@ import dagger.Provides;
 public class UserModule {
 
     @Provides
-    IAuthService providesAuthService(Application application) {
-        return new AuthServiceWilddogImpl(application);
+    IAuthManager providesAuthManager(Application application) {
+        return new AuthManagerWilddogImpl(application);
     }
 
     @Provides
@@ -49,7 +49,7 @@ public class UserModule {
             SchedulerProvider provider,
             UserProfileDiskCache userDiskCache,
             AvatarDiskCache avatarDiskCache,
-            IAuthService service,
+            IAuthManager service,
             IUserManager userManager,
             Clock clock) {
         return new UserModel(provider, userDiskCache, avatarDiskCache, service, userManager, clock);

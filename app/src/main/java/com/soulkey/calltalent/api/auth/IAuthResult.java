@@ -6,8 +6,12 @@ package com.soulkey.calltalent.api.auth;
  */
 public interface IAuthResult<T> {
     String getReason();
-
     T getData();
-
     boolean isSuccessful();
+
+    void setData(T t);
+
+    void setSuccessful(boolean isSuccess);
+
+    void setReason(String reason);
 }

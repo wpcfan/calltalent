@@ -3,8 +3,8 @@ package com.soulkey.calltalent.api.auth.wilddog;
 import android.app.Application;
 import android.support.annotation.NonNull;
 
+import com.soulkey.calltalent.api.auth.IAuthManager;
 import com.soulkey.calltalent.api.auth.IAuthResult;
-import com.soulkey.calltalent.api.auth.IAuthService;
 import com.soulkey.calltalent.api.wrapper.RxWilddog;
 import com.soulkey.calltalent.domain.entity.User;
 import com.wilddog.client.Wilddog;
@@ -12,14 +12,14 @@ import com.wilddog.client.Wilddog;
 import rx.Observable;
 
 /**
- * Wilddog version of the implementation of IAuthService
+ * Wilddog version of the implementation of IAuthManager
  * Created by peng on 2016/5/27.
  */
-public class AuthServiceWilddogImpl implements IAuthService {
+public class AuthManagerWilddogImpl implements IAuthManager {
 
     private Wilddog wilddog;
 
-    public AuthServiceWilddogImpl(Application application) {
+    public AuthManagerWilddogImpl(Application application) {
         Wilddog.setAndroidContext(application);
         String AUTH_URL = "https://calltalent.wilddogio.com/";
         this.wilddog = new Wilddog(AUTH_URL);

@@ -1,7 +1,9 @@
 package com.soulkey.calltalent.ui;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -11,16 +13,17 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.soulkey.calltalent.App;
-import com.soulkey.calltalent.api.network.INetworkService;
-import com.soulkey.calltalent.api.storage.IStorageService;
+import com.soulkey.calltalent.api.network.INetworkManager;
+import com.soulkey.calltalent.api.storage.IStorageManager;
 import com.soulkey.calltalent.di.component.BaseActivityComponent;
 import com.soulkey.calltalent.di.component.DaggerBaseActivityComponent;
-import com.soulkey.calltalent.di.module.NetworkModule;
+import com.soulkey.calltalent.di.module.HttpModule;
 import com.soulkey.calltalent.di.module.UserModule;
 import com.soulkey.calltalent.domain.entity.User;
 import com.soulkey.calltalent.domain.model.UserModel;
 import com.soulkey.calltalent.ui.auth.LoginActivity;
 import com.soulkey.calltalent.utils.animation.AnimationUtil;
+import com.soulkey.calltalent.utils.memory.Reflector;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
 import javax.inject.Inject;
@@ -47,9 +50,10 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     @Inject
     protected UserModel userModel;
     @Inject
-    protected INetworkService networkService;
+    protected INetworkManager networkService;
     @Inject
-    protected IStorageService storageService;
+    protected IStorageManager storageService;
+
 
     protected long getDebounceTime() {
         return 400L;
@@ -65,9 +69,10 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         BaseActivityComponent component = DaggerBaseActivityComponent
                 .builder()
                 .applicationComponent(App.from(this).getAppComponent())
-                .networkModule(new NetworkModule())
                 .userModule(new UserModule())
+                .httpModule(new HttpModule())
                 .build();
+
         injectBaseActivityComponent(component);
         _subscription.add(accessDeniedFallback());
         AnimationUtil.setupWindowAnimations(getWindow());
@@ -91,6 +96,8 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         if (mAlertDialog != null && mAlertDialog.isShowing()) {
             mAlertDialog.dismiss();
         }
+        //fix for memory leak: http://code.google.com/p/android/issues/detail?id=34731
+        fixInputMethodManager();
     }
 
     /**
@@ -152,8 +159,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
                                 throwable.getMessage(),
                                 Toast.LENGTH_SHORT)
                                 .show())
-                .onErrorResumeNext(throwable -> Observable.just(null))
-                .compose(bindToLifecycle());
+                .onErrorResumeNext(throwable -> Observable.just(null));
     }
 
     /**
@@ -207,10 +213,19 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         return networkService.observeNetworkChange()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(networkStatus -> {
-                    if (networkStatus == INetworkService.NetworkStatus.OFFLINE ||
-                            networkStatus == INetworkService.NetworkStatus.UNKNOWN)
+                    if (networkStatus == INetworkManager.NetworkStatus.OFFLINE ||
+                            networkStatus == INetworkManager.NetworkStatus.UNKNOWN)
                         showSnackBar(findViewById(android.R.id.content), "no network", "Close");
                 });
     }
 
+    private void fixInputMethodManager() {
+        final Object imm = getSystemService(Context.INPUT_METHOD_SERVICE);
+        final Reflector.TypedObject windowToken
+                = new Reflector.TypedObject(getWindow().getDecorView().getWindowToken(), IBinder.class);
+        Reflector.invokeMethodExceptionSafe(imm, "windowDismissed", windowToken);
+        final Reflector.TypedObject view
+                = new Reflector.TypedObject(null, View.class);
+        Reflector.invokeMethodExceptionSafe(imm, "startGettingWindowFocus", view);
+    }
 }

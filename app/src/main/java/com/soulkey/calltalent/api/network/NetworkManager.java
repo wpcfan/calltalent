@@ -1,31 +1,29 @@
 package com.soulkey.calltalent.api.network;
 
 import android.app.Application;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import com.github.pwittchen.reactivenetwork.library.ConnectivityStatus;
 import com.github.pwittchen.reactivenetwork.library.ReactiveNetwork;
-import com.soulkey.calltalent.api.network.processor.BingImageProcessor;
 
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import rx.Observable;
 
 /**
  * Network API that encapsulates the network status and http client
  * Created by peng on 2016/7/3.
  */
-public class NetworkService implements INetworkService {
+public class NetworkManager implements INetworkManager {
 
-    private final OkHttpClient client;
     private final ReactiveNetwork rxNetwork;
     private final Application application;
+    private final Uri cacheDirUri;
 
-    public NetworkService(Application application) {
+    public NetworkManager(Application application) {
         rxNetwork = new ReactiveNetwork();
         this.application = application;
-        this.client = new OkHttpClient.Builder().build();
+
+        cacheDirUri = Uri.fromFile(application.getCacheDir());
     }
 
     @Override
@@ -38,15 +36,6 @@ public class NetworkService implements INetworkService {
     @Override
     public Observable<NetworkStatus> getNetworkStatus() {
         return Observable.fromCallable(() -> mapNetworkStatus(rxNetwork.getConnectivityStatus(application)));
-    }
-
-    @Override
-    public Observable<String> getSplashImageUrl(String url) {
-        return getHttpResponse(url).map(BingImageProcessor::getImageUri);
-    }
-
-    private Observable<Response> getHttpResponse(String url) {
-        return Observable.fromCallable(() -> client.newCall(new Request.Builder().url(url).build()).execute());
     }
 
     @NonNull
