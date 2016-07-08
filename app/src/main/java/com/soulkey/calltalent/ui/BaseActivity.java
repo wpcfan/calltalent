@@ -15,10 +15,10 @@ import android.widget.Toast;
 import com.soulkey.calltalent.App;
 import com.soulkey.calltalent.api.network.INetworkManager;
 import com.soulkey.calltalent.api.storage.IStorageManager;
+import com.soulkey.calltalent.di.component.ApplicationComponent;
 import com.soulkey.calltalent.di.component.BaseActivityComponent;
 import com.soulkey.calltalent.di.component.DaggerBaseActivityComponent;
-import com.soulkey.calltalent.di.module.HttpModule;
-import com.soulkey.calltalent.di.module.UserModule;
+import com.soulkey.calltalent.di.module.DomainModule;
 import com.soulkey.calltalent.domain.entity.User;
 import com.soulkey.calltalent.domain.model.UserModel;
 import com.soulkey.calltalent.ui.auth.LoginActivity;
@@ -66,14 +66,12 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        BaseActivityComponent component = DaggerBaseActivityComponent
-                .builder()
-                .applicationComponent(App.from(this).getAppComponent())
-                .userModule(new UserModule())
-                .httpModule(new HttpModule())
+        ApplicationComponent component = App.from(this).getAppComponent();
+        BaseActivityComponent activityComponent = DaggerBaseActivityComponent.builder()
+                .applicationComponent(component)
+                .domainModule(new DomainModule())
                 .build();
-
-        injectBaseActivityComponent(component);
+        injectBaseActivityComponent(activityComponent);
         _subscription.add(accessDeniedFallback());
         AnimationUtil.setupWindowAnimations(getWindow());
         Icepick.restoreInstanceState(this, savedInstanceState);

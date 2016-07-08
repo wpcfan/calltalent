@@ -10,7 +10,7 @@ import dagger.Provides;
 @Module
 public class SplashModule {
     @Provides
-    public SplashModel providesSplashModule(SchedulerProvider schedulerProvider, IHttpManager networkService) {
-        return new SplashModel(schedulerProvider, networkService);
+    public SplashModel providesSplashModel(SchedulerProvider schedulerProvider, IHttpManager httpManager) {
+        return new SplashModel(schedulerProvider, httpManager);
     }
 }

@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.soulkey.calltalent.R;
 import com.soulkey.calltalent.di.component.BaseActivityComponent;
+import com.soulkey.calltalent.di.module.SplashModule;
 import com.soulkey.calltalent.domain.model.SplashModel;
 import com.soulkey.calltalent.service.SplashService;
 
@@ -30,6 +31,7 @@ public class SplashActivity extends BaseActivity {
 
     @Inject
     SplashModel splashModel;
+
     @BindView(R.id.splash_image)
     ImageView splashImage;
 
@@ -48,38 +50,7 @@ public class SplashActivity extends BaseActivity {
         Subscription subscriptionCountDown = dealWithCountDown(observableCountDown);
         getSubsCollector().add(subscriptionCountDown);
 
-        final String URL = "http://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=en-US";
-
-        Subscription subSplashImage = dealWithSplashImage(observableCountDown, URL);
-        getSubsCollector().add(subSplashImage);
-    }
-
-    private Subscription dealWithSplashImage(Observable<Long> observableCountDown, String URL) {
-        return observableCountDown
-                .map(Object::toString)
-                .switchMap(s -> splashModel.getSplashImage(URL).subscribeOn(Schedulers.io()))
-//                .doOnNext(url -> {
-//                    if (url != null && url.length() > 1) {
-//                        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-//                        request.setDestinationUri(Uri.fromFile(new File(getCacheDir().getAbsolutePath(), "downloaded_splash.jpg")));
-//                        DownloadManager downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
-//                        downloadManager.enqueue(request);
-//                        Picasso.with(this).load(url).fit().noFade().into(splashImage);
-//                        splash_image_uri = url;
-//                    }
-//                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(bindToLifecycle())
-                .subscribe(
-                        url -> {
-                            if (url != null && url.length() > 1) {
-                                SplashService.startActionDownloadImage(SplashActivity.this, "splash.jpg", url);
-
-//                                Picasso.with(this).load(url).fit().noFade().into(splashImage);
-                                splash_image_uri = url;
-                            }
-                        },
-                        err -> Toast.makeText(SplashActivity.this, err.getMessage(), Toast.LENGTH_SHORT).show());
+        SplashService.startActionDownloadImage(SplashActivity.this, "splash.jpg");
     }
 
     private Subscription dealWithCountDown(Observable<Long> observableCountDown) {
@@ -106,6 +77,7 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void injectBaseActivityComponent(BaseActivityComponent component) {
         component.inject(this);
+        component.plus(new SplashModule()).inject(this);
     }
 
     @Override

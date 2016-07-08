@@ -7,9 +7,11 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class HttpModule {
+public class ServiceModule {
+
     @Provides
     IHttpManager providesHttpManager() {
         return new HttpManager();
     }
+
 }

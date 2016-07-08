@@ -29,13 +29,14 @@ import dagger.Component;
         NetworkModule.class
 })
 public interface ApplicationComponent {
-    void inject(App app);
     Application getApplication();
+
+    SchedulerProvider getSchedulerProvider();
     Clock getClock();
-    SchedulerProvider getProvider();
+    SharedPreferences getSharedPreferences();
+    INetworkManager getNetworkManager();
 
     IStorageManager getStorageManager();
-    SharedPreferences getSharedPreferences();
 
-    INetworkManager getNetworkManager();
+    void inject(App app);
 }

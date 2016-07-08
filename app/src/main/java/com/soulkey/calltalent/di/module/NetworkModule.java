@@ -5,6 +5,8 @@ import android.app.Application;
 import com.soulkey.calltalent.api.network.INetworkManager;
 import com.soulkey.calltalent.api.network.NetworkManager;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -14,6 +16,7 @@ import dagger.Provides;
  */
 @Module
 public class NetworkModule {
+    @Singleton
     @Provides
     INetworkManager providesNetworkManager(Application application) {
         return new NetworkManager(application);
