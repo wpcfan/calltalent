@@ -1,0 +1,13 @@
+CREATE TABLE setting (
+  setting_name TEXT NOT NULL PRIMARY KEY,
+  setting_value TEXT
+);
+
+select_all:
+select *
+from setting;
+
+select_by_setting_name:
+select *
+from setting
+where setting.setting_name = ?;

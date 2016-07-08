@@ -12,7 +12,6 @@ import com.soulkey.calltalent.di.component.ServiceComponent;
 import com.soulkey.calltalent.di.module.ServiceModule;
 import com.soulkey.calltalent.ui.BaseActivity;
 import com.soulkey.calltalent.utils.image.ImageUtil;
-import com.squareup.sqlbrite.SqlBrite;
 
 import java.io.File;
 
@@ -22,17 +21,15 @@ import javax.inject.Inject;
  * An {@link IntentService} subclass for handling asynchronous task requests in
  * a service on a separate handler thread.
  */
-@SuppressWarnings("ALL")
 public final class SplashService extends IntentService {
     // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
     private static final String ACTION_DOWNLOAD = "com.soulkey.calltalent.service.action.DOWNLOAD";
-
     private static final String PARAM_FILE_NAME = "com.soulkey.calltalent.service.extra.PARAM_FILE_NAME";
+
     public static final String PARAM_STORED_IMAGE_URI = "com.soulkey.calltalent.service.extra.PARAM_STORED_IMAGE_URI";
 
     @Inject
     IHttpManager httpManager;
-    SqlBrite sqlBrite = SqlBrite.create();
 
     public SplashService() {
         super("SplashService");
@@ -43,12 +40,6 @@ public final class SplashService extends IntentService {
         component.inject(this);
     }
 
-    /**
-     * Starts this service to perform action Foo with the given parameters. If
-     * the service is already performing a task this action will be queued.
-     *
-     * @see IntentService
-     */
     public static void startActionDownloadImage(Context context, String filename) {
         Intent intent = new Intent(context, SplashService.class);
         intent.setAction(ACTION_DOWNLOAD);

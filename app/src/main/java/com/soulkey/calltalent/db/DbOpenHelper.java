@@ -4,30 +4,38 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-@SuppressWarnings("ALL")
+import com.soulkey.calltalent.db.model.SettingModel;
+import com.soulkey.calltalent.db.populator.SettingPopulator;
+
 public final class DbOpenHelper extends SQLiteOpenHelper {
-    private static final int VERSION = 1;
-    private static final String TABLE_SETTING_TABLE_NAME = "setting";
-    private static final String TABLE_SETTING_COLUMN_ID = "name";
-    private static final String TABLE_SETTING_COLUMN_VALUE = "value";
 
-    private static final String CREATE_SETTING = ""
-            + "CREATE TABLE " + TABLE_SETTING_TABLE_NAME + "("
-            + TABLE_SETTING_COLUMN_ID + " TEXT NOT NULL PRIMARY KEY,"
-            + TABLE_SETTING_COLUMN_VALUE + " TEXT NOT NULL"
-            + ")";
+    public static final String DB_NAME = "calltalent.db";
+    private static final int DB_VERSION = 1;
+    private static DbOpenHelper instance;
 
-    public DbOpenHelper(Context context) {
-        super(context, "calltalent.db", null, VERSION);
+    public static DbOpenHelper getInstance(Context context) {
+        if (null == instance) {
+            instance = new DbOpenHelper(context);
+        }
+        return instance;
+    }
+
+    private DbOpenHelper(Context context) {
+        super(context, DB_NAME, null, DB_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(CREATE_SETTING);
+        db.execSQL(SettingModel.CREATE_TABLE);
+        populateDb(db);
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int i, int i1) {
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+    }
+
+    private void populateDb(SQLiteDatabase db) {
+        SettingPopulator.populate(db);
     }
 }

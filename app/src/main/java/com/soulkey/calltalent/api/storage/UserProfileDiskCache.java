@@ -12,7 +12,6 @@ import rx.Observable;
  * Disk Cache for UserProfile
  * Created by peng on 2016/6/4.
  */
-@SuppressWarnings("ALL")
 public final class UserProfileDiskCache implements IDiskCache<UserProfile> {
 
     private final String KEY_UID = "userprofile-key-uid";

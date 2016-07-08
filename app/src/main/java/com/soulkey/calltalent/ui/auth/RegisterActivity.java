@@ -28,7 +28,6 @@ import butterknife.ButterKnife;
 import rx.Observable;
 import rx.Subscription;
 
-@SuppressWarnings("ALL")
 public final class RegisterActivity extends EmailAutoCompleteActivity {
 
     @BindView(R.id.registerBtn)

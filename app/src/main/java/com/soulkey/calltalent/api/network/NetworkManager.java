@@ -12,7 +12,6 @@ import rx.Observable;
  * Network API that encapsulates the network status and http client
  * Created by peng on 2016/7/3.
  */
-@SuppressWarnings("ALL")
 public final class NetworkManager implements INetworkManager {
 
     private final ReactiveNetwork rxNetwork;

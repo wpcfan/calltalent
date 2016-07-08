@@ -12,7 +12,6 @@ import dagger.Provides;
  * Common Support Libraries
  * Created by wangpeng on 16/7/6.
  */
-@SuppressWarnings("ALL")
 @Module
 public final class SupportModule {
     @Provides

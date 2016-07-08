@@ -14,7 +14,6 @@ import dagger.Provides;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
-@SuppressWarnings("ALL")
 @Module
 public final class DbModule {
     @Provides

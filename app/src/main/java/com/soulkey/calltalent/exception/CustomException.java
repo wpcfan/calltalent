@@ -4,7 +4,6 @@ package com.soulkey.calltalent.exception;
  * Custom Exception for Authentication
  * Created by peng on 2016/5/28.
  */
-@SuppressWarnings("ALL")
 public class CustomException extends Exception {
 
     public enum ErrorCode {

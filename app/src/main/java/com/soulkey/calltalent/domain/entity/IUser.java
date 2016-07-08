@@ -6,6 +6,5 @@ package com.soulkey.calltalent.domain.entity;
  */
 interface IUser {
     String uid();
-
     boolean isAnonymous();
 }

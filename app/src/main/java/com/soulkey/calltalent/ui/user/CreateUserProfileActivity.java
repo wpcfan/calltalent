@@ -38,7 +38,6 @@ import rx.schedulers.Schedulers;
 /**
  * CreateUserProfileActivity is the UI for users to create his/her profile
  */
-@SuppressWarnings("ALL")
 public final class CreateUserProfileActivity extends BaseActivity {
 
     private final String TEMP_PROFILE_NAME = "temp_profile_name";

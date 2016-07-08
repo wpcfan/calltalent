@@ -19,7 +19,6 @@ import dagger.Component;
  * The bridge between the Modules and Inject targets
  * Created by peng on 2016/5/25.
  */
-@SuppressWarnings("ALL")
 @Singleton
 @Component(modules = {
         AppModule.class,

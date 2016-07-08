@@ -15,7 +15,6 @@ import dagger.Provides;
  * Storage Module
  * Created by peng on 2016/7/3.
  */
-@SuppressWarnings("ALL")
 @Module
 public final class StorageModule {
     @Provides

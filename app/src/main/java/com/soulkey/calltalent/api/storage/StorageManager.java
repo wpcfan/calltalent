@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
  *
  * Created by peng on 2016/7/3.
  */
-@SuppressWarnings("ALL")
 public final class StorageManager implements IStorageManager {
     private final SharedPreferences prefs;
 

@@ -7,7 +7,6 @@ import com.soulkey.calltalent.utils.rx.ISchedulerProvider;
 import dagger.Module;
 import dagger.Provides;
 
-@SuppressWarnings("ALL")
 @Module
 public final class SplashModule {
     @Provides

@@ -12,7 +12,6 @@ import rx.Observable;
  *
  * Created by peng on 2016/6/28.
  */
-@SuppressWarnings("ALL")
 public final class AvatarDiskCache implements IDiskCache<Avatar> {
     private final String TAG = AvatarDiskCache.class.getSimpleName();
     private final String KEY_UID = "avatar-key-uid";

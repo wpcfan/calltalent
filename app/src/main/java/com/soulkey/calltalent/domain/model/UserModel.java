@@ -18,7 +18,6 @@ import rx.subjects.ReplaySubject;
  * The User Model providing the UI with data needed
  * Created by peng on 2016/6/4.
  */
-@SuppressWarnings("ALL")
 public final class UserModel {
     private static final String TAG = UserModel.class.getSimpleName();
     private static final long STALE_MS = 50 * 1000;

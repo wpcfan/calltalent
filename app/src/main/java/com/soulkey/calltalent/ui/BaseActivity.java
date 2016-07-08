@@ -43,7 +43,6 @@ import rx.subscriptions.CompositeSubscription;
  * The base Activity for all the activities
  * Created by peng on 2016/5/23.
  */
-@SuppressWarnings("ALL")
 public abstract class BaseActivity extends RxAppCompatActivity {
     private AlertDialog mAlertDialog;
 

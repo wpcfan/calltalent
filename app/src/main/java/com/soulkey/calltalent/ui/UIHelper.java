@@ -16,7 +16,6 @@ import java.util.Map;
  *
  * Created by peng on 2016/6/7.
  */
-@SuppressWarnings("ALL")
 public final class UIHelper {
 
     // region Utility Methods

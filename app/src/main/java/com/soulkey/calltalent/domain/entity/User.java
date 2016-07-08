@@ -8,7 +8,6 @@ import com.google.auto.value.AutoValue;
  * User model
  * Created by peng on 2016/5/25.
  */
-@SuppressWarnings("ALL")
 @AutoValue
 public abstract class User implements Parcelable, IUser {
 
@@ -19,7 +18,5 @@ public abstract class User implements Parcelable, IUser {
     }
 
     public abstract String uid();
-
     public abstract boolean isAnonymous();
-
 }

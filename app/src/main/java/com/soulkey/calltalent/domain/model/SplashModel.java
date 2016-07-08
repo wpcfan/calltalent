@@ -5,7 +5,6 @@ import com.soulkey.calltalent.utils.rx.ISchedulerProvider;
 
 import rx.Observable;
 
-@SuppressWarnings("ALL")
 public final class SplashModel {
     private final ISchedulerProvider schedulerProvider;
     private final IHttpManager httpManager;
