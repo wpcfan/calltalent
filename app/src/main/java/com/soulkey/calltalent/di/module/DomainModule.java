@@ -24,7 +24,7 @@ import dagger.Provides;
  * @see <a href="http://wilddogio.com">WildDog</a> for details
  * Created by peng on 2016/5/25.
  */
-@Module
+@Module(includes = StorageModule.class)
 public class DomainModule {
 
     @ActivityScope

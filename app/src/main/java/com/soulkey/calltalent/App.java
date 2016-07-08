@@ -8,7 +8,6 @@ import com.soulkey.calltalent.di.component.ApplicationComponent;
 import com.soulkey.calltalent.di.component.DaggerApplicationComponent;
 import com.soulkey.calltalent.di.module.AppModule;
 import com.soulkey.calltalent.di.module.NetworkModule;
-import com.soulkey.calltalent.di.module.StorageModule;
 import com.soulkey.calltalent.di.module.SupportModule;
 
 /**
@@ -36,7 +35,6 @@ public class App extends Application {
         appComponent = DaggerApplicationComponent.builder()
                 .appModule(new AppModule(this))
                 .supportModule(new SupportModule())
-                .storageModule(new StorageModule())
                 .networkModule(new NetworkModule())
                 .build();
         appComponent.inject(this);

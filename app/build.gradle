@@ -104,7 +104,7 @@ dependencies {
     //    Chinese alternative of Google's Firebase
     compile 'com.wilddog:wilddog-client-android:latest.release'
     compile 'com.tencent.bugly:crashreport:latest.release'
-
+    compile 'com.jakewharton.timber:timber:latest.release'
     //LeakCanary is a framework to help detect the memory leak and then find out the root causes
     debugCompile 'com.squareup.leakcanary:leakcanary-android:latest.release'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:latest.release'

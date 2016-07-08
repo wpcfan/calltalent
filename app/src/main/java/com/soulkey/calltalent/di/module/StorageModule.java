@@ -1,11 +1,12 @@
 package com.soulkey.calltalent.di.module;
 
+import android.app.Application;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import com.soulkey.calltalent.api.storage.IStorageManager;
 import com.soulkey.calltalent.api.storage.StorageManager;
-
-import javax.inject.Singleton;
+import com.soulkey.calltalent.di.scope.ActivityScope;
 
 import dagger.Module;
 import dagger.Provides;
@@ -17,7 +18,13 @@ import dagger.Provides;
 @Module
 public class StorageModule {
     @Provides
-    @Singleton
+    @ActivityScope
+    public SharedPreferences providesSharedPreferences(Application application) {
+        return PreferenceManager.getDefaultSharedPreferences(application);
+    }
+
+    @Provides
+    @ActivityScope
     IStorageManager providesStorageManager(SharedPreferences prefs) {
         return new StorageManager(prefs);
     }

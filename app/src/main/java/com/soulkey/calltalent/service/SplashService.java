@@ -10,6 +10,7 @@ import com.soulkey.calltalent.api.network.IHttpManager;
 import com.soulkey.calltalent.di.component.DaggerServiceComponent;
 import com.soulkey.calltalent.di.component.ServiceComponent;
 import com.soulkey.calltalent.di.module.ServiceModule;
+import com.soulkey.calltalent.ui.BaseActivity;
 import com.soulkey.calltalent.utils.image.ImageUtil;
 import com.squareup.sqlbrite.SqlBrite;
 
@@ -66,15 +67,18 @@ public class SplashService extends IntentService {
                         .getSplashImageUrl(URL)
                         .flatMap(remote_url -> httpManager.fetchImageByUrl(remote_url))
                         .map(bitmap -> ImageUtil.bitmap2file(bitmap, file, Bitmap.CompressFormat.JPEG))
-                        .subscribe(result -> {
-                            if (result)
-                                writeString(PARAM_STORED_IMAGE_URI, Uri.fromFile(file).toString());
-                        });
+                        .subscribe(result -> sendOutputResult(file, result));
             }
         }
     }
 
-    private void writeString(String name, String value) {
-
+    private void sendOutputResult(File file, Boolean result) {
+        if (result) {
+            Intent broadcastIntent = new Intent();
+            broadcastIntent.setAction(BaseActivity.SplashReceiver.PARAM_RECEIVED_STORED_IMAGE_URI);
+            broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
+            broadcastIntent.putExtra(PARAM_STORED_IMAGE_URI, Uri.fromFile(file).toString());
+            sendBroadcast(broadcastIntent);
+        }
     }
 }

@@ -1,7 +1,10 @@
 package com.soulkey.calltalent.ui;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
@@ -19,8 +22,10 @@ import com.soulkey.calltalent.di.component.ApplicationComponent;
 import com.soulkey.calltalent.di.component.BaseActivityComponent;
 import com.soulkey.calltalent.di.component.DaggerBaseActivityComponent;
 import com.soulkey.calltalent.di.module.DomainModule;
+import com.soulkey.calltalent.di.module.StorageModule;
 import com.soulkey.calltalent.domain.entity.User;
 import com.soulkey.calltalent.domain.model.UserModel;
+import com.soulkey.calltalent.service.SplashService;
 import com.soulkey.calltalent.ui.auth.LoginActivity;
 import com.soulkey.calltalent.utils.animation.AnimationUtil;
 import com.soulkey.calltalent.utils.memory.Reflector;
@@ -39,7 +44,6 @@ import rx.subscriptions.CompositeSubscription;
  * Created by peng on 2016/5/23.
  */
 public abstract class BaseActivity extends RxAppCompatActivity {
-    private final String TAG = BaseActivity.class.getSimpleName();
     private AlertDialog mAlertDialog;
 
     /**
@@ -50,18 +54,19 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     @Inject
     protected UserModel userModel;
     @Inject
-    protected INetworkManager networkService;
+    protected INetworkManager networkManager;
     @Inject
-    protected IStorageManager storageService;
-
+    protected IStorageManager storageManager;
+    private SplashReceiver receiver;
 
     protected long getDebounceTime() {
         return 400L;
     }
-
     protected CompositeSubscription getSubsCollector() {
         return _subscription;
     }
+
+    protected abstract void injectBaseActivityComponent(BaseActivityComponent component);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,15 +74,32 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         ApplicationComponent component = App.from(this).getAppComponent();
         BaseActivityComponent activityComponent = DaggerBaseActivityComponent.builder()
                 .applicationComponent(component)
+                .storageModule(new StorageModule())
                 .domainModule(new DomainModule())
                 .build();
         injectBaseActivityComponent(activityComponent);
         _subscription.add(accessDeniedFallback());
         AnimationUtil.setupWindowAnimations(getWindow());
         Icepick.restoreInstanceState(this, savedInstanceState);
+        registerSplashReceiver();
     }
 
-    protected abstract void injectBaseActivityComponent(BaseActivityComponent component);
+    private void registerSplashReceiver() {
+        IntentFilter filter = new IntentFilter(SplashReceiver.PARAM_RECEIVED_STORED_IMAGE_URI);
+        filter.addCategory(Intent.CATEGORY_DEFAULT);
+        receiver = new SplashReceiver();
+        registerReceiver(receiver, filter);
+    }
+
+    public class SplashReceiver extends BroadcastReceiver {
+        public static final String PARAM_RECEIVED_STORED_IMAGE_URI = "com.soulkey.calltalent.service.extra.PARAM_STORED_IMAGE_URI";
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String uri = intent.getStringExtra(SplashService.PARAM_STORED_IMAGE_URI);
+            storageManager.writeString(SplashService.PARAM_STORED_IMAGE_URI, uri);
+        }
+    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -104,6 +126,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        unregisterReceiver(receiver);
         if (_subscription.hasSubscriptions())
             _subscription.clear();
         if (!_subscription.isUnsubscribed())
@@ -208,7 +231,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     }
 
     protected Subscription checkNetworkStatus() {
-        return networkService.observeNetworkChange()
+        return networkManager.observeNetworkChange()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(networkStatus -> {
                     if (networkStatus == INetworkManager.NetworkStatus.OFFLINE ||

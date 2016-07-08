@@ -17,6 +17,5 @@ import dagger.Component;
         })
 public interface BaseActivityComponent {
     void inject(BaseActivity activity);
-
     SplashComponent plus(SplashModule splashModule);
 }

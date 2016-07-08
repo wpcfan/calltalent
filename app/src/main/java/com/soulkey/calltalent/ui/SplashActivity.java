@@ -1,5 +1,6 @@
 package com.soulkey.calltalent.ui;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -49,8 +50,11 @@ public class SplashActivity extends BaseActivity {
         Observable<Long> observableCountDown = getTimerStream();
         Subscription subscriptionCountDown = dealWithCountDown(observableCountDown);
         getSubsCollector().add(subscriptionCountDown);
-
-        SplashService.startActionDownloadImage(SplashActivity.this, "splash.jpg");
+        String uri = storageManager.readString(SplashService.PARAM_STORED_IMAGE_URI);
+        if (uri == null)
+            SplashService.startActionDownloadImage(SplashActivity.this, "splash.jpg");
+        else
+            splashImage.setImageURI(Uri.parse(uri));
     }
 
     private Subscription dealWithCountDown(Observable<Long> observableCountDown) {

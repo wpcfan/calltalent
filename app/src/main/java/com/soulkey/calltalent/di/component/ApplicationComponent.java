@@ -1,14 +1,12 @@
 package com.soulkey.calltalent.di.component;
 
 import android.app.Application;
-import android.content.SharedPreferences;
 
 import com.soulkey.calltalent.App;
 import com.soulkey.calltalent.api.network.INetworkManager;
-import com.soulkey.calltalent.api.storage.IStorageManager;
 import com.soulkey.calltalent.di.module.AppModule;
+import com.soulkey.calltalent.di.module.DbModule;
 import com.soulkey.calltalent.di.module.NetworkModule;
-import com.soulkey.calltalent.di.module.StorageModule;
 import com.soulkey.calltalent.di.module.SupportModule;
 import com.soulkey.calltalent.domain.Clock;
 import com.soulkey.calltalent.utils.rx.SchedulerProvider;
@@ -25,18 +23,13 @@ import dagger.Component;
 @Component(modules = {
         AppModule.class,
         SupportModule.class,
-        StorageModule.class,
-        NetworkModule.class
+        NetworkModule.class,
+        DbModule.class
 })
 public interface ApplicationComponent {
     Application getApplication();
-
     SchedulerProvider getSchedulerProvider();
     Clock getClock();
-    SharedPreferences getSharedPreferences();
     INetworkManager getNetworkManager();
-
-    IStorageManager getStorageManager();
-
     void inject(App app);
 }

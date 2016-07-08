@@ -1,9 +1,5 @@
 package com.soulkey.calltalent.di.module;
 
-import android.app.Application;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-
 import com.soulkey.calltalent.domain.Clock;
 import com.soulkey.calltalent.utils.rx.SchedulerProvider;
 
@@ -30,9 +26,4 @@ public class SupportModule {
         return Clock.REAL;
     }
 
-    @Provides
-    @Singleton
-    public SharedPreferences providesSharedPreferences(Application application) {
-        return PreferenceManager.getDefaultSharedPreferences(application);
-    }
 }
