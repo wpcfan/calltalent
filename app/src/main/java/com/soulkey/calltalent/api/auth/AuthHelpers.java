@@ -6,7 +6,8 @@ import com.soulkey.calltalent.exception.CustomException;
  * Helpers to make authentication easier
  * Created by peng on 2016/5/31.
  */
-class AuthHelpers {
+@SuppressWarnings("ALL")
+final class AuthHelpers {
     public static CustomException.ErrorCode mapWildDogAuthErrToOurs(int wilddogErrCode) {
         switch (wilddogErrCode) {
             case -12:

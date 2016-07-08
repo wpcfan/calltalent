@@ -3,6 +3,7 @@ package com.soulkey.calltalent.utils.rxpreferences;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
+@SuppressWarnings("ALL")
 final class LongAdapter implements Preference.Adapter<Long> {
     static final LongAdapter INSTANCE = new LongAdapter();
 

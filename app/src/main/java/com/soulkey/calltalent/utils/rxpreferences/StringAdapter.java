@@ -3,6 +3,7 @@ package com.soulkey.calltalent.utils.rxpreferences;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
+@SuppressWarnings("ALL")
 final class StringAdapter implements Preference.Adapter<String> {
     static final StringAdapter INSTANCE = new StringAdapter();
 

@@ -26,6 +26,7 @@ import rx.android.schedulers.AndroidSchedulers;
  * To reuse the common logic between RegisterActivity and LoginActivity
  * Created by peng on 2016/6/11.
  */
+@SuppressWarnings("ALL")
 public abstract class EmailAutoCompleteActivity extends BaseActivity {
 
     Subscription dealWithEmailTextChanges(

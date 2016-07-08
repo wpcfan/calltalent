@@ -8,6 +8,7 @@ import com.google.auto.value.AutoValue;
  *
  * Created by peng on 2016/6/28.
  */
+@SuppressWarnings("ALL")
 @AutoValue
 public abstract class Avatar implements Parcelable {
     //Please note that the order of params defined in the constructor

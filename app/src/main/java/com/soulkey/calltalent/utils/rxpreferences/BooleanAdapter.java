@@ -3,6 +3,7 @@ package com.soulkey.calltalent.utils.rxpreferences;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
+@SuppressWarnings("ALL")
 final class BooleanAdapter implements Preference.Adapter<Boolean> {
     static final BooleanAdapter INSTANCE = new BooleanAdapter();
 

@@ -11,7 +11,8 @@ import com.soulkey.calltalent.ui.auth.LoginActivity;
 
 import rx.Subscription;
 
-public class MainActivity extends BaseActivity {
+@SuppressWarnings("ALL")
+public final class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

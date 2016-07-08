@@ -17,8 +17,9 @@ import timber.log.Timber;
  * Dagger Module for customized application object -- App
  * Created by peng on 2016/5/24.
  */
+@SuppressWarnings("ALL")
 @Module
-public class AppModule {
+public final class AppModule {
     private final Application mApplication;
 
     public AppModule(Application application) {

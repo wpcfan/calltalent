@@ -15,9 +15,10 @@ import rx.Observable;
  * Wilddog version of the implementation of IAuthManager
  * Created by peng on 2016/5/27.
  */
-public class AuthManagerWilddogImpl implements IAuthManager {
+@SuppressWarnings("ALL")
+public final class AuthManagerWilddogImpl implements IAuthManager {
 
-    private Wilddog wilddog;
+    private final Wilddog wilddog;
 
     public AuthManagerWilddogImpl(Application application) {
         Wilddog.setAndroidContext(application);

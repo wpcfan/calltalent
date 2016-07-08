@@ -2,7 +2,7 @@ package com.soulkey.calltalent.utils.memory;
 
 import java.lang.reflect.Method;
 
-public class Reflector {
+public final class Reflector {
     public static final class TypedObject {
         private final Object object;
         private final Class type;

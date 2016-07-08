@@ -28,7 +28,8 @@ import rx.schedulers.Schedulers;
  * Provide a splash screen for the app
  * Created by peng on 2016/5/24.
  */
-public class SplashActivity extends BaseActivity {
+@SuppressWarnings("ALL")
+public final class SplashActivity extends BaseActivity {
 
     @Inject
     SplashModel splashModel;

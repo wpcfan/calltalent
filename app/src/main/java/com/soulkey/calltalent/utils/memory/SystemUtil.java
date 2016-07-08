@@ -9,10 +9,8 @@ import static android.content.pm.ApplicationInfo.FLAG_LARGE_HEAP;
 import static android.os.Build.VERSION.SDK_INT;
 import static android.os.Build.VERSION_CODES.HONEYCOMB;
 
-/**
- * Created by wangpeng on 16/6/29.
- */
-public class SystemUtil {
+@SuppressWarnings("ALL")
+public final class SystemUtil {
 
     @SuppressWarnings("unchecked")
     static <T> T getService(Context context, String service) {

@@ -12,11 +12,12 @@ import rx.Observable;
  *
  * Created by peng on 2016/6/28.
  */
-public class AvatarDiskCache implements IDiskCache<Avatar> {
+@SuppressWarnings("ALL")
+public final class AvatarDiskCache implements IDiskCache<Avatar> {
     private final String TAG = AvatarDiskCache.class.getSimpleName();
     private final String KEY_UID = "avatar-key-uid";
     private final String KEY_MEDIA_URI = "avatar-key-media-uri";
-    private SharedPreferences prefs;
+    private final SharedPreferences prefs;
 
     @Inject
     public AvatarDiskCache(SharedPreferences prefs) {

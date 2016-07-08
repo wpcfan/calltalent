@@ -8,6 +8,7 @@ import java.util.Set;
 
 import static android.os.Build.VERSION_CODES.HONEYCOMB;
 
+@SuppressWarnings("ALL")
 @TargetApi(HONEYCOMB)
 final class StringSetAdapter implements Preference.Adapter<Set<String>> {
     static final StringSetAdapter INSTANCE = new StringSetAdapter();

@@ -2,6 +2,7 @@ package com.soulkey.calltalent.db;
 
 import android.database.Cursor;
 
+@SuppressWarnings("ALL")
 public final class DbCursor {
     public static final int BOOLEAN_FALSE = 0;
     public static final int BOOLEAN_TRUE = 1;

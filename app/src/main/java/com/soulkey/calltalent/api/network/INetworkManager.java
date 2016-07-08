@@ -6,6 +6,7 @@ import rx.Observable;
  *
  * Created by peng on 2016/7/3.
  */
+@SuppressWarnings("ALL")
 public interface INetworkManager {
     enum NetworkStatus {
         UNKNOWN("unknown"),

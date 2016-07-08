@@ -7,10 +7,8 @@ import android.support.v7.graphics.Palette;
 
 import com.soulkey.calltalent.R;
 
-/**
- * Created by peng on 2016/7/7.
- */
-public class PaletteUtil {
+@SuppressWarnings("ALL")
+public final class PaletteUtil {
     public enum ColorFlavor {
         LightVibrant,
         DarkMuted,

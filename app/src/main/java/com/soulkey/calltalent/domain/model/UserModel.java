@@ -4,11 +4,11 @@ import com.soulkey.calltalent.api.auth.IAuthManager;
 import com.soulkey.calltalent.api.storage.AvatarDiskCache;
 import com.soulkey.calltalent.api.storage.UserProfileDiskCache;
 import com.soulkey.calltalent.api.user.IUserManager;
-import com.soulkey.calltalent.domain.Clock;
+import com.soulkey.calltalent.domain.IClock;
 import com.soulkey.calltalent.domain.entity.Avatar;
 import com.soulkey.calltalent.domain.entity.User;
 import com.soulkey.calltalent.domain.entity.UserProfile;
-import com.soulkey.calltalent.utils.rx.SchedulerProvider;
+import com.soulkey.calltalent.utils.rx.ISchedulerProvider;
 
 import rx.Observable;
 import rx.Subscription;
@@ -18,26 +18,27 @@ import rx.subjects.ReplaySubject;
  * The User Model providing the UI with data needed
  * Created by peng on 2016/6/4.
  */
-public class UserModel {
+@SuppressWarnings("ALL")
+public final class UserModel {
     private static final String TAG = UserModel.class.getSimpleName();
     private static final long STALE_MS = 50 * 1000;
-    private final SchedulerProvider schedulerProvider;
+    private final ISchedulerProvider schedulerProvider;
     private final UserProfileDiskCache diskCache;
     private final AvatarDiskCache avatarDiskCache;
     private final IAuthManager service;
     private final IUserManager userManager;
-    private final Clock clock;
+    private final IClock clock;
     private UserProfile memoryCache;
     private ReplaySubject<UserProfile> userProfileReplaySubject;
     private Subscription userProfileSubscription;
 
     public UserModel(
-            SchedulerProvider schedulerProvider,
+            ISchedulerProvider schedulerProvider,
             UserProfileDiskCache diskCache,
             AvatarDiskCache avatarDiskCache,
             IAuthManager service,
             IUserManager userManager,
-            Clock clock) {
+            IClock clock) {
         this.schedulerProvider = schedulerProvider;
         this.diskCache = diskCache;
         this.avatarDiskCache = avatarDiskCache;

@@ -25,6 +25,7 @@ import rx.Subscription;
 /**
  * The LoginActivity defines the login-related behaviors
  */
+@SuppressWarnings("ALL")
 public final class LoginActivity extends EmailAutoCompleteActivity {
     private boolean shouldFinish;
     @BindView(R.id.link_to_register)

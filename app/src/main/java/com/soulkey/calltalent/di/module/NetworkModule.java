@@ -14,8 +14,9 @@ import dagger.Provides;
  * Network Module
  * Created by peng on 2016/7/3.
  */
+@SuppressWarnings("ALL")
 @Module
-public class NetworkModule {
+public final class NetworkModule {
     @Singleton
     @Provides
     INetworkManager providesNetworkManager(Application application) {

@@ -5,9 +5,7 @@ import java.lang.annotation.RetentionPolicy;
 
 import javax.inject.Scope;
 
-/**
- * Created by wangpeng on 16/7/7.
- */
+@SuppressWarnings("ALL")
 @Scope
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ServiceScope {

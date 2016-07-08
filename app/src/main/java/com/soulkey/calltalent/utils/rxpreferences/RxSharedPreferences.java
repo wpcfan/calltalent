@@ -1,9 +1,5 @@
 package com.soulkey.calltalent.utils.rxpreferences;
 
-/**
- * Created by wangpeng on 16/7/7.
- */
-
 import android.annotation.TargetApi;
 import android.content.SharedPreferences;
 import android.support.annotation.CheckResult;
@@ -21,6 +17,7 @@ import static android.os.Build.VERSION_CODES.HONEYCOMB;
 import static com.soulkey.calltalent.utils.rxpreferences.Preconditions.checkNotNull;
 
 /** A factory for reactive {@link Preference} objects. */
+@SuppressWarnings("ALL")
 public final class RxSharedPreferences {
     private static final Float DEFAULT_FLOAT = 0f;
     private static final Integer DEFAULT_INTEGER = 0;

@@ -3,6 +3,7 @@ package com.soulkey.calltalent.utils.rxpreferences;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
+@SuppressWarnings("ALL")
 final class FloatAdapter implements Preference.Adapter<Float> {
     static final FloatAdapter INSTANCE = new FloatAdapter();
 

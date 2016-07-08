@@ -4,12 +4,8 @@ import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-/**
- *
- * Created by peng on 2016/6/3.
- */
-public interface SchedulerProvider {
-    SchedulerProvider DEFAULT = new SchedulerProvider() {
+public interface ISchedulerProvider {
+    ISchedulerProvider DEFAULT = new ISchedulerProvider() {
         @Override
         public <T> Observable.Transformer<T, T> applySchedulers() {
             return observable -> observable.subscribeOn(Schedulers.io())

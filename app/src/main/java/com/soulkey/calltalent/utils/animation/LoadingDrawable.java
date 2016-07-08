@@ -6,11 +6,9 @@ import android.graphics.PixelFormat;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 
-/**
- * Created by peng on 2016/6/30.
- */
-public class LoadingDrawable extends Drawable implements Animatable {
-    private LoadingRenderer mLoadingRender;
+@SuppressWarnings("ALL")
+public final class LoadingDrawable extends Drawable implements Animatable {
+    private final LoadingRenderer mLoadingRender;
 
     public LoadingDrawable(LoadingRenderer loadingRender) {
         this.mLoadingRender = loadingRender;

@@ -2,15 +2,16 @@ package com.soulkey.calltalent.di.module;
 
 import com.soulkey.calltalent.api.network.IHttpManager;
 import com.soulkey.calltalent.domain.model.SplashModel;
-import com.soulkey.calltalent.utils.rx.SchedulerProvider;
+import com.soulkey.calltalent.utils.rx.ISchedulerProvider;
 
 import dagger.Module;
 import dagger.Provides;
 
+@SuppressWarnings("ALL")
 @Module
-public class SplashModule {
+public final class SplashModule {
     @Provides
-    public SplashModel providesSplashModel(SchedulerProvider schedulerProvider, IHttpManager httpManager) {
+    public SplashModel providesSplashModel(ISchedulerProvider schedulerProvider, IHttpManager httpManager) {
         return new SplashModel(schedulerProvider, httpManager);
     }
 }

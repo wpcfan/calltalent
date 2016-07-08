@@ -4,6 +4,7 @@ package com.soulkey.calltalent.ui.auth;
  * The login parameters to pass between LoginActivity and RegisterActivity
  * Created by peng on 2016/6/5.
  */
+@SuppressWarnings("ALL")
 public enum LoginParams {
     PARAM_KEY_USERNAME("intent-params-key-username"),
     PARAM_KEY_PASSWORD("intent-params-key-password"),

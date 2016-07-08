@@ -14,7 +14,8 @@ import android.view.animation.TranslateAnimation;
  * Animation Helper
  * Created by peng on 2016/6/22.
  */
-public class AnimationUtil {
+@SuppressWarnings("ALL")
+public final class AnimationUtil {
 
     private static final long LongDuration = 1000L;
     private static final long ShortDuration = 200L;

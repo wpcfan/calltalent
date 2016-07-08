@@ -12,9 +12,9 @@ import com.soulkey.calltalent.api.storage.UserProfileDiskCache;
 import com.soulkey.calltalent.api.user.IUserManager;
 import com.soulkey.calltalent.api.user.wilddog.UserManagerWilddogImpl;
 import com.soulkey.calltalent.di.scope.ActivityScope;
-import com.soulkey.calltalent.domain.Clock;
+import com.soulkey.calltalent.domain.IClock;
 import com.soulkey.calltalent.domain.model.UserModel;
-import com.soulkey.calltalent.utils.rx.SchedulerProvider;
+import com.soulkey.calltalent.utils.rx.ISchedulerProvider;
 
 import dagger.Module;
 import dagger.Provides;
@@ -24,8 +24,9 @@ import dagger.Provides;
  * @see <a href="http://wilddogio.com">WildDog</a> for details
  * Created by peng on 2016/5/25.
  */
+@SuppressWarnings("ALL")
 @Module(includes = StorageModule.class)
-public class DomainModule {
+public final class DomainModule {
 
     @ActivityScope
     @Provides
@@ -59,12 +60,12 @@ public class DomainModule {
     @ActivityScope
     @Provides
     public UserModel providesUserModel(
-            SchedulerProvider provider,
+            ISchedulerProvider provider,
             UserProfileDiskCache userDiskCache,
             AvatarDiskCache avatarDiskCache,
             IAuthManager service,
             IUserManager userManager,
-            Clock clock) {
+            IClock clock) {
         return new UserModel(provider, userDiskCache, avatarDiskCache, service, userManager, clock);
     }
 }

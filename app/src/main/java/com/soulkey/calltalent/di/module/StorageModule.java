@@ -15,8 +15,9 @@ import dagger.Provides;
  * Storage Module
  * Created by peng on 2016/7/3.
  */
+@SuppressWarnings("ALL")
 @Module
-public class StorageModule {
+public final class StorageModule {
     @Provides
     @ActivityScope
     public SharedPreferences providesSharedPreferences(Application application) {

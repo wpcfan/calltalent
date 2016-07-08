@@ -27,7 +27,8 @@ import rx.subscriptions.Subscriptions;
  * Wilddog's RX Wrapper
  * Created by peng on 2016/6/12.
  */
-public class RxWilddog {
+@SuppressWarnings("ALL")
+public final class RxWilddog {
     public static Func1<WilddogChildEvent, Boolean> makeEventFilter(
             final @WilddogChildEvent.EventType int eventType) {
         return wilddogChildEvent -> wilddogChildEvent.eventType == eventType;

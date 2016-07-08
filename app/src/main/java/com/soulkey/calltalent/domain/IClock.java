@@ -1,11 +1,11 @@
 package com.soulkey.calltalent.domain;
 
 /**
- * The Clock interface
+ * The IClock interface
  * Created by peng on 2016/6/4.
  */
-public interface Clock {
-    Clock REAL = System::currentTimeMillis;
+public interface IClock {
+    IClock REAL = System::currentTimeMillis;
 
     long millis();
 }

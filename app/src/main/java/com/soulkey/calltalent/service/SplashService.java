@@ -22,7 +22,8 @@ import javax.inject.Inject;
  * An {@link IntentService} subclass for handling asynchronous task requests in
  * a service on a separate handler thread.
  */
-public class SplashService extends IntentService {
+@SuppressWarnings("ALL")
+public final class SplashService extends IntentService {
     // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
     private static final String ACTION_DOWNLOAD = "com.soulkey.calltalent.service.action.DOWNLOAD";
 

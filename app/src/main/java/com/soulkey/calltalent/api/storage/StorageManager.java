@@ -7,7 +7,8 @@ import android.support.annotation.NonNull;
  *
  * Created by peng on 2016/7/3.
  */
-public class StorageManager implements IStorageManager {
+@SuppressWarnings("ALL")
+public final class StorageManager implements IStorageManager {
     private final SharedPreferences prefs;
 
     public StorageManager(SharedPreferences prefs) {
@@ -30,14 +31,12 @@ public class StorageManager implements IStorageManager {
 
     @Override
     public String readString(@NonNull String key) {
-        String value = prefs.getString(key, "");
-        return value;
+        return prefs.getString(key, "");
     }
 
     @Override
     public Boolean readBoolean(@NonNull String key) {
-        Boolean value = prefs.getBoolean(key, true);
-        return value;
+        return prefs.getBoolean(key, true);
     }
 
     @Override

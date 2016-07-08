@@ -38,7 +38,8 @@ import rx.schedulers.Schedulers;
 /**
  * CreateUserProfileActivity is the UI for users to create his/her profile
  */
-public class CreateUserProfileActivity extends BaseActivity {
+@SuppressWarnings("ALL")
+public final class CreateUserProfileActivity extends BaseActivity {
 
     private final String TEMP_PROFILE_NAME = "temp_profile_name";
     private final String TEMP_PROFILE_TITLE = "temp_profile_title";
@@ -82,7 +83,7 @@ public class CreateUserProfileActivity extends BaseActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(uri -> {
                     localUri = Uri.parse(uri);
-                    RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(getResources(), uri.toString());
+                    RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(getResources(), uri);
                     dr.setCornerRadius(5);
                     takePhotoBtn.setImageDrawable(dr);
                     nameInput.setText(storageManager.readString(TEMP_PROFILE_NAME));
@@ -142,7 +143,7 @@ public class CreateUserProfileActivity extends BaseActivity {
     private Observable<Boolean> getSubmitProfileStream() {
         return RxView.clicks(completeUserProfile)
                 .flatMap(__ -> {
-                    if (localUri == null || localUri.equals(""))
+                    if (localUri == null || localUri.toString().equals(""))
                         return Observable.error(
                                 new RequireFieldNotSetException(
                                         getResources()

@@ -1,7 +1,6 @@
 package com.soulkey.calltalent.api.network;
 
 import android.app.Application;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import com.github.pwittchen.reactivenetwork.library.ConnectivityStatus;
@@ -13,17 +12,15 @@ import rx.Observable;
  * Network API that encapsulates the network status and http client
  * Created by peng on 2016/7/3.
  */
-public class NetworkManager implements INetworkManager {
+@SuppressWarnings("ALL")
+public final class NetworkManager implements INetworkManager {
 
     private final ReactiveNetwork rxNetwork;
     private final Application application;
-    private final Uri cacheDirUri;
 
     public NetworkManager(Application application) {
         rxNetwork = new ReactiveNetwork();
         this.application = application;
-
-        cacheDirUri = Uri.fromFile(application.getCacheDir());
     }
 
     @Override

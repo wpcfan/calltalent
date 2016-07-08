@@ -1,7 +1,7 @@
 package com.soulkey.calltalent.di.module;
 
-import com.soulkey.calltalent.domain.Clock;
-import com.soulkey.calltalent.utils.rx.SchedulerProvider;
+import com.soulkey.calltalent.domain.IClock;
+import com.soulkey.calltalent.utils.rx.ISchedulerProvider;
 
 import javax.inject.Singleton;
 
@@ -12,18 +12,19 @@ import dagger.Provides;
  * Common Support Libraries
  * Created by wangpeng on 16/7/6.
  */
+@SuppressWarnings("ALL")
 @Module
-public class SupportModule {
+public final class SupportModule {
     @Provides
     @Singleton
-    public SchedulerProvider providesSchedulerProvider() {
-        return SchedulerProvider.DEFAULT;
+    public ISchedulerProvider providesSchedulerProvider() {
+        return ISchedulerProvider.DEFAULT;
     }
 
     @Provides
     @Singleton
-    public Clock providesClock() {
-        return Clock.REAL;
+    public IClock providesClock() {
+        return IClock.REAL;
     }
 
 }

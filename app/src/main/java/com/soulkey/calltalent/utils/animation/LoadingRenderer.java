@@ -11,9 +11,7 @@ import android.util.DisplayMetrics;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 
-/**
- * Created by peng on 2016/6/30.
- */
+@SuppressWarnings("ALL")
 public abstract class LoadingRenderer {
     private static final long ANIMATION_DURATION = 1333;
 

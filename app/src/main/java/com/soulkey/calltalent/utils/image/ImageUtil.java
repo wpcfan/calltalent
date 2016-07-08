@@ -24,13 +24,13 @@ import java.util.Date;
 import java.util.Locale;
 
 import rx.Observable;
-import rx.exceptions.Exceptions;
 
 /**
  * Image Helper to ease image manipulation
  * Created by wangpeng on 16/6/29.
  */
-public class ImageUtil {
+@SuppressWarnings("ALL")
+public final class ImageUtil {
     private static final int MAX_WIDTH = 1080;
     private static final int MAX_HEIGHT = 1920;
     private static final String DATE_FORMAT = "ddMMyyyy_HHmmss";
@@ -103,7 +103,7 @@ public class ImageUtil {
         return createBitmap(data, matrix)
                 .map(bitmap -> {
                     File file = getOutputFile(context);
-                    bitmap2file(bitmap, file, Bitmap.CompressFormat.JPEG);
+                    bitmap2file(bitmap, file, compressFormat);
                     return Uri.fromFile(file);
                 });
     }
@@ -126,8 +126,7 @@ public class ImageUtil {
             fileOutputStream.close();
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
-            throw Exceptions.propagate(e);
+            return false;
         }
     }
 
@@ -235,7 +234,7 @@ public class ImageUtil {
         int bufferSize = 1024;
         byte[] buffer = new byte[bufferSize];
 
-        int len = 0;
+        int len;
         while ((len = inputStream.read(buffer)) != -1) {
             byteBuffer.write(buffer, 0, len);
         }

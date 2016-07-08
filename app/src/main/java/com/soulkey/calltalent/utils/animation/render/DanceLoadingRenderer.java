@@ -16,10 +16,8 @@ import android.view.animation.Interpolator;
 
 import com.soulkey.calltalent.utils.animation.LoadingRenderer;
 
-/**
- * Created by peng on 2016/6/30.
- */
-public class DanceLoadingRenderer extends LoadingRenderer {
+@SuppressWarnings("ALL")
+public final class DanceLoadingRenderer extends LoadingRenderer {
     private static final Interpolator MATERIAL_INTERPOLATOR = new FastOutSlowInInterpolator();
     private static final Interpolator ACCELERATE_INTERPOLATOR = new AccelerateInterpolator();
     private static final Interpolator DECELERATE_INTERPOLATOR = new DecelerateInterpolator();

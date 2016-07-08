@@ -12,7 +12,8 @@ import rx.Observable;
  * Disk Cache for UserProfile
  * Created by peng on 2016/6/4.
  */
-public class UserProfileDiskCache implements IDiskCache<UserProfile> {
+@SuppressWarnings("ALL")
+public final class UserProfileDiskCache implements IDiskCache<UserProfile> {
 
     private final String KEY_UID = "userprofile-key-uid";
     private final String KEY_NAME = "userprofile-key-name";
@@ -21,7 +22,7 @@ public class UserProfileDiskCache implements IDiskCache<UserProfile> {
     private final String KEY_GENDER = "userprofile-key-gender";
     private final String KEY_DESC = "userprofile-key-desc";
     private final String KEY_TIMESTAMP = "userprofile-key-timestamp";
-    private SharedPreferences prefs;
+    private final SharedPreferences prefs;
 
     @Inject
     public UserProfileDiskCache(SharedPreferences sharedPreferences) {

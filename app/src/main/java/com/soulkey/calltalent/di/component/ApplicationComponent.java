@@ -8,8 +8,8 @@ import com.soulkey.calltalent.di.module.AppModule;
 import com.soulkey.calltalent.di.module.DbModule;
 import com.soulkey.calltalent.di.module.NetworkModule;
 import com.soulkey.calltalent.di.module.SupportModule;
-import com.soulkey.calltalent.domain.Clock;
-import com.soulkey.calltalent.utils.rx.SchedulerProvider;
+import com.soulkey.calltalent.domain.IClock;
+import com.soulkey.calltalent.utils.rx.ISchedulerProvider;
 
 import javax.inject.Singleton;
 
@@ -19,6 +19,7 @@ import dagger.Component;
  * The bridge between the Modules and Inject targets
  * Created by peng on 2016/5/25.
  */
+@SuppressWarnings("ALL")
 @Singleton
 @Component(modules = {
         AppModule.class,
@@ -28,8 +29,10 @@ import dagger.Component;
 })
 public interface ApplicationComponent {
     Application getApplication();
-    SchedulerProvider getSchedulerProvider();
-    Clock getClock();
+
+    ISchedulerProvider getSchedulerProvider();
+
+    IClock getClock();
     INetworkManager getNetworkManager();
     void inject(App app);
 }

@@ -2,10 +2,8 @@ package com.soulkey.calltalent.utils.validation;
 
 import android.support.annotation.Nullable;
 
-/**
- * Created by peng on 2016/6/10.
- */
-public class ValidationResult<T> {
+@SuppressWarnings("ALL")
+public final class ValidationResult<T> {
 
     private final boolean valid;
     private final String reason;

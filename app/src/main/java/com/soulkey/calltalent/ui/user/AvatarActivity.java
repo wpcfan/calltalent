@@ -44,7 +44,8 @@ import rx.schedulers.Schedulers;
 import rx_activity_result.Result;
 import rx_activity_result.RxActivityResult;
 
-public class AvatarActivity extends BaseActivity {
+@SuppressWarnings("ALL")
+public final class AvatarActivity extends BaseActivity {
     private final String TAG = AvatarActivity.class.getSimpleName();
     @State
     byte[] cameraData;

@@ -5,6 +5,7 @@ import com.soulkey.calltalent.ui.SplashActivity;
 
 import dagger.Subcomponent;
 
+@SuppressWarnings("ALL")
 @Subcomponent(modules = SplashModule.class)
 public interface SplashComponent {
     void inject(SplashActivity activity);

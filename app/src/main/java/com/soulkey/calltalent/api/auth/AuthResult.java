@@ -6,7 +6,8 @@ import android.support.annotation.Nullable;
  * Store the result the authentication
  * Created by peng on 2016/6/12.
  */
-public class AuthResult<T> implements IAuthResult<T> {
+@SuppressWarnings("ALL")
+public final class AuthResult<T> implements IAuthResult<T> {
 
     private boolean success;
     private String reason;

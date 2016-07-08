@@ -5,16 +5,13 @@ import android.support.annotation.NonNull;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- *
- * Created by peng on 2016/6/10.
- */
-public class ValidationUtils {
+@SuppressWarnings("ALL")
+public final class ValidationUtils {
 
     private static final String MOBILE_NUMBER_REGEX = "[1]\\d{10}$";
     private static final String TEXT_WITH_MOBILE_NUMBER_REGEX = ".*[7-9][0-9]{9}.*";
     private static final String TEXT_WITH_EMAIL_ADDRESS_REGEX = ".*[a-zA-Z0-9\\+\\" +
-            ".\\_\\%\\-\\+]{1,256}\\@[a-zA-Z0-9]{1,64}\\.[a-zA-Z0-9]{2,25}.*";
+            "._%\\-\\+]{1,256}\\@[a-zA-Z0-9]{1,64}\\.[a-zA-Z0-9]{2,25}.*";
 
     private static final String USERNAME_REGEX = "^[a-zA-Z][a-zA-Z._0-9]{2,19}$";
     private static final String TEXT_WITH_FOUR_CONSECUTIVE_NUMBERS_REGEX = ".*[0-9]{5,}.*";
@@ -84,14 +81,14 @@ public class ValidationUtils {
     }
 
     public static ValidationResult<Boolean> validateMinLength(
-            @NonNull String text, @NonNull int minLength) {
+            @NonNull String text, int minLength) {
         if (text.length() < minLength)
             return ValidationResult.failure("At least " + minLength + " characters are required", false);
         return ValidationResult.success(true);
     }
 
     public static ValidationResult<Boolean> validateMaxLength(
-            @NonNull String text, @NonNull int maxLength) {
+            @NonNull String text, int maxLength) {
         if (text.length() > maxLength)
             return ValidationResult.failure("no more than " + maxLength + " characters are required", false);
         return ValidationResult.success(true);

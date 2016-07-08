@@ -3,6 +3,7 @@ package com.soulkey.calltalent.utils.rxpreferences;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
+@SuppressWarnings("ALL")
 final class EnumAdapter<T extends Enum<T>> implements Preference.Adapter<T> {
     private final Class<T> enumClass;
 

@@ -14,7 +14,8 @@ import com.soulkey.calltalent.di.module.SupportModule;
  * Custom application definition.
  * Created by peng on 2016/5/20.
  */
-public class App extends Application {
+@SuppressWarnings("ALL")
+public final class App extends Application {
 
     private static final String TAG = App.class.getSimpleName();
     private ApplicationComponent appComponent;

@@ -10,7 +10,8 @@ import com.ragnarok.rxcamera.config.RxCameraConfigChooser;
  * Camera helper functions
  * Created by peng on 2016/6/13.
  */
-public class CameraUtil {
+@SuppressWarnings("ALL")
+public final class CameraUtil {
     public final static int Y_AXIS = 1024;
     public final static int X_AXIS = 768;
     public final static int MIN_FRAME = 15;

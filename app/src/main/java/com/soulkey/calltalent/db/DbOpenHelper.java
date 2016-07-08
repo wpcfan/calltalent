@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+@SuppressWarnings("ALL")
 public final class DbOpenHelper extends SQLiteOpenHelper {
     private static final int VERSION = 1;
     private static final String TABLE_SETTING_TABLE_NAME = "setting";

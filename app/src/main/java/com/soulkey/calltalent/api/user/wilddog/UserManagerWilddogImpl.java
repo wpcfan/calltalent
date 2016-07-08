@@ -19,7 +19,8 @@ import rx.schedulers.Schedulers;
  * User related API service call encapsulated in here
  * Created by peng on 2016/6/11.
  */
-public class UserManagerWilddogImpl implements IUserManager {
+@SuppressWarnings("ALL")
+public final class UserManagerWilddogImpl implements IUserManager {
 
     private final Wilddog wilddog;
     private final Cloudinary cloudinary;

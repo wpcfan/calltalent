@@ -9,10 +9,7 @@ import java.io.IOException;
 import okhttp3.Response;
 import rx.exceptions.Exceptions;
 
-/**
- * Created by wangpeng on 16/7/6.
- */
-public class BingImageProcessor {
+public final class BingImageProcessor {
     public static String getImageUri(Response response) {
         try {
             final String body = response.body().string();

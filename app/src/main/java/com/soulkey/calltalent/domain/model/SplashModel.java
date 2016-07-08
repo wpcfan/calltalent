@@ -1,18 +1,16 @@
 package com.soulkey.calltalent.domain.model;
 
 import com.soulkey.calltalent.api.network.IHttpManager;
-import com.soulkey.calltalent.utils.rx.SchedulerProvider;
+import com.soulkey.calltalent.utils.rx.ISchedulerProvider;
 
 import rx.Observable;
 
-/**
- * Created by wangpeng on 16/7/6.
- */
-public class SplashModel {
-    private final SchedulerProvider schedulerProvider;
+@SuppressWarnings("ALL")
+public final class SplashModel {
+    private final ISchedulerProvider schedulerProvider;
     private final IHttpManager httpManager;
 
-    public SplashModel(SchedulerProvider schedulerProvider, IHttpManager httpManager) {
+    public SplashModel(ISchedulerProvider schedulerProvider, IHttpManager httpManager) {
         this.schedulerProvider = schedulerProvider;
         this.httpManager = httpManager;
     }

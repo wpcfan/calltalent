@@ -11,6 +11,7 @@ import rx.functions.Action1;
 /**
  * A preference of type {@link T}. Instances can be created from {@link RxSharedPreferences}.
  */
+@SuppressWarnings("ALL")
 public final class Preference<T> {
     /**
      * Stores and retrieves instances of {@code T} in {@link SharedPreferences}.

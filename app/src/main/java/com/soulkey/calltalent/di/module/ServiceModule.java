@@ -6,8 +6,9 @@ import com.soulkey.calltalent.api.network.IHttpManager;
 import dagger.Module;
 import dagger.Provides;
 
+@SuppressWarnings("ALL")
 @Module
-public class ServiceModule {
+public final class ServiceModule {
 
     @Provides
     IHttpManager providesHttpManager() {
