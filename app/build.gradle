@@ -3,6 +3,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 //apply plugin: 'kotlin-android'
 apply plugin: 'com.squareup.sqldelight'
+//apply plugin: 'realm-android'
 apply plugin: 'com.fernandocejas.frodo'
 frodo {
     enabled = true
@@ -10,6 +11,7 @@ frodo {
 buildscript {
     ext {
         support_version = '24.0.0'
+        firebase_version = '9.2.0'
     }
 
     repositories {
@@ -48,7 +50,23 @@ android {
         release {
             minifyEnabled true
             zipAlignEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            versionNameSuffix '-DEBUG'
+            minifyEnabled false
+            zipAlignEnabled false
+            shrinkResources false
+        }
+    }
+
+    productFlavors {
+        baseline {
+
+        }
+        play {
+
         }
     }
 }
@@ -105,7 +123,9 @@ dependencies {
     //    Chinese alternative of Google's Firebase
     compile 'com.wilddog:wilddog-client-android:latest.release'
     compile 'com.tencent.bugly:crashreport:latest.release'
-    compile 'com.jakewharton.timber:timber:latest.release'
+    debugCompile 'com.jakewharton.timber:timber:latest.release'
+    debugCompile 'com.facebook.stetho:stetho:latest.release'
+    debugCompile 'com.facebook.stetho:stetho-okhttp3:latest.release'
     //LeakCanary is a framework to help detect the memory leak and then find out the root causes
     debugCompile 'com.squareup.leakcanary:leakcanary-android:latest.release'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:latest.release'
@@ -125,13 +145,13 @@ dependencies {
     //    compile "io.reactivex:rxkotlin:$rxkotlin_version"
 
     //    Google's Realtime data and Analytic platform
-//    PlayCompile "com.google.firebase:firebase-database:$firebase_version"
-//    PlayCompile "com.google.firebase:firebase-core:$firebase_version"
-//    PlayCompile "com.google.firebase:firebase-auth:$firebase_version"
+    playCompile "com.google.firebase:firebase-database:$firebase_version"
+    playCompile "com.google.firebase:firebase-core:$firebase_version"
+    playCompile "com.google.firebase:firebase-auth:$firebase_version"
     //Bring Android Tranistion Framework to pre-lollipop
 //    compile "com.andkulikov:transitionseverywhere:1.6.4"
 }
 
 // Add to the bottom of the file
-//apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.gms.google-services'
 apply plugin: 'me.tatarka.retrolambda'

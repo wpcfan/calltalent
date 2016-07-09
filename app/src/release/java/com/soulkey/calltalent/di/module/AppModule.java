@@ -3,15 +3,12 @@ package com.soulkey.calltalent.di.module;
 import android.app.Application;
 
 import com.fuck_boilerplate.rx_paparazzo.RxPaparazzo;
-import com.soulkey.calltalent.BuildConfig;
-import com.squareup.leakcanary.LeakCanary;
 import com.tencent.bugly.crashreport.CrashReport;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import timber.log.Timber;
 
 /**
  * Dagger Module for customized application object -- App
@@ -23,10 +20,6 @@ public final class AppModule {
 
     public AppModule(Application application) {
         this.mApplication = application;
-        LeakCanary.install(mApplication);
-        if (BuildConfig.DEBUG) {
-            Timber.plant(new Timber.DebugTree());
-        }
         RxPaparazzo.register(mApplication);
         CrashReport.initCrashReport(mApplication, "900037648", true);
     }
