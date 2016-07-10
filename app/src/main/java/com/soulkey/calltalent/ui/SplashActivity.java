@@ -11,6 +11,8 @@ import com.soulkey.calltalent.di.component.BaseActivityComponent;
 import com.soulkey.calltalent.di.module.SplashModule;
 import com.soulkey.calltalent.domain.model.SplashModel;
 import com.soulkey.calltalent.service.SplashService;
+import com.soulkey.calltalent.utils.animation.LoadingDrawable;
+import com.soulkey.calltalent.utils.animation.render.DanceLoadingRenderer;
 
 import java.util.concurrent.TimeUnit;
 
@@ -42,6 +44,8 @@ public final class SplashActivity extends BaseActivity {
     @State
     String splash_image_uri;
 
+    private LoadingDrawable mLoadingDrawable;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,11 +54,29 @@ public final class SplashActivity extends BaseActivity {
         Observable<Long> observableCountDown = getTimerStream();
         Subscription subscriptionCountDown = dealWithCountDown(observableCountDown);
         getSubsCollector().add(subscriptionCountDown);
+
         String uri = storageManager.readString(SplashService.PARAM_STORED_IMAGE_URI);
-        if (uri == null)
+        if (uri == null || uri.equals("")) {
             SplashService.startActionDownloadImage(SplashActivity.this, "splash.jpg");
+            mLoadingDrawable = new LoadingDrawable(new DanceLoadingRenderer(this));
+            splashImage.setImageDrawable(mLoadingDrawable);
+        }
         else
             splashImage.setImageURI(Uri.parse(uri));
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (mLoadingDrawable != null)
+            mLoadingDrawable.start();
+    }
+
+    @Override
+    protected void onStop() {
+        if (mLoadingDrawable != null)
+            mLoadingDrawable.stop();
+        super.onStop();
     }
 
     private Subscription dealWithCountDown(Observable<Long> observableCountDown) {

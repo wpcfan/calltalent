@@ -6,7 +6,6 @@ import android.graphics.PixelFormat;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 
-@SuppressWarnings("ALL")
 public final class LoadingDrawable extends Drawable implements Animatable {
     private final LoadingRenderer mLoadingRender;
 

@@ -57,6 +57,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     protected INetworkManager networkManager;
     @Inject
     protected IStorageManager storageManager;
+
     private SplashReceiver receiver;
 
     protected long getDebounceTime() {

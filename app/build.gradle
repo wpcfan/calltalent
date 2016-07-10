@@ -61,6 +61,15 @@ android {
         }
     }
 
+    signingConfigs {
+        release {
+            storeFile file('calltalent.keystore')
+            storePassword 'Soulkey'
+            keyAlias 'calltalent'
+            keyPassword 'Soulkey'
+        }
+    }
+
     productFlavors {
         baseline {
 
@@ -128,7 +137,6 @@ dependencies {
     debugCompile 'com.facebook.stetho:stetho-okhttp3:latest.release'
     //LeakCanary is a framework to help detect the memory leak and then find out the root causes
     debugCompile 'com.squareup.leakcanary:leakcanary-android:latest.release'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:latest.release'
     testCompile 'junit:junit:4.12'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:latest.release'
     //Anko

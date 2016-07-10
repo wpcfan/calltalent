@@ -13,13 +13,13 @@ public class SettingPopulator {
                 SettingModel.TABLE_NAME,
                 null,
                 Setting.FACTORY.marshal()
-                        .setting_name("downloaded_splash_image_local_uri")
+                        .setting_name(Setting.PARAM.DOWNLOADED_SPLASH_URI.getValue())
                         .setting_value("").asContentValues());
         db.insert(
                 SettingModel.TABLE_NAME,
                 null,
                 Setting.FACTORY.marshal()
-                        .setting_name("splash_image_remote_uri")
+                        .setting_name(Setting.PARAM.SPLASH_REMOTE_URI.getValue())
                         .setting_value(SPLASH_IMAGE_URI).asContentValues());
     }
 }
