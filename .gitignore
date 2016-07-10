@@ -42,7 +42,3 @@ captures/
 *.jks
 /*.keystore
 
-/app/src/play/**/*.*
-/app/src/play/java/com/soulkey/calltalent/api/auth/firebase/AuthServiceFirebaseImpl.java
-/app/src/play/java/com/soulkey/calltalent/api/user/firebase/UserManagerFirebaseImpl.java
-/app/src/play/java/com/soulkey/calltalent/api/wrapper/RxFirebase.java
