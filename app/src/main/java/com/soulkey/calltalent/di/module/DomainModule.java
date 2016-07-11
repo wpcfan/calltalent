@@ -5,8 +5,6 @@ import android.content.SharedPreferences;
 
 import com.soulkey.calltalent.api.auth.IAuthManager;
 import com.soulkey.calltalent.api.auth.wilddog.AuthManagerWilddogImpl;
-import com.soulkey.calltalent.api.network.HttpManager;
-import com.soulkey.calltalent.api.network.IHttpManager;
 import com.soulkey.calltalent.api.storage.AvatarDiskCache;
 import com.soulkey.calltalent.api.storage.UserProfileDiskCache;
 import com.soulkey.calltalent.api.user.IUserManager;
@@ -49,11 +47,6 @@ public final class DomainModule {
     @Provides
     public AvatarDiskCache providesAvatarDiskCache(SharedPreferences prefs) {
         return new AvatarDiskCache(prefs);
-    }
-
-    @Provides
-    IHttpManager providesHttpManager() {
-        return new HttpManager();
     }
 
     @ActivityScope

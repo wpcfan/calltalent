@@ -73,6 +73,8 @@
 -keep class com.wilddog.client.** { *; }
 -keep interface com.wilddog.client.** { *; }
 -dontwarn com.shaded.fasterxml.**
+-keep class com.shaded.fasterxml.** { *; }
+-keep interface com.shaded.fasterxml.** { *; }
 
 #icepick
 -dontwarn icepick.**
@@ -91,6 +93,9 @@
 #bugly
 -dontwarn com.tencent.bugly.**
 -keep public class com.tencent.bugly.**{*;}
+
+# Cloudinary
+-keep class com.cloudinary.** { *; }
 
 # ALSO REMEMBER KEEPING YOUR MODEL CLASSES
 -keep class com.soulkey.calltalent.domain.** { *; }

@@ -10,12 +10,11 @@ import com.squareup.sqlbrite.BriteDatabase;
 import rx.Observable;
 
 public class SettingDao implements ISettingDao {
-    private Application application;
+
     private BriteDatabase db;
 
     public SettingDao(Application application) {
-        this.application = application;
-        db = SqlBrightWrapper.getDatabase(this.application);
+        db = SqlBrightWrapper.getDatabase(application);
     }
 
     @Override
@@ -26,15 +25,19 @@ public class SettingDao implements ISettingDao {
                 settingName)
                 .map(query -> {
                     Cursor cursor = query.run();
-                    if (cursor != null && cursor.moveToNext()) {
-                        return cursor.getString(0);
+                    try {
+                        if (cursor != null && cursor.moveToNext()) {
+                            return cursor.getString(1);
+                        }
+                    } finally {
+                        cursor.close();
                     }
                     return null;
-                });
+                }).firstOrDefault("");
     }
 
     @Override
-    public boolean updateSetting(String name, String value) {
+    public boolean updateSetting(@NonNull String name, String value) {
         return db.update(
                 Setting.TABLE_NAME,
                 Setting.FACTORY.marshal().setting_value(value).asContentValues(),
@@ -43,7 +46,7 @@ public class SettingDao implements ISettingDao {
     }
 
     @Override
-    public boolean createSetting(String name, String value) {
+    public boolean createSetting(@NonNull String name, String value) {
         return db.insert(
                 Setting.TABLE_NAME,
                 Setting.FACTORY.marshal().setting_name(name).setting_value(value).asContentValues()) == 1;

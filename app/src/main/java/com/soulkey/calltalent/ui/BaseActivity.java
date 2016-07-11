@@ -13,7 +13,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.soulkey.calltalent.App;
 import com.soulkey.calltalent.api.network.INetworkManager;
@@ -24,6 +23,7 @@ import com.soulkey.calltalent.di.component.DaggerBaseActivityComponent;
 import com.soulkey.calltalent.di.module.DomainModule;
 import com.soulkey.calltalent.di.module.StorageModule;
 import com.soulkey.calltalent.domain.entity.User;
+import com.soulkey.calltalent.domain.model.SettingModel;
 import com.soulkey.calltalent.domain.model.UserModel;
 import com.soulkey.calltalent.service.SplashService;
 import com.soulkey.calltalent.ui.auth.LoginActivity;
@@ -57,6 +57,8 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     protected INetworkManager networkManager;
     @Inject
     protected IStorageManager storageManager;
+    @Inject
+    protected SettingModel settingModel;
 
     private SplashReceiver receiver;
 
@@ -93,12 +95,12 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     }
 
     public class SplashReceiver extends BroadcastReceiver {
-        public static final String PARAM_RECEIVED_STORED_IMAGE_URI = "com.soulkey.calltalent.service.extra.PARAM_STORED_IMAGE_URI";
+        public static final String PARAM_RECEIVED_STORED_IMAGE_URI = "com.soulkey.calltalent.service.extra.PARAM_IMAGE_STORED_RESULT";
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            String uri = intent.getStringExtra(SplashService.PARAM_STORED_IMAGE_URI);
-            storageManager.writeString(SplashService.PARAM_STORED_IMAGE_URI, uri);
+            Boolean result = intent.getBooleanExtra(SplashService.PARAM_IMAGE_STORED_RESULT, false);
+            Log.d("Receiver: ", "onReceive: " + result);
         }
     }
 
@@ -174,14 +176,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     protected Observable<User> login(final String username, final String password) {
         return userModel.login(
                 username,
-                password)
-                .doOnError(throwable ->
-                        Toast.makeText(
-                                this,
-                                throwable.getMessage(),
-                                Toast.LENGTH_SHORT)
-                                .show())
-                .onErrorResumeNext(throwable -> Observable.just(null));
+                password);
     }
 
     /**

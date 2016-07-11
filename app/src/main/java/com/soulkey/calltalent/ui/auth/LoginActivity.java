@@ -87,7 +87,10 @@ public final class LoginActivity extends EmailAutoCompleteActivity {
                         validateEmail(usernameText, usernameWrapper))
                 .doOnNext(__ -> signinBtn.setEnabled(false))
                 .flatMap(__ -> login(
-                        usernameText.getText().toString(), passwordText.getText().toString()))
+                        usernameText.getText().toString(), passwordText.getText().toString())
+                        .doOnError(throwable ->
+                                usernameWrapper.setError(throwable.getMessage()))
+                        .onErrorResumeNext(throwable -> Observable.just(null)))
                 .doOnNext(u -> {
                     if (u == null) signinBtn.setEnabled(true);
                 })

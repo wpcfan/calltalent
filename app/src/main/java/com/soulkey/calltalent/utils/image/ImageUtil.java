@@ -118,7 +118,7 @@ public final class ImageUtil {
         });
     }
 
-    public static boolean bitmap2file(Bitmap bitmap, File file, Bitmap.CompressFormat compressFormat) {
+    public static Boolean bitmap2file(Bitmap bitmap, File file, Bitmap.CompressFormat compressFormat) {
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(file);
             bitmap.compress(compressFormat, 90, fileOutputStream);
@@ -239,5 +239,19 @@ public final class ImageUtil {
             byteBuffer.write(buffer, 0, len);
         }
         return byteBuffer.toByteArray();
+    }
+
+    public static Uri getSplashUri(Context context) {
+        return Uri.parse(context.getCacheDir().getAbsolutePath() + "/splash.jpg");
+    }
+
+    public static boolean ifExits(Uri uri) {
+        File file = new File(uri.toString());
+        return file.exists();
+    }
+
+    public static boolean ifExits(String filePath) {
+        File file = new File(filePath);
+        return file.exists();
     }
 }

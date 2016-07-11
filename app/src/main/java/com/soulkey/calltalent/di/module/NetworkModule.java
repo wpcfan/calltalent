@@ -2,6 +2,8 @@ package com.soulkey.calltalent.di.module;
 
 import android.app.Application;
 
+import com.soulkey.calltalent.api.network.HttpManager;
+import com.soulkey.calltalent.api.network.IHttpManager;
 import com.soulkey.calltalent.api.network.INetworkManager;
 import com.soulkey.calltalent.api.network.NetworkManager;
 
@@ -20,5 +22,11 @@ public final class NetworkModule {
     @Provides
     INetworkManager providesNetworkManager(Application application) {
         return new NetworkManager(application);
+    }
+
+    @Singleton
+    @Provides
+    IHttpManager providesHttpManager() {
+        return new HttpManager();
     }
 }

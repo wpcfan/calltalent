@@ -1,11 +1,13 @@
 package com.soulkey.calltalent.db;
 
+import android.support.annotation.NonNull;
+
 import rx.Observable;
 
 public interface ISettingDao {
-    Observable<String> getSettingValueByName(String settingName);
+    Observable<String> getSettingValueByName(@NonNull String settingName);
 
-    boolean updateSetting(String name, String value);
+    boolean updateSetting(@NonNull String name, String value);
 
-    boolean createSetting(String name, String value);
+    boolean createSetting(@NonNull String name, String value);
 }
