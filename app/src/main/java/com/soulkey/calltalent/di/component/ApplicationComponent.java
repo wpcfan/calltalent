@@ -11,8 +11,6 @@ import com.soulkey.calltalent.di.module.DbModule;
 import com.soulkey.calltalent.di.module.NetworkModule;
 import com.soulkey.calltalent.di.module.SupportModule;
 import com.soulkey.calltalent.domain.IClock;
-import com.soulkey.calltalent.domain.model.SettingModel;
-import com.soulkey.calltalent.service.SplashService;
 import com.soulkey.calltalent.utils.rx.ISchedulerProvider;
 
 import javax.inject.Singleton;
@@ -40,9 +38,5 @@ public interface ApplicationComponent {
     ISettingDao getSettingDao();
     ISchedulerProvider getSchedulerProvider();
     IClock getClock();
-
-    SettingModel getSettingModel();
     void inject(App app);
-
-    void inject(SplashService service);
 }

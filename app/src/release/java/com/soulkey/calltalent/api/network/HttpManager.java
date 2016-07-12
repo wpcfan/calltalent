@@ -18,11 +18,6 @@ public final class HttpManager implements IHttpManager {
     }
 
     @Override
-    public Observable<String> getSplashImageUrl(String url) {
-        return getHttpResponse(url).map(BingImageProcessor::getImageUri);
-    }
-
-    @Override
     public Observable<Bitmap> fetchImageByUrl(String url) {
         return getHttpResponse(url).map(response -> response.body().byteStream()).map(BitmapFactory::decodeStream);
     }

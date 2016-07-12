@@ -6,8 +6,12 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 
 import com.soulkey.calltalent.App;
-import com.soulkey.calltalent.api.network.IHttpManager;
-import com.soulkey.calltalent.domain.model.SettingModel;
+import com.soulkey.calltalent.di.component.BaseActivityComponent;
+import com.soulkey.calltalent.di.component.DaggerBaseActivityComponent;
+import com.soulkey.calltalent.di.module.DomainModule;
+import com.soulkey.calltalent.di.module.SplashModule;
+import com.soulkey.calltalent.di.module.StorageModule;
+import com.soulkey.calltalent.domain.model.SplashModel;
 import com.soulkey.calltalent.ui.BaseActivity;
 import com.soulkey.calltalent.utils.image.ImageUtil;
 
@@ -29,9 +33,8 @@ public final class SplashService extends IntentService {
     public static final String PARAM_IMAGE_STORED_RESULT = "com.soulkey.calltalent.service.extra.PARAM_IMAGE_STORED_RESULT";
 
     @Inject
-    IHttpManager httpManager;
-    @Inject
-    SettingModel settingModel;
+    SplashModel splashModel;
+
     String currUri;
 
     public SplashService() {
@@ -53,7 +56,6 @@ public final class SplashService extends IntentService {
             if (ACTION_DOWNLOAD.equals(action)) {
                 final String imageUri = intent.getStringExtra(PARAM_IMAGE_URI);
                 final File file = new File(getCacheDir() + "/splash.jpg");
-
                 Subscription subscription = dealWithSplashImage(imageUri, file);
             }
         }
@@ -61,11 +63,11 @@ public final class SplashService extends IntentService {
 
     private Subscription dealWithSplashImage(String imageUri, File file) {
         return
-                httpManager.getSplashImageUrl(imageUri).withLatestFrom(
-                        settingModel.getLastSavedSplashRemoteUri(), (curr, prev) -> {
+                splashModel.getSplashImageUrl(imageUri).withLatestFrom(
+                        splashModel.getLastSavedSplashRemoteUri(), (curr, prev) -> {
                             Boolean same = curr.equals(prev);
                             if (!same) {
-                                settingModel.saveSplashRemoteUri(curr);
+                                splashModel.saveSplashRemoteUri(curr);
                                 currUri = curr;
                                 return true;
                             }
@@ -73,7 +75,7 @@ public final class SplashService extends IntentService {
                         })
                         .flatMap(needChange -> {
                             if (needChange) {
-                                return httpManager.fetchImageByUrl(currUri);
+                                return splashModel.fetchImageByUrl(currUri);
                             } else {
                                 throw new AssertionError("no need to change splash");
                             }
@@ -84,7 +86,12 @@ public final class SplashService extends IntentService {
 
 
     private void injectComponent() {
-        App.from(this).getAppComponent().inject(this);
+        BaseActivityComponent activityComponent = DaggerBaseActivityComponent.builder()
+                .applicationComponent(App.from(this).getAppComponent())
+                .storageModule(new StorageModule())
+                .domainModule(new DomainModule())
+                .build();
+        activityComponent.plus(new SplashModule()).inject(this);
     }
 
     private void sendOutputResult(Boolean result) {

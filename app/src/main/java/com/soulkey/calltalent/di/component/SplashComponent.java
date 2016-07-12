@@ -1,6 +1,7 @@
 package com.soulkey.calltalent.di.component;
 
 import com.soulkey.calltalent.di.module.SplashModule;
+import com.soulkey.calltalent.service.SplashService;
 import com.soulkey.calltalent.ui.SplashActivity;
 
 import dagger.Subcomponent;
@@ -8,4 +9,6 @@ import dagger.Subcomponent;
 @Subcomponent(modules = SplashModule.class)
 public interface SplashComponent {
     void inject(SplashActivity activity);
+
+    void inject(SplashService service);
 }

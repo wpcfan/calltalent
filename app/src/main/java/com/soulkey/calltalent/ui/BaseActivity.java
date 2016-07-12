@@ -23,7 +23,6 @@ import com.soulkey.calltalent.di.component.DaggerBaseActivityComponent;
 import com.soulkey.calltalent.di.module.DomainModule;
 import com.soulkey.calltalent.di.module.StorageModule;
 import com.soulkey.calltalent.domain.entity.User;
-import com.soulkey.calltalent.domain.model.SettingModel;
 import com.soulkey.calltalent.domain.model.UserModel;
 import com.soulkey.calltalent.service.SplashService;
 import com.soulkey.calltalent.ui.auth.LoginActivity;
@@ -57,8 +56,6 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     protected INetworkManager networkManager;
     @Inject
     protected IStorageManager storageManager;
-    @Inject
-    protected SettingModel settingModel;
 
     private SplashReceiver receiver;
 
