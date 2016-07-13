@@ -85,10 +85,10 @@ public final class CreateUserProfileActivity extends BaseActivity {
                     RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(getResources(), uri);
                     dr.setCornerRadius(5);
                     takePhotoBtn.setImageDrawable(dr);
-                    nameInput.setText(storageManager.readString(TEMP_PROFILE_NAME));
-                    titleInput.setText(storageManager.readString(TEMP_PROFILE_TITLE));
-                    descInput.setText(storageManager.readString(TEMP_PROFILE_DESC));
-                    if (storageManager.readBoolean(TEMP_PROFILE_GENDER))
+                    nameInput.setText(userModel.readString(TEMP_PROFILE_NAME));
+                    titleInput.setText(userModel.readString(TEMP_PROFILE_TITLE));
+                    descInput.setText(userModel.readString(TEMP_PROFILE_DESC));
+                    if (userModel.readBoolean(TEMP_PROFILE_GENDER))
                         maleChecked.setChecked(true);
                     else
                         femaleChecked.setChecked(true);
@@ -125,10 +125,10 @@ public final class CreateUserProfileActivity extends BaseActivity {
         return RxView.clicks(takePhotoBtn)
                 .compose(bindToLifecycle())
                 .subscribe(aVoid -> {
-                    storageManager.writeString(TEMP_PROFILE_NAME, nameInput.getText().toString());
-                    storageManager.writeString(TEMP_PROFILE_TITLE, titleInput.getText().toString());
-                    storageManager.writeString(TEMP_PROFILE_DESC, descInput.getText().toString());
-                    storageManager.writeBoolean(TEMP_PROFILE_GENDER, genderRadioGroup.getCheckedRadioButtonId() == R.id.gender_male_selected);
+                    userModel.writeString(TEMP_PROFILE_NAME, nameInput.getText().toString());
+                    userModel.writeString(TEMP_PROFILE_TITLE, titleInput.getText().toString());
+                    userModel.writeString(TEMP_PROFILE_DESC, descInput.getText().toString());
+                    userModel.writeBoolean(TEMP_PROFILE_GENDER, genderRadioGroup.getCheckedRadioButtonId() == R.id.gender_male_selected);
                     UIHelper.launchActivity(this, AvatarActivity.class, params);
                     finish();
                 });
@@ -162,10 +162,10 @@ public final class CreateUserProfileActivity extends BaseActivity {
                                 this, notice.getThrowable().getMessage(), Toast.LENGTH_SHORT).show();
                 })
                 .doOnNext(__ -> {
-                    storageManager.remove(TEMP_PROFILE_NAME);
-                    storageManager.remove(TEMP_PROFILE_TITLE);
-                    storageManager.remove(TEMP_PROFILE_GENDER);
-                    storageManager.remove(TEMP_PROFILE_DESC);
+                    userModel.remove(TEMP_PROFILE_NAME);
+                    userModel.remove(TEMP_PROFILE_TITLE);
+                    userModel.remove(TEMP_PROFILE_GENDER);
+                    userModel.remove(TEMP_PROFILE_DESC);
                 })
                 .flatMap(notification -> {
                     if (notification.hasValue()) {

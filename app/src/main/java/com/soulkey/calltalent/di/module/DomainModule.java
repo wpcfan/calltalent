@@ -5,7 +5,10 @@ import android.content.SharedPreferences;
 
 import com.soulkey.calltalent.api.auth.IAuthManager;
 import com.soulkey.calltalent.api.auth.wilddog.AuthManagerWilddogImpl;
+import com.soulkey.calltalent.api.network.IHttpManager;
+import com.soulkey.calltalent.api.network.INetworkManager;
 import com.soulkey.calltalent.api.storage.AvatarDiskCache;
+import com.soulkey.calltalent.api.storage.IStorageManager;
 import com.soulkey.calltalent.api.storage.UserProfileDiskCache;
 import com.soulkey.calltalent.api.user.IUserManager;
 import com.soulkey.calltalent.api.user.wilddog.UserManagerWilddogImpl;
@@ -57,7 +60,19 @@ public final class DomainModule {
             AvatarDiskCache avatarDiskCache,
             IAuthManager service,
             IUserManager userManager,
+            IHttpManager httpManager,
+            INetworkManager networkManager,
+            IStorageManager storageManager,
             IClock clock) {
-        return new UserModel(provider, userDiskCache, avatarDiskCache, service, userManager, clock);
+        return new UserModel(
+                provider,
+                userDiskCache,
+                avatarDiskCache,
+                service,
+                userManager,
+                httpManager,
+                networkManager,
+                storageManager,
+                clock);
     }
 }

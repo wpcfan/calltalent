@@ -1,7 +1,12 @@
 package com.soulkey.calltalent.domain.model;
 
+import android.support.annotation.NonNull;
+
 import com.soulkey.calltalent.api.auth.IAuthManager;
+import com.soulkey.calltalent.api.network.IHttpManager;
+import com.soulkey.calltalent.api.network.INetworkManager;
 import com.soulkey.calltalent.api.storage.AvatarDiskCache;
+import com.soulkey.calltalent.api.storage.IStorageManager;
 import com.soulkey.calltalent.api.storage.UserProfileDiskCache;
 import com.soulkey.calltalent.api.user.IUserManager;
 import com.soulkey.calltalent.domain.IClock;
@@ -26,6 +31,9 @@ public final class UserModel {
     private final AvatarDiskCache avatarDiskCache;
     private final IAuthManager service;
     private final IUserManager userManager;
+    private final IHttpManager httpManager;
+    private final INetworkManager networkManager;
+    private final IStorageManager storageManager;
     private final IClock clock;
     private UserProfile memoryCache;
     private ReplaySubject<UserProfile> userProfileReplaySubject;
@@ -37,13 +45,47 @@ public final class UserModel {
             AvatarDiskCache avatarDiskCache,
             IAuthManager service,
             IUserManager userManager,
+            IHttpManager httpManager,
+            INetworkManager networkManager,
+            IStorageManager storageManager,
             IClock clock) {
         this.schedulerProvider = schedulerProvider;
         this.diskCache = diskCache;
         this.avatarDiskCache = avatarDiskCache;
         this.service = service;
         this.userManager = userManager;
+        this.httpManager = httpManager;
+        this.networkManager = networkManager;
+        this.storageManager = storageManager;
         this.clock = clock;
+    }
+
+    public Boolean writeString(@NonNull String key, @NonNull String value) {
+        return storageManager.writeString(key, value);
+    }
+
+    public Boolean writeBoolean(@NonNull String key, @NonNull Boolean value) {
+        return storageManager.writeBoolean(key, value);
+    }
+
+    public String readString(@NonNull String key) {
+        return storageManager.readString(key);
+    }
+
+    public Boolean readBoolean(@NonNull String key) {
+        return storageManager.readBoolean(key);
+    }
+
+    public void remove(@NonNull String key) {
+        storageManager.remove(key);
+    }
+
+    public Observable<INetworkManager.NetworkStatus> observeNetworkChange() {
+        return networkManager.observeNetworkChange();
+    }
+
+    public Observable<INetworkManager.NetworkStatus> getNetworkStatus() {
+        return networkManager.getNetworkStatus();
     }
 
     public Observable<Boolean> saveAvatarToDiskCache(String uid, String mediaUri) {

@@ -16,7 +16,6 @@ import android.view.View;
 
 import com.soulkey.calltalent.App;
 import com.soulkey.calltalent.api.network.INetworkManager;
-import com.soulkey.calltalent.api.storage.IStorageManager;
 import com.soulkey.calltalent.di.component.ApplicationComponent;
 import com.soulkey.calltalent.di.component.BaseActivityComponent;
 import com.soulkey.calltalent.di.component.DaggerBaseActivityComponent;
@@ -52,10 +51,6 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     private final CompositeSubscription _subscription = new CompositeSubscription();
     @Inject
     protected UserModel userModel;
-    @Inject
-    protected INetworkManager networkManager;
-    @Inject
-    protected IStorageManager storageManager;
 
     private SplashReceiver receiver;
 
@@ -224,7 +219,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     }
 
     protected Subscription checkNetworkStatus() {
-        return networkManager.observeNetworkChange()
+        return userModel.observeNetworkChange()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(networkStatus -> {
                     if (networkStatus == INetworkManager.NetworkStatus.OFFLINE ||
