@@ -110,6 +110,7 @@ dependencies {
     compile 'com.google.android:flexbox:latest.release'
     compile 'com.squareup.moshi:moshi:latest.release'
     compile 'com.jakewharton.rxbinding:rxbinding:latest.release'
+    compile 'com.jakewharton.rxbinding:rxbinding-support-v4:latest.release'
     compile 'com.jakewharton.rxbinding:rxbinding-design:latest.release'
     compile 'com.jakewharton.rxbinding:rxbinding-appcompat-v7:latest.release'
     compile 'com.jakewharton.rxbinding:rxbinding-recyclerview-v7:latest.release'

@@ -1,4 +1,4 @@
-package com.soulkey.calltalent.utils.animation;
+package com.soulkey.calltalent.utils.animation.loadinganimation;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;

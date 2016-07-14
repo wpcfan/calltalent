@@ -10,8 +10,8 @@ import com.soulkey.calltalent.di.component.BaseActivityComponent;
 import com.soulkey.calltalent.di.module.SplashModule;
 import com.soulkey.calltalent.domain.model.SplashModel;
 import com.soulkey.calltalent.service.SplashService;
-import com.soulkey.calltalent.utils.animation.LoadingDrawable;
-import com.soulkey.calltalent.utils.animation.render.DanceLoadingRenderer;
+import com.soulkey.calltalent.utils.animation.loadinganimation.LoadingDrawable;
+import com.soulkey.calltalent.utils.animation.loadinganimation.render.DanceLoadingRenderer;
 import com.soulkey.calltalent.utils.image.ImageUtil;
 
 import java.util.concurrent.TimeUnit;

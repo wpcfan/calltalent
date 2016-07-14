@@ -1,4 +1,4 @@
-package com.soulkey.calltalent.utils.animation.render;
+package com.soulkey.calltalent.utils.animation.loadinganimation.render;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -14,7 +14,7 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 
-import com.soulkey.calltalent.utils.animation.LoadingRenderer;
+import com.soulkey.calltalent.utils.animation.loadinganimation.LoadingRenderer;
 
 public final class DanceLoadingRenderer extends LoadingRenderer {
     private static final Interpolator MATERIAL_INTERPOLATOR = new FastOutSlowInInterpolator();
