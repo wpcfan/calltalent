@@ -15,19 +15,31 @@ import com.soulkey.calltalent.ui.adapter.MainRecyclerViewAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class FragmentOne extends Fragment {
+
+    @BindView(R.id.recycler_view)
+    RecyclerView mRecyclerView;
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main_tab_home, container, false);
-        RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        ButterKnife.bind(this, view);
         mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        List<Integer> datas = new ArrayList<>();
+        List<Integer> data = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
-            datas.add(i);
+            data.add(i);
         }
-        mRecyclerView.setAdapter(new MainRecyclerViewAdapter(getActivity(), datas));
+        mRecyclerView.setAdapter(new MainRecyclerViewAdapter(getActivity(), data));
         return view;
     }
 }

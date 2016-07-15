@@ -12,6 +12,9 @@ import com.soulkey.calltalent.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainViewHolder> {
     private List<Integer> datas;
     private Context context;
@@ -41,20 +44,21 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainViewHolder
         ViewGroup.LayoutParams params = holder.itemView.getLayoutParams();
         params.height = lists.get(position);//把随机的高度赋予item布局
         holder.itemView.setLayoutParams(params);
-        holder.mTextView.setText(position + "");
+        holder.mTextView.setText(String.valueOf(position));
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return datas.size();
     }
 }
 
 class MainViewHolder extends RecyclerView.ViewHolder {
+    @BindView(R.id.item_tv)
     TextView mTextView;
 
     public MainViewHolder(View itemView) {
         super(itemView);
-        mTextView = (TextView) itemView.findViewById(R.id.item_tv);
+        ButterKnife.bind(this, itemView);
     }
 }
