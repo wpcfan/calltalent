@@ -124,7 +124,13 @@ dependencies {
     compile 'com.trello:rxlifecycle-components:latest.release'
     compile 'com.github.pwittchen:reactivenetwork:latest.release'
     //RxPermissions/RxActivityResullt will be auto imported by Rxparazzo
-    compile 'com.github.FuckBoilerplate:RxPaparazzo:latest.release'
+    compile('com.github.FuckBoilerplate:RxPaparazzo:latest.release') {
+        exclude group: 'com.yalantis:ucrop', module: 'ucrop'
+        exclude group: 'com.tbruyelle.rxpermissions', module: 'rxpermissions'
+        exclude group: 'io.reactivex', module: 'rxjava'
+        exclude group: 'io.reactivex', module: 'rxandroid'
+    }
+    compile 'com.tbruyelle.rxpermissions:rxpermissions:latest.release@aar'
     compile 'com.yalantis:ucrop:latest.release'
     compile 'com.ragnarok.rxcamera:lib:latest.release'
     compile 'com.cloudinary:cloudinary-android:latest.release'

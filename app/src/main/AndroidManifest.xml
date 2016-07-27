@@ -71,9 +71,6 @@
             android:name=".service.SplashService"
             android:exported="false" />
 
-        <activity
-            android:name=".UserLoginActivity"
-            android:label="@string/title_activity_user_login"></activity>
     </application>
 
 </manifest>
