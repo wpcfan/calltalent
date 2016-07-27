@@ -84,10 +84,6 @@ public final class UserModel {
         return networkManager.observeNetworkChange();
     }
 
-    public Observable<INetworkManager.NetworkStatus> getNetworkStatus() {
-        return networkManager.getNetworkStatus();
-    }
-
     public Observable<Boolean> saveAvatarToDiskCache(String uid, String mediaUri) {
         return avatarDiskCache.saveEntity(Avatar.create(uid, mediaUri));
     }

@@ -10,7 +10,7 @@ frodo {
 }
 buildscript {
     ext {
-        support_version = '24.0.0'
+        support_version = '24.1.1'
         firebase_version = '9.2.0'
     }
 
@@ -23,7 +23,7 @@ buildscript {
 android {
 
     compileSdkVersion 24
-    buildToolsVersion "24.0.0"
+    buildToolsVersion "24.0.1"
 
     defaultConfig {
         applicationId "com.soulkey.calltalent"
@@ -125,6 +125,7 @@ dependencies {
     compile 'com.github.pwittchen:reactivenetwork:latest.release'
     //RxPermissions/RxActivityResullt will be auto imported by Rxparazzo
     compile 'com.github.FuckBoilerplate:RxPaparazzo:latest.release'
+    compile 'com.yalantis:ucrop:latest.release'
     compile 'com.ragnarok.rxcamera:lib:latest.release'
     compile 'com.cloudinary:cloudinary-android:latest.release'
     compile 'com.cloudinary:cloudinary-core:latest.release'

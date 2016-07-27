@@ -9,8 +9,7 @@ import rx.Observable;
 public interface INetworkManager {
     enum NetworkStatus {
         UNKNOWN("unknown"),
-        WIFI_CONNECTED("connected to WiFi"),
-        MOBILE_CONNECTED("connected to mobile network"),
+        CONNECTED("connected"),
         OFFLINE("offline");
 
         private final String value;
@@ -23,5 +22,4 @@ public interface INetworkManager {
     }
 
     Observable<NetworkStatus> observeNetworkChange();
-    Observable<NetworkStatus> getNetworkStatus();
 }

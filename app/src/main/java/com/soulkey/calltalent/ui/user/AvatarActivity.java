@@ -30,7 +30,6 @@ import com.soulkey.calltalent.utils.image.ImageUtil;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.yalantis.ucrop.UCrop;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -98,7 +97,7 @@ public final class AvatarActivity extends BaseActivity {
     public Map<String, String> getParams() {
         Map<String, String> params = new HashMap<>();
         params.put(LoginParams.PARAM_KEY_UID.getValue(), uid);
-        params.put(LoginParams.PARAM_KEY_AVATAR_URI.getValue(), tempFileUri.toString());
+        params.put(LoginParams.PARAM_KEY_AVATAR_URI.getValue(), tempFileUri.getLastPathSegment());
         return params;
     }
 
@@ -135,9 +134,8 @@ public final class AvatarActivity extends BaseActivity {
                 .subscribe(uri -> {
                     if (uri != null) {
                         tempFileUri = uri;
-                        imagePreview.setImageURI(uri);
-                    } else
-                        imagePreview.setImageURI(tempFileUri);
+                    }
+                    imagePreview.setImageURI(tempFileUri);
                     editBtn.setEnabled(true);
                 });
         getSubsCollector().add(subEdit);
@@ -210,9 +208,11 @@ public final class AvatarActivity extends BaseActivity {
         options.setToolbarColor(ContextCompat.getColor(this, R.color.primary));
         options.setShowCropFrame(true);
         options.setMaxBitmapSize(1024 * 1024 * 1024);
+        options.setHideBottomControls(true);
+        options.withAspectRatio(1, 1);
         UCrop uCrop = UCrop.of(
                 Uri.parse(uri),
-                Uri.fromFile(new File(getCacheDir(), "avatar.jpg")))
+                tempFileUri)
                 .withOptions(options);
         return RxActivityResult.on(this)
                 .startIntent(uCrop.getIntent(getApplicationContext()));

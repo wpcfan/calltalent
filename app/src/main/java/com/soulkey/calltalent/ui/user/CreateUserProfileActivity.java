@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,6 +24,7 @@ import com.soulkey.calltalent.ui.UIHelper;
 import com.soulkey.calltalent.ui.auth.LoginParams;
 import com.soulkey.calltalent.utils.image.ImageUtil;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -56,7 +58,7 @@ public final class CreateUserProfileActivity extends BaseActivity {
     @BindView(R.id.showUserProfileBtn)
     Button showUserProfileBtn;
     @BindView(R.id.take_photo_btn)
-    ImageView takePhotoBtn;
+    ImageView avatarImage;
     @BindView(R.id.gender_radio_group)
     RadioGroup genderRadioGroup;
     @BindView(R.id.gender_male_selected)
@@ -64,7 +66,7 @@ public final class CreateUserProfileActivity extends BaseActivity {
     @BindView(R.id.gender_female_selected)
     RadioButton femaleChecked;
     @State
-    Uri localUri;
+    String localUri;
     @State
     String uid;
     @State
@@ -80,11 +82,13 @@ public final class CreateUserProfileActivity extends BaseActivity {
         Subscription subReceiveParam = getParams()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(uri -> {
-                    localUri = Uri.parse(uri);
-                    RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(getResources(), uri);
+                .subscribe(path -> {
+                    String dirname = ImageUtil.getApplicationName(this);
+                    File dir = ImageUtil.getPublicDir(null, dirname, this);
+                    localUri = dir.getAbsolutePath() + "/" + path;
+                    RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(getResources(), localUri);
                     dr.setCornerRadius(5);
-                    takePhotoBtn.setImageDrawable(dr);
+                    avatarImage.setImageDrawable(dr);
                     nameInput.setText(userModel.readString(TEMP_PROFILE_NAME));
                     titleInput.setText(userModel.readString(TEMP_PROFILE_TITLE));
                     descInput.setText(userModel.readString(TEMP_PROFILE_DESC));
@@ -122,7 +126,7 @@ public final class CreateUserProfileActivity extends BaseActivity {
     }
 
     private Subscription dealWithAvatar(Map<String, String> params) {
-        return RxView.clicks(takePhotoBtn)
+        return RxView.clicks(avatarImage)
                 .compose(bindToLifecycle())
                 .subscribe(aVoid -> {
                     userModel.writeString(TEMP_PROFILE_NAME, nameInput.getText().toString());
@@ -142,7 +146,7 @@ public final class CreateUserProfileActivity extends BaseActivity {
     private Observable<Boolean> getSubmitProfileStream() {
         return RxView.clicks(completeUserProfile)
                 .flatMap(__ -> {
-                    if (localUri == null || localUri.toString().equals(""))
+                    if (TextUtils.isEmpty(localUri))
                         return Observable.error(
                                 new RequireFieldNotSetException(
                                         getResources()
@@ -150,7 +154,7 @@ public final class CreateUserProfileActivity extends BaseActivity {
                                 .materialize();
                     byte[] data = new byte[0];
                     try {
-                        data = ImageUtil.getBytes(this, localUri);
+                        data = ImageUtil.getBytes(this, Uri.parse(localUri));
                     } catch (IOException e) {
                         return Observable.error(e).materialize();
                     }
